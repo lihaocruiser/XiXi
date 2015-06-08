@@ -5,6 +5,10 @@
 *.apk
 *.ap_
 
+# files for the dex VM
+*.dex
+*.iml
+
 # Files for the Dalvik VM
 *.dex
 
@@ -14,6 +18,7 @@
 # Generated files
 bin/
 gen/
+*target/
 
 # Gradle files
 .gradle/
