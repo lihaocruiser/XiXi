@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import com.xixi.net.API;
-import com.xixi.util.JSONReceiver;
+import com.xixi.net.JSONReceiver;
 import com.loopj.android.http.*;
 
 public class LoginTask {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="start_page_background">#EBEBEB</color>
+    <color name="login_hint">#ABADAC</color>
+    <color name="login_button">#18B4ED</color>
+    <color name="register_button">#18B4ED</color>
+    <color name="tint_color">#ADADAE</color>
+    
+    <color name="other_homepage_tag_color">#aa000000</color>
+    <color name="message_nick_name">#43A4C7</color>
+    <color name="xixi_nav_top">#18B4ED</color>
+    <color name="xixi_comment">#EDEFED</color>
+    <color name="xixi_comment_nickname">#3C517E</color>
+
+    <!-- 相册 -->
+    <color name="photo_ablum_background">#EDEDED</color>
+    <color name="take_picture_text">#333333</color>
+    <color name="photo_ablum_bottom_layout_background">#333333</color>
+
+    <!-- 个人主页 -->
+    <color name="pm_text">#56AAEC</color>
+
+    <!-- 菜单 -->
+    <color name="home_menu_background">#F9F9F9</color>
+    <color name="home_menu_line">#DFDFDF</color>
+
+    <color name="blue_deep">#1080FF</color>
+    <color name="blue_mid">#1E90FF</color>
+    <color name="blue_light">#00BFFF</color>
+
+    <color name="grey_deep">#ADADAD</color>
+    <color name="grey_mid">#F5F5F5</color>
+    <color name="grey_light">#F9F9F9</color>
+
+    <color name="white">#FFFFFF</color>
+
+
+
+</resources>

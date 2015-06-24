@@ -2,17 +2,17 @@ package com.xixi.net.magpie;
 
 import android.util.Log;
 
-import com.xixi.net.API;
-import com.xixi.net.JSONReceiver;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.xixi.net.API;
+import com.xixi.net.JSONReceiver;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MagpieListTask {
+public class MagpieTask {
 
 	private RequestParams params;
 
@@ -31,7 +31,7 @@ public class MagpieListTask {
 		public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 			Log.i(getClass().toString(), "onSuccess");
             if (arg2 == null) {
-                receiver.onSuccess(null);
+                receiver.onFailure(null);
                 return;
             }
 			try {
@@ -45,13 +45,13 @@ public class MagpieListTask {
 
 	};
 
-	public MagpieListTask(RequestParams params, JSONReceiver receiver) {
+	public MagpieTask(RequestParams params, JSONReceiver receiver) {
 		this.params = params;
 		this.receiver = receiver;
 	}
 	
 	public void execute() {
-		String url = API.HOST + "post/postlist";
+		String url = API.HOST + "post/lookpost";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 

@@ -1,0 +1,54 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xixi.ui.main.DiscoverFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_circle"
+        style="@style/discover_item"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            style="@style/discover_im"
+            android:src="@drawable/ic_discover_circle"/>
+
+        <TextView
+            style="@style/discover_tv"
+            android:text="circle"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_weekend"
+        style="@style/discover_item"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            style="@style/discover_im"
+            android:src="@drawable/ic_discover_weekend"/>
+
+        <TextView
+            style="@style/discover_tv"
+            android:text="weekend"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_help"
+        style="@style/discover_item"
+        android:layout_marginTop="1dp">
+
+        <ImageView
+            style="@style/discover_im"
+            android:src="@drawable/ic_discover_help"/>
+
+        <TextView
+            style="@style/discover_tv"
+            android:text="help"/>
+
+    </LinearLayout>
+
+</LinearLayout>

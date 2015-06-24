@@ -1,13 +1,12 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lihao.ui.main.MagpieFragment">
+    tools:context="com.xixi.ui.magpie.MagpieActivity">
 
-    <ListView
-        android:id="@+id/circle_listview"
+    <com.xixi.widget.LoadListView
+        android:id="@+id/magpie_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+</LinearLayout>

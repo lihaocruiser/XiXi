@@ -15,7 +15,7 @@ import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.net.start.LoginTask;
 import com.xixi.ui.main.MainActivity;
-import com.xixi.util.JSONReceiver;
+import com.xixi.net.JSONReceiver;
 import com.xixi.util.SafeJSON;
 import com.loopj.android.http.*;
 

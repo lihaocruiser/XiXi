@@ -1,0 +1,58 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.lihao.ui.main.MagpieFragment">
+
+
+    <LinearLayout
+        android:id="@+id/ll_homepage"
+        style="@style/discover_item"
+        android:layout_marginTop="20dp">
+
+        <com.xixi.widget.CircleImageView
+            android:id="@+id/header"
+            style="@style/discover_im"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_zhanjun"/>
+
+        <TextView
+            style="@style/discover_tv"
+            android:text="Homepage"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_messages"
+        style="@style/discover_item"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            style="@style/discover_im"
+            android:src="@drawable/ic_me_setting"/>
+
+        <TextView
+            style="@style/discover_tv"
+            android:text="Messages"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_settings"
+        style="@style/discover_item"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            style="@style/discover_im"
+            android:src="@drawable/ic_me_messages"/>
+
+        <TextView
+            style="@style/discover_tv"
+            android:text="Settings"/>
+
+    </LinearLayout>
+
+</LinearLayout>

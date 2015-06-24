@@ -5,14 +5,11 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.xixi.net.API;
-import com.xixi.util.BitmapReceiver;
+import com.xixi.net.BitmapReceiver;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ImageTask {
 

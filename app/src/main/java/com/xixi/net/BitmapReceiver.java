@@ -1,4 +1,4 @@
-package com.xixi.util;
+package com.xixi.net;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;

@@ -79,6 +79,9 @@ public class RefreshAndLoadListView extends ListView implements OnScrollListener
         this.addHeaderView(header);
         this.addFooterView(footer);
 
+        setFooterDividersEnabled(false);
+        setHeaderDividersEnabled(false);
+
         params = (FrameLayout.LayoutParams) drag_header.getLayoutParams();
         params.height = HEADER_HEIGHT;
         drag_header.setLayoutParams(params);
@@ -182,22 +185,19 @@ public class RefreshAndLoadListView extends ListView implements OnScrollListener
         isRefreshing = false;
         refresh_header.clearAnimation();
         refresh_header.setVisibility(INVISIBLE);
-        Log.i("","onRefreshComplete");
     }
 
     public void onLoadComplete() {
         isLoading = false;
-        Log.i("", "onLoadComplete");
     }
 
     public void onLoadOver() {
         isLoadingOver = true;
-        Log.i("","onLoadOver");
         tv_footer.setText("No More Data.");
     }
 
     public void onError() {
-        tv_footer.setText("Network Error.");
+        tv_footer.setText("Unknown Error.");
     }
 
 
@@ -213,7 +213,6 @@ public class RefreshAndLoadListView extends ListView implements OnScrollListener
         refresh_header.setVisibility(VISIBLE);
         refresh_header.startAnimation(animation);
 
-        Log.i("","onRefresh");
         if (listener != null) {
             listener.onRefresh();
         }
@@ -224,7 +223,6 @@ public class RefreshAndLoadListView extends ListView implements OnScrollListener
         if (isLoading || isLoadingOver) return;
         isLoading = true;
 
-        Log.i("","onLoad");
         if (listener != null) {
             listener.onLoad();
         }

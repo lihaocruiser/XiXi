@@ -20,7 +20,14 @@ public class ApplicationContext {
 	private final static String USER_PASSWORD = "password";
 	private final static String USER_CHECKED = "checked";
 
-	public static String age;
+    private final static String USER_AGE = "age";
+    private final static String USER_HEAD_PIC = "headPic";
+    private final static String USER_LABEL = "label";
+    private final static String USER_NICK_NAME = "nickname";
+    private final static String USER_SEX = "sex";
+    private final static String USER_SCHOOL = "school";
+
+	public static int age;
 	public static String headPic;
 	public static String label;
 	public static String nickname;
@@ -51,17 +58,23 @@ public class ApplicationContext {
 	}
 
 	public void saveUserInfo(JSONObject obj) {
-		age	= SafeJSON.getString(obj, "age", null);
+		age	= SafeJSON.getInt(obj, "age", -1);
 		headPic = SafeJSON.getString(obj, "headPic", null);
 		label = SafeJSON.getString(obj, "label", null);
 		nickname = SafeJSON.getString(obj, "nickname", null);
 		sex = SafeJSON.getString(obj, "sex", null);
 		school = SafeJSON.getString(obj, "school", null);
+        setAge(age);
+        setHeadPic(headPic);
+        setLabel(label);
+        setNickName(nickname);
+        setSex(sex);
+        setSchool(school);
 	}
 
 	public void clearSP() {
 		Editor editor = getSP().edit().clear();
-		editor.commit();
+		editor.apply();
 	}
 	
 	public String getToken() {
@@ -70,7 +83,7 @@ public class ApplicationContext {
 	
 	public void setToken(String token) {
 		Editor editor = getSP().edit().putString(USER_TOKEN, token);
-		editor.commit();
+		editor.apply();
 	}
 	
 	public String getEmail() {
@@ -79,7 +92,7 @@ public class ApplicationContext {
 	
 	public void setEmail(String email) {
 		Editor editor = getSP().edit().putString(USER_EMAIL, email);
-		editor.commit();
+		editor.apply();
 	}
 	
 	public String getPassword() {
@@ -88,16 +101,70 @@ public class ApplicationContext {
 	
 	public void setPassword(String password) {
 		Editor editor = getSP().edit().putString(USER_PASSWORD, password);
-		editor.commit();
+		editor.apply();
 	}
-	
-	public int getChecked() {
-		return getSP().getInt(USER_CHECKED, -1);
-	}
-	
-	public void setChecked(int checked) {
-		Editor editor = getSP().edit().putInt(USER_CHECKED, checked);
-		editor.commit();
-	}
-		
+
+    public int getChecked() {
+        return getSP().getInt(USER_CHECKED, -1);
+    }
+
+    public void setChecked(int checked) {
+        Editor editor = getSP().edit().putInt(USER_CHECKED, checked);
+        editor.apply();
+    }
+
+    public int getAge() {
+        return getSP().getInt(USER_AGE, -1);
+    }
+
+    public void setAge(int age) {
+        Editor editor = getSP().edit().putInt(USER_AGE, age);
+        editor.apply();
+    }
+
+    public String getHeadPic() {
+        return getSP().getString(USER_HEAD_PIC, null);
+    }
+
+    public void setHeadPic(String USER_HEAD_PIC) {
+        Editor editor = getSP().edit().putString(USER_HEAD_PIC, null);
+        editor.apply();
+    }
+
+    public String getLabel() {
+        return getSP().getString(USER_LABEL, null);
+    }
+
+    public void setLabel(String label) {
+        Editor editor = getSP().edit().putString(USER_LABEL, null);
+        editor.apply();
+    }
+
+    public String getNickname() {
+        return getSP().getString(USER_NICK_NAME, null);
+    }
+
+    public void setNickName(String nickname) {
+        Editor editor = getSP().edit().putString(USER_NICK_NAME, null);
+        editor.apply();
+    }
+
+    public String getSex() {
+        return getSP().getString(USER_SEX, null);
+    }
+
+    public void setSex(String sex) {
+        Editor editor = getSP().edit().putString(USER_SEX, null);
+        editor.apply();
+    }
+
+    public String getSchool() {
+        return getSP().getString(USER_SCHOOL, null);
+    }
+
+    public void setSchool(String school) {
+        Editor editor = getSP().edit().putString(USER_SCHOOL, null);
+        editor.apply();
+    }
+
 }

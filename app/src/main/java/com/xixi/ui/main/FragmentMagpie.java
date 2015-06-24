@@ -1,11 +1,13 @@
 package com.xixi.ui.main;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,8 +16,9 @@ import com.xixi.R;
 import com.xixi.bean.MagpieTitleBean;
 import com.xixi.net.image.ImageTask;
 import com.xixi.net.magpie.MagpieListTask;
-import com.xixi.util.BitmapReceiver;
-import com.xixi.util.JSONReceiver;
+import com.xixi.ui.magpie.MagpieActivity;
+import com.xixi.net.BitmapReceiver;
+import com.xixi.net.JSONReceiver;
 import com.xixi.util.StringUtil;
 import com.xixi.widget.RefreshAndLoadListView;
 
@@ -33,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MagpieFragment extends Fragment {
+public class FragmentMagpie extends Fragment implements AdapterView.OnItemClickListener {
 
     RefreshAndLoadListView listView;
     MagpieAdapter magpieAdapter;
@@ -166,6 +169,13 @@ public class MagpieFragment extends Fragment {
         }
     };
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), MagpieActivity.class);
+        intent.putExtra("id", beanList.get(position).id);
+        startActivity(intent);
+    }
+
 
     private class MagpieAdapter extends BaseAdapter {
 
@@ -191,7 +201,7 @@ public class MagpieFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.lv_magpie_item, null);
+                convertView = inflater.inflate(R.layout.lv_magpie_title_item, null);
                 holder = new ViewHolder();
                 holder.imHead = (ImageView) convertView.findViewById(R.id.head);
                 holder.tvTitle = (TextView) convertView.findViewById(R.id.title);

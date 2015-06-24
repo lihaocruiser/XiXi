@@ -28,28 +28,21 @@
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_magpie"/>
+            android:src="@drawable/ic_main_magpie"/>
 
         <ImageView
-            android:id="@+id/iv_circle"
+            android:id="@+id/iv_discover"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_circle_white"/>
+            android:src="@drawable/ic_main_discover_white"/>
 
         <ImageView
-            android:id="@+id/iv_weekend"
+            android:id="@+id/iv_me"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_magpie_white"/>
-
-        <ImageView
-            android:id="@+id/iv_setting"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_magpie_white"/>
+            android:src="@drawable/ic_main_magpie_white"/>
 
     </LinearLayout>
 
