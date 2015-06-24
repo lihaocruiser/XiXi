@@ -158,7 +158,7 @@ public class FragmentMagpie extends Fragment implements AdapterView.OnItemClickL
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject item = (JSONObject) array.get(i);
                     MagpieTitleBean bean = new MagpieTitleBean(item);
-                    if (!bean.isInList(beanList)) {
+                    if (!beanList.contains(bean)) {
                         beanList.add(bean);
                     }
                 }

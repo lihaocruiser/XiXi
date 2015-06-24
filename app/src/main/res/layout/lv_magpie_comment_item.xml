@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/header"
+            android:id="@+id/im_header"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="@dimen/abc_control_padding_material"
@@ -19,7 +19,7 @@
             android:src="@drawable/ic_launcher"/>
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -34,7 +34,7 @@
             android:src="@drawable/ic_launcher"/>
 
         <TextView
-            android:id="@+id/floor"
+            android:id="@+id/tv_floor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -42,7 +42,7 @@
             android:text="1st floor"/>
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -60,37 +60,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/like"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/like_count"
-            android:src="@drawable/ic_launcher"/>
-
         <TextView
-            android:id="@+id/like_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/comment"
-            android:text="0"/>
-
-        <ImageView
-            android:id="@+id/comment"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/comment_number"
-            android:src="@drawable/ic_launcher"/>
-
-        <TextView
-            android:id="@+id/comment_number"
+            android:id="@+id/tv_reply_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="0"/>
+
+        <ImageView
+            android:id="@+id/im_reply"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_reply_count"
+            android:src="@drawable/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/im_reply"
+            android:text="0"/>
+
+        <ImageView
+            android:id="@+id/im_like"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_like_count"
+            android:src="@drawable/ic_launcher"/>
 
     </RelativeLayout>
 

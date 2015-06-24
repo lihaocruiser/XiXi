@@ -4,33 +4,27 @@ import com.xixi.util.SafeJSON;
 
 import org.json.JSONObject;
 
-public class MagpieBean {
+public class MagpieCommentBean {
 
     private int id;
-    private String title;
     private String content;
     private int likeCount;
     private int[] likeId;
     private String time;
-    private String picUrl;
+    private int floor;
 
     private int userId;
     private String userName;
     private String userSex;
     private String userHeaderUrl;
 
-    public MagpieBean() {}
+    public MagpieCommentBean() {}
 
-    public MagpieBean(JSONObject obj) {
-
-        if (obj == null) {
-            return;
-        }
+    public MagpieCommentBean(JSONObject obj) {
 
         JSONObject user = SafeJSON.getJSONObject(obj, "publisher", null);
 
         id = SafeJSON.getInt(obj, "id", -1);
-        title = SafeJSON.getString(obj, "title", null);
         content = SafeJSON.getString(obj, "content", null);
         likeCount = SafeJSON.getInt(obj, "likeCount", 0);
         time = SafeJSON.getString(obj, "publishTime", null);
@@ -45,10 +39,6 @@ public class MagpieBean {
 
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getContent() {
@@ -67,8 +57,8 @@ public class MagpieBean {
         return time;
     }
 
-    public String getPicUrl() {
-        return picUrl;
+    public int getFloor() {
+        return floor;
     }
 
     public int getUserId() {
