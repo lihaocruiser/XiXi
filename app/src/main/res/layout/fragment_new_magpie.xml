@@ -1,5 +1,4 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -58,10 +57,7 @@
 
         <Button
             android:id="@+id/btn_add_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/abc_action_bar_default_padding_material"
-            android:background="@color/blue_mid"
+            style="@style/btn_blue_large"
             android:text="add photo" />
 
         <LinearLayout

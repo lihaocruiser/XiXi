@@ -24,8 +24,8 @@
     <color name="home_menu_background">#F9F9F9</color>
     <color name="home_menu_line">#DFDFDF</color>
 
-    <color name="blue_deep">#1080FF</color>
-    <color name="blue_mid">#1E90FF</color>
+    <color name="blue_deep">#1E90FF</color>
+    <color name="blue_mid">#10A7FF</color>
     <color name="blue_light">#00BFFF</color>
 
     <color name="grey_deep">#ADADAD</color>
