@@ -18,12 +18,15 @@ import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 import com.xixi.R;
+import com.xixi.bean.ApplicationContext;
 import com.xixi.bean.MagpieBean;
 import com.xixi.bean.MagpieCommentBean;
 import com.xixi.net.BitmapReceiver;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageTask;
 import com.xixi.net.magpie.MagpieCommentTask;
+import com.xixi.net.magpie.MagpieSendCommentTask;
+import com.xixi.net.magpie.MagpieSendReplyMagpieTask;
 import com.xixi.net.magpie.MagpieTask;
 import com.xixi.widget.LoadListView;
 
@@ -54,13 +57,14 @@ public class MagpieActivity extends ActionBarActivity {
     TextView tvUserName;
     TextView tvTime;
     TextView tvLikeCount;
-    TextView tvCommentCount;
+    TextView tvReplyCount;
     TextView tvContent;
 
     // Bottom
     EditText etContent;
     Button btnSend;
 
+    MagpieBean magpieBean;
     List<MagpieCommentBean> beanList = new ArrayList<>();
     Collection<String> taskSet = new HashSet<>();
     Map<String, Bitmap> headMap = new HashMap<>();
@@ -69,9 +73,10 @@ public class MagpieActivity extends ActionBarActivity {
     int pageSize = 10;
     boolean isLoading;
     boolean noMoreItem;
+    int replyFloor = -1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_magpie);
@@ -97,6 +102,31 @@ public class MagpieActivity extends ActionBarActivity {
 
         loadMagpie();
         loadComment();
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = etContent.getText().toString();
+                if (content == null) {
+                    Toast.makeText(MagpieActivity.this, "cannot be empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int myID = 0;   // TODO get myID
+                switch (replyFloor) {
+                    case -1:
+                        sendComment(content, myID);
+                        break;
+                    case 0:
+                        int targetID = magpieBean.getUserId();
+                        if (targetID != 0) {
+                            replyMagpie(content, targetID, myID);
+                        }
+                        break;
+                    default:
+                        //replyComment(); TODO
+                }
+            }
+        });
     }
 
     private void initHeaderView() {
@@ -108,7 +138,7 @@ public class MagpieActivity extends ActionBarActivity {
         tvUserName = (TextView) findViewById(R.id.tv_name);
         tvTime = (TextView) findViewById(R.id.tv_time);
         tvLikeCount = (TextView) findViewById(R.id.tv_like_count);
-        tvCommentCount = (TextView) findViewById(R.id.tv_comment_count);
+        tvReplyCount = (TextView) findViewById(R.id.tv_reply_count);
         tvContent = (TextView) findViewById(R.id.tv_content);
     }
 
@@ -131,7 +161,7 @@ public class MagpieActivity extends ActionBarActivity {
             @Override
             public void onSuccess(JSONObject obj) {
                 if (obj == null) return;
-                MagpieBean magpieBean = new MagpieBean(obj);
+                magpieBean = new MagpieBean(obj);
                 FillHeaderView(magpieBean);
                 LoadHeadPic(magpieBean.getUserHeaderUrl());
                 LoadMagpiePic(magpieBean.getPicUrl());
@@ -329,7 +359,50 @@ public class MagpieActivity extends ActionBarActivity {
         }
     }
 
+    private void sendComment(String content, int commenterID) {
+        RequestParams params = new RequestParams();
+        params.put("postID", id);
+        params.put("content", content);
+        params.put("publisherID", commenterID);
+        new MagpieSendCommentTask(params, sendingReceiver).execute();
+    }
 
+    private void replyMagpie(String content, int parentReplierID, int replierID) {
+        RequestParams params = new RequestParams();
+        params.put("postID", id);
+        params.put("content", content);
+        params.put("parentReplierID", parentReplierID);
+        params.put("replierID", replierID);
+        new MagpieSendReplyMagpieTask(params, sendingReceiver).execute();
+    }
+
+    private void replyComment(int commentID, String content, int parentReplierID, int replierID) {
+        RequestParams params = new RequestParams();
+        params.put("commentID", commentID);
+        params.put("content", content);
+        params.put("parentReplierID", parentReplierID);
+        params.put("replierID", replierID);
+        new MagpieSendReplyMagpieTask(params,sendingReceiver).execute();
+    }
+
+    JSONReceiver sendingReceiver = new JSONReceiver() {
+        @Override
+        public void onFailure(JSONObject obj) {
+            Toast.makeText(MagpieActivity.this, "Sending Failed", Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        public void onSuccess(JSONObject obj) {
+            etContent.setText(null);
+            refreshComment();
+            Toast.makeText(MagpieActivity.this, "Sending Succeeded", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private void refreshComment() {
+        pageIndex = 0;
+        beanList.clear();
+        loadComment();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
