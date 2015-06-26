@@ -1,6 +1,5 @@
 package com.xixi.ui.magpie;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentTransaction;
@@ -11,13 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.xixi.R;
-import com.xixi.ui.Image.ImageBucketFragment;
-import com.xixi.ui.Image.ImageGridFragment;
+import com.xixi.ui.image.ImageBucketFragment;
+import com.xixi.ui.image.ImageGridFragment;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class NewMagpieActivity extends ActionBarActivity {
 

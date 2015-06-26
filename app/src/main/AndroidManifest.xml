@@ -29,6 +29,10 @@
             android:name=".ui.magpie.NewMagpieActivity"
             android:label="@string/title_activity_new_magpie" >
         </activity>
+        <activity
+            android:name=".ui.me.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

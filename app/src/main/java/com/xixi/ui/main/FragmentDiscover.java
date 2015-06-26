@@ -19,7 +19,7 @@ public class FragmentDiscover extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main_discover, container, false);
         llCircle = (LinearLayout) rootView.findViewById(R.id.ll_circle);
         llWeekend = (LinearLayout) rootView.findViewById(R.id.ll_weekend);
         llHelp = (LinearLayout) rootView.findViewById(R.id.ll_help);

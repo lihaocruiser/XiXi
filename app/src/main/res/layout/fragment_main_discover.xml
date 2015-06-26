@@ -8,45 +8,45 @@
 
     <LinearLayout
         android:id="@+id/ll_circle"
-        style="@style/discover_item"
+        style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
         <ImageView
-            style="@style/discover_im"
+            style="@style/item_im_tv_left"
             android:src="@drawable/ic_discover_circle"/>
 
         <TextView
-            style="@style/discover_tv"
+            style="@style/item_im_tv_right"
             android:text="circle"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_weekend"
-        style="@style/discover_item"
+        style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
         <ImageView
-            style="@style/discover_im"
+            style="@style/item_im_tv_left"
             android:src="@drawable/ic_discover_weekend"/>
 
         <TextView
-            style="@style/discover_tv"
+            style="@style/item_im_tv_right"
             android:text="weekend"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_help"
-        style="@style/discover_item"
+        style="@style/item_im_tv"
         android:layout_marginTop="1dp">
 
         <ImageView
-            style="@style/discover_im"
+            style="@style/item_im_tv_left"
             android:src="@drawable/ic_discover_help"/>
 
         <TextView
-            style="@style/discover_tv"
+            style="@style/item_im_tv_right"
             android:text="help"/>
 
     </LinearLayout>

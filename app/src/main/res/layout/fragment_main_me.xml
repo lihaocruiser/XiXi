@@ -8,49 +8,49 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_homepage"
-        style="@style/discover_item"
+        android:id="@+id/ll_profile"
+        style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
         <com.xixi.widget.CircleImageView
             android:id="@+id/header"
-            style="@style/discover_im"
+            style="@style/item_im_tv_left"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/ic_zhanjun"/>
 
         <TextView
-            style="@style/discover_tv"
+            style="@style/item_im_tv_right"
             android:text="Homepage"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_messages"
-        style="@style/discover_item"
+        style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
         <ImageView
-            style="@style/discover_im"
-            android:src="@drawable/ic_me_setting"/>
+            style="@style/item_im_tv_left"
+            android:src="@drawable/ic_me_messages"/>
 
         <TextView
-            style="@style/discover_tv"
+            style="@style/item_im_tv_right"
             android:text="Messages"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_settings"
-        style="@style/discover_item"
+        style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
         <ImageView
-            style="@style/discover_im"
-            android:src="@drawable/ic_me_messages"/>
+            style="@style/item_im_tv_left"
+            android:src="@drawable/ic_me_setting"/>
 
         <TextView
-            style="@style/discover_tv"
+            style="@style/item_im_tv_right"
             android:text="Settings"/>
 
     </LinearLayout>

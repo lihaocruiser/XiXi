@@ -58,7 +58,7 @@ public class FragmentMagpie extends Fragment implements AdapterView.OnItemClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_magpie, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_main_magpie, container, false);
         listView = (RefreshAndLoadListView) rootView.findViewById(R.id.magpie_listview);
         return rootView;
     }

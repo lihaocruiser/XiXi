@@ -1,0 +1,79 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xixi.ui.me.ProfileActivity">
+
+    <com.xixi.widget.CircleImageView
+        android:id="@+id/im_header"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_zhanjun"/>
+
+    <LinearLayout
+        android:id="@+id/ll_nickname"
+        style="@style/item_tv_tv">
+
+        <TextView
+            style="@style/item_tv_tv_left"
+            android:text="nickname"/>
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            style="@style/item_tv_tv_right"
+            android:text="某浩的马甲"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_age"
+        style="@style/item_tv_tv"
+        android:layout_marginTop="1dp">
+
+        <TextView
+            style="@style/item_tv_tv_left"
+            android:text="age"/>
+
+        <TextView
+            android:id="@+id/tv_age"
+            style="@style/item_tv_tv_right"
+            android:text="24"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_school"
+        style="@style/item_tv_tv"
+        android:layout_marginTop="1dp">
+
+        <TextView
+            style="@style/item_tv_tv_left"
+            android:text="school"/>
+
+        <TextView
+            android:id="@+id/tv_school"
+            style="@style/item_tv_tv_right"
+            android:text="中国科学技术大学"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_label"
+        style="@style/item_tv_tv"
+        android:layout_marginTop="1dp">
+
+        <TextView
+            style="@style/item_tv_tv_left"
+            android:text="label"/>
+
+        <TextView
+            android:id="@+id/tv_label"
+            style="@style/item_tv_tv_right"
+            android:text="dota2"/>
+
+    </LinearLayout>
+
+</LinearLayout>

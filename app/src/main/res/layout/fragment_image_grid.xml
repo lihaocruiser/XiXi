@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/abc_control_padding_material"
     android:paddingRight="@dimen/abc_control_padding_material"
     android:orientation="vertical"
-    tools:context="com.xixi.ui.Image.ImageGridFragment">
+    tools:context="com.xixi.ui.image.ImageGridFragment">
 
     <GridView
         android:id="@+id/gridview"
