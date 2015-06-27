@@ -37,8 +37,8 @@ public class MagpieSendReplyMagpieTask {
 			try {
                 String str = new String(arg2);
                 JSONObject obj = new JSONObject(str);
-                int checked = obj.optInt("checked");
-                if (checked == 1) {
+                int checked = obj.optInt("checked", 1);
+                if (checked == 0) {
                     receiver.onSuccess(null);
                 } else {
                     receiver.onFailure(null);

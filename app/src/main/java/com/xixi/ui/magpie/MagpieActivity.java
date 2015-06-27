@@ -18,12 +18,11 @@ import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 import com.xixi.R;
-import com.xixi.bean.ApplicationContext;
 import com.xixi.bean.MagpieBean;
 import com.xixi.bean.MagpieCommentBean;
 import com.xixi.net.BitmapReceiver;
 import com.xixi.net.JSONReceiver;
-import com.xixi.net.image.ImageTask;
+import com.xixi.net.image.ImageDownloadTask;
 import com.xixi.net.magpie.MagpieCommentTask;
 import com.xixi.net.magpie.MagpieSendCommentTask;
 import com.xixi.net.magpie.MagpieSendReplyMagpieTask;
@@ -194,7 +193,7 @@ public class MagpieActivity extends ActionBarActivity {
                 imUserHeader.setImageBitmap(bitmap);
             }
         };
-        new ImageTask(headerUrl, receiver).execute();
+        new ImageDownloadTask(headerUrl, receiver).execute();
     }
 
     private void LoadMagpiePic(String picUrl) {
@@ -211,7 +210,7 @@ public class MagpieActivity extends ActionBarActivity {
                 imMagpiePic.setImageBitmap(bitmap);
             }
         };
-        new ImageTask(picUrl, receiver).execute();
+        new ImageDownloadTask(picUrl, receiver).execute();
     }
 
 
@@ -337,7 +336,7 @@ public class MagpieActivity extends ActionBarActivity {
                     imUserHeader.setImageResource(R.drawable.ic_launcher);
                     taskSet.add(headerUrl);
 
-                    new ImageTask(headerUrl, new BitmapReceiver() {
+                    new ImageDownloadTask(headerUrl, new BitmapReceiver() {
                         @Override
                         public void onFailure() {
                             taskSet.remove(headerUrl);

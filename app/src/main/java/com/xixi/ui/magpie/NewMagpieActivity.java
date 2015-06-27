@@ -8,11 +8,20 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.loopj.android.http.RequestParams;
 import com.xixi.R;
+import com.xixi.net.JSONReceiver;
+import com.xixi.net.image.ImageUploader;
+import com.xixi.net.magpie.MagpieSendTask;
 import com.xixi.ui.image.ImageBucketFragment;
 import com.xixi.ui.image.ImageGridFragment;
+import com.xixi.util.DialogManager;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -26,13 +35,17 @@ public class NewMagpieActivity extends ActionBarActivity {
     MenuItem menuSend;
     MenuItem menuFinish;
 
-    HashMap<Long, String> checkedMap;
+    DialogManager dialogManager;
+
+    HashMap<Long, String> checkedMap = new HashMap<>();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_magpie);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        dialogManager = new DialogManager(this);
 
         newMagpieFragment = new NewMagpieFragment();
         imageBucketFragment = new ImageBucketFragment();
@@ -84,6 +97,69 @@ public class NewMagpieActivity extends ActionBarActivity {
     }
 
 
+    private void sendMagpie() {
+        final int publisherID = 0;    // TODO get publisher ID
+        final String title = newMagpieFragment.etTitle.getText().toString();
+        final String basic = newMagpieFragment.etBasic.getText().toString();
+        final String hobby = newMagpieFragment.etHobby.getText().toString();
+        final String condition = newMagpieFragment.etCondition.getText().toString();
+        final String content = "基本情况\n" + basic + "\n兴趣爱好\n" + hobby + "\n心动条件\n" + condition;
+        if (title.equals("") || basic.equals("") || hobby.equals("") || condition.equals("")) {
+            Toast.makeText(NewMagpieActivity.this, "empty content!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // upload image
+        ArrayList<String> localUrls = new ArrayList<>(checkedMap.values());
+        if (localUrls.size() == 0) {
+            sendMagpieContent(publisherID, title, content, null);
+        } else {
+            ImageUploader imageUploader = ImageUploader.getInstance();
+            imageUploader.setOnUploadFinishListener(new ImageUploader.OnUploadFinishListener() {
+                @Override
+                public void onFailure() {
+                    Toast.makeText(NewMagpieActivity.this, "upload image fail", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(ArrayList<String> receivedUrls) {
+                    sendMagpieContent(publisherID, title, content, receivedUrls);
+                }
+            });
+            dialogManager.showProgressDialog("uploading");
+            imageUploader.execute(localUrls);
+        }
+    }
+
+    private void sendMagpieContent(int publisherID, String title, String content, ArrayList<String> imageUrls) {
+        StringBuilder stringBuilder = new StringBuilder(content);
+        if (imageUrls != null) {
+            for (String url : imageUrls) {
+                stringBuilder.append("@|").append(url);
+            }
+        }
+        RequestParams params = new RequestParams();
+        params.put("publisherID", publisherID);
+        params.put("title", title);
+        params.put("content", stringBuilder);
+        dialogManager.showProgressDialog("uploading");
+        new MagpieSendTask(params, new JSONReceiver() {
+            @Override
+            public void onFailure(JSONObject obj) {
+                dialogManager.dismissProgressDialog();
+                Toast.makeText(NewMagpieActivity.this, "sending fail", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(JSONObject obj) {
+                dialogManager.dismissProgressDialog();
+                Toast.makeText(NewMagpieActivity.this, "sending succeed", Toast.LENGTH_SHORT).show();
+                NewMagpieActivity.this.finish();
+            }
+        }).execute();
+    }
+
+
     @Override
     public void onBackPressed() {
         if (currentFragment == newMagpieFragment) {
@@ -131,13 +207,6 @@ public class NewMagpieActivity extends ActionBarActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void sendMagpie() {
-        String title = newMagpieFragment.etTitle.getText().toString();
-        String basic = newMagpieFragment.etBasic.getText().toString();
-        String hobby = newMagpieFragment.etHobby.getText().toString();
-        String condition = newMagpieFragment.etCondition.getText().toString();
     }
 
 }

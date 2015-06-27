@@ -12,7 +12,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MagpieSendReplyCommentTask {
+public class MagpieSendTask {
 
 	private RequestParams params;
 
@@ -50,13 +50,13 @@ public class MagpieSendReplyCommentTask {
 
 	};
 
-	public MagpieSendReplyCommentTask(RequestParams params, JSONReceiver receiver) {
+	public MagpieSendTask(RequestParams params, JSONReceiver receiver) {
 		this.params = params;
 		this.receiver = receiver;
 	}
 	
 	public void execute() {
-		String url = API.HOST + "postReplies/repliespost";
+		String url = API.HOST + "post/releasepost";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 

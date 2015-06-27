@@ -11,7 +11,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
 
-public class ImageTask {
+public class ImageDownloadTask {
 
     public int count = 0;
 
@@ -46,7 +46,7 @@ public class ImageTask {
 
     };
 
-    public ImageTask(String url, BitmapReceiver bitmapReceiver) {
+    public ImageDownloadTask(String url, BitmapReceiver bitmapReceiver) {
         this.url = url;
         this.absUrl = API.HOST + url;
         this.bitmapReceiver = bitmapReceiver;

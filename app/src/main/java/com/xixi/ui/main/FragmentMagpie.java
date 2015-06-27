@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.bean.MagpieTitleBean;
-import com.xixi.net.image.ImageTask;
+import com.xixi.net.image.ImageDownloadTask;
 import com.xixi.net.magpie.MagpieListTask;
 import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.net.BitmapReceiver;
@@ -235,7 +235,7 @@ public class FragmentMagpie extends Fragment implements AdapterView.OnItemClickL
                     };
                     taskSet.add(url);
                     // TODO cache new tasks if task number is larger than a const
-                    new ImageTask(url, bitmapReceiver).execute();
+                    new ImageDownloadTask(url, bitmapReceiver).execute();
                 }
             }
             return convertView;

@@ -1,4 +1,4 @@
-package com.xixi.net.magpie;
+package com.xixi.net.image;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MagpieSendReplyCommentTask {
+public class ImageUploadTask {
 
 	private RequestParams params;
 
@@ -37,12 +37,7 @@ public class MagpieSendReplyCommentTask {
 			try {
                 String str = new String(arg2);
                 JSONObject obj = new JSONObject(str);
-                int checked = obj.optInt("checked", 1);
-                if (checked == 0) {
-                    receiver.onSuccess(null);
-                } else {
-                    receiver.onFailure(null);
-                }
+                receiver.onSuccess(obj);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -50,13 +45,13 @@ public class MagpieSendReplyCommentTask {
 
 	};
 
-	public MagpieSendReplyCommentTask(RequestParams params, JSONReceiver receiver) {
+	public ImageUploadTask(RequestParams params, JSONReceiver receiver) {
 		this.params = params;
 		this.receiver = receiver;
 	}
 	
 	public void execute() {
-		String url = API.HOST + "postReplies/repliespost";
+		String url = API.HOST + "customer/uploadImg";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 

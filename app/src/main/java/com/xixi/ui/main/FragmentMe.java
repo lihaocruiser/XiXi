@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.xixi.R;
-import com.xixi.net.image.ImageTask;
+import com.xixi.net.image.ImageDownloadTask;
 import com.xixi.net.BitmapReceiver;
 import com.xixi.ui.me.ProfileActivity;
 import com.xixi.widget.CircleImageView;
@@ -47,7 +47,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
         //headPic = ApplicationContext.getInstance().getHeadPic();
 
         if (headPic != null) {
-            new ImageTask(headPic, new BitmapReceiver() {
+            new ImageDownloadTask(headPic, new BitmapReceiver() {
                 @Override
                 public void onFailure() {
                     Toast.makeText(getActivity(), "getHeadPic fail", Toast.LENGTH_SHORT).show();
