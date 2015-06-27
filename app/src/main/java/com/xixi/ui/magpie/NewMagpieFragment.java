@@ -75,7 +75,6 @@ public class NewMagpieFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-
         }
         return true;
     }

@@ -30,6 +30,7 @@ public class ImageGridFragment extends Fragment {
 
     private List<ImageItem> imageList;
     private long bucketId;
+    private int maxImageCount;
 
     private Context context;
     private LayoutInflater inflater;
@@ -67,7 +68,7 @@ public class ImageGridFragment extends Fragment {
                 String imagePath = imageItem.imagePath;
                 if (checkedMap.containsKey(imageId)) {
                     checkedMap.remove(imageId);
-                } else if (checkedMap.size() > 0) {
+                } else if (checkedMap.size() >= maxImageCount) {
                     Toast.makeText(getActivity(), "exceeds max number", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
@@ -86,6 +87,10 @@ public class ImageGridFragment extends Fragment {
         imageGridAdapter.notifyDataSetChanged();
     }
 
+
+    public void setMaxImageCount(int maxImageCount) {
+        this.maxImageCount = maxImageCount;
+    }
 
     private class ImageGridAdapter extends BaseAdapter {
 

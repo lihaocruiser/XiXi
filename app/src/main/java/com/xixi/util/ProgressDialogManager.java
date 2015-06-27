@@ -3,16 +3,16 @@ package com.xixi.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-public class DialogManager {
+public class ProgressDialogManager {
 
     private ProgressDialog progressDialog;
     private Context context;
 
-    public DialogManager (Context context) {
+    public ProgressDialogManager(Context context) {
         this.context = context;
     }
 
-    public void showProgressDialog(String s) {
+    public void show(String s) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(context);
         }
@@ -24,7 +24,7 @@ public class DialogManager {
         }
     }
 
-    public void dismissProgressDialog() {
+    public void dismiss() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }

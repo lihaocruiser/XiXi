@@ -74,4 +74,9 @@
         <item name="android:background">@drawable/selector_blue_small</item>
     </style>
 
+    <style name="et_large">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

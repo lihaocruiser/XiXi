@@ -9,8 +9,7 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/et_large"
         android:layout_marginTop="@dimen/abc_action_bar_progress_bar_size"
         android:inputType="textEmailAddress"
         android:hint="邮箱"
@@ -18,8 +17,7 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/et_large"
         android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
         android:inputType="textPassword"
         android:hint="密码"
@@ -27,16 +25,14 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/btn_blue_large"
         android:layout_marginTop="@dimen/abc_action_bar_progress_bar_size"
         android:text="登录"/>
 
     <Button
         android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+        style="@style/btn_blue_large"
+        android:layout_marginTop="16dp"
         android:text="注册"/>
 
 </LinearLayout>

@@ -1,0 +1,106 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/im_header"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_boy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue_deep"
+                android:text="boy"/>
+
+            <RadioButton
+                android:id="@+id/rb_girl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_deep"
+                android:text="girl"/>
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/et_nickname"
+            style="@style/et_large"
+            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:hint="nickname"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_age"
+            style="@style/et_large"
+            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:inputType="number"
+            android:hint="age"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_email"
+            style="@style/et_large"
+            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:inputType="textEmailAddress"
+            android:hint="email"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            style="@style/et_large"
+            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:inputType="textPassword"
+            android:hint="password"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_password_confirm"
+            style="@style/et_large"
+            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:inputType="textPassword"
+            android:hint="confirm password"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_school"
+            style="@style/et_large"
+            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:inputType="text"
+            android:hint="school"
+            android:editable="false"
+            android:singleLine="true"/>
+
+        <Button
+            android:id="@+id/btn_register"
+            style="@style/btn_blue_large"
+            android:layout_marginTop="32dp"
+            android:text="注册"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            style="@style/btn_blue_large"
+            android:layout_marginTop="16dp"
+            android:text="登录"/>
+
+    </LinearLayout>
+</ScrollView>
