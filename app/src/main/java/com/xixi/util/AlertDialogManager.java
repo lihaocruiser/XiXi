@@ -15,7 +15,7 @@ public class AlertDialogManager {
         builder = new AlertDialog.Builder(context);
     }
 
-    public void showListDialog(String[] items, DialogInterface.OnClickListener listener) {
+    public void show(String[] items, DialogInterface.OnClickListener listener) {
         builder.setItems(items, listener);
         builder.create();
         builder.show();

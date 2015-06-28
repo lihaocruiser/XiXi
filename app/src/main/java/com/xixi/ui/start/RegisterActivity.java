@@ -15,7 +15,6 @@ import com.loopj.android.http.RequestParams;
 import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
-import com.xixi.net.magpie.MagpieSendTask;
 import com.xixi.net.start.RegisterTask;
 import com.xixi.ui.image.ImageBucketFragment;
 import com.xixi.ui.image.ImageGridFragment;
@@ -34,7 +33,6 @@ public class RegisterActivity extends ActionBarActivity {
     ImageGridFragment imageGridFragment;
     Fragment currentFragment;
 
-    MenuItem menuSend;
     MenuItem menuFinish;
 
     ProgressDialogManager dialogManager;
@@ -89,15 +87,12 @@ public class RegisterActivity extends ActionBarActivity {
         currentFragment = to;
         if (to == registerFragment) {
             transaction.disallowAddToBackStack().commit();
-            menuSend.setVisible(true);
             menuFinish.setVisible(false);
         } else if (to == imageBucketFragment) {
             transaction.addToBackStack(null).commit();
-            menuSend.setVisible(false);
             menuFinish.setVisible(false);
         } else if (to == imageGridFragment) {
             transaction.commit();
-            menuSend.setVisible(false);
             menuFinish.setVisible(true);
         }
     }
@@ -113,7 +108,7 @@ public class RegisterActivity extends ActionBarActivity {
     private void register() {
         nickname = registerFragment.etNickname.getText().toString();
         age = registerFragment.etAge.getText().toString();
-        school = registerFragment.etSchool.getText().toString();
+        school = registerFragment.btnSchool.getText().toString();
         email = registerFragment.etEmail.getText().toString();
         password = registerFragment.etPassword.getText().toString();
         passwordConfirm = registerFragment.etPasswordConfirm.getText().toString();
@@ -196,9 +191,7 @@ public class RegisterActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_register, menu);
-        menuSend = menu.findItem(R.id.action_send);
         menuFinish = menu.findItem(R.id.action_finish);
-        menuSend.setVisible(true);
         menuFinish.setVisible(false);
         return true;
     }
@@ -223,10 +216,6 @@ public class RegisterActivity extends ActionBarActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(path);
                     registerFragment.imHeader.setImageBitmap(bitmap);
                 }
-                return true;
-
-            case R.id.action_send:
-                register();
                 return true;
         }
         return super.onOptionsItemSelected(item);
