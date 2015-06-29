@@ -1,4 +1,4 @@
-package com.xixi.util;
+package com.xixi.util.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;

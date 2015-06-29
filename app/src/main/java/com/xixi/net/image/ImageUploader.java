@@ -58,17 +58,6 @@ public class ImageUploader {
         }
     };
 
-    public void setOnUploadFinishListener(OnUploadFinishListener listener) {
-        this.listener = listener;
-    }
-
-    public void execute(ArrayList<String> localUrls) {
-        imageCount = 0;
-        this.localUrls = localUrls;
-        receivedUrls = new ArrayList<>();
-        uploadImage(imageCount);
-    }
-
     private void uploadImage(int imageCount) {
         RequestParams params = new RequestParams();
         File file = new File(localUrls.get(imageCount));
@@ -78,6 +67,34 @@ public class ImageUploader {
             e.printStackTrace();
         }
         new ImageUploadTask(params, receiver).execute();
+    }
+
+
+    public void setOnUploadFinishListener(OnUploadFinishListener listener) {
+        this.listener = listener;
+    }
+
+
+    /**
+     * upload one picture
+     * @param localUrl
+     */
+    public void execute(String localUrl) {
+        ArrayList<String > urls = new ArrayList<>();
+        urls.add(localUrl);
+        this.execute(urls);
+    }
+
+
+    /**
+     * upload a bunch of picture
+     * @param localUrls
+     */
+    public void execute(ArrayList<String> localUrls) {
+        imageCount = 0;
+        this.localUrls = localUrls;
+        receivedUrls = new ArrayList<>();
+        uploadImage(imageCount);
     }
 
 }

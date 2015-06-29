@@ -12,5 +12,6 @@
     <string name="title_activity_intro">IntroActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_image_browse">ImageBrowseActivity</string>
 
 </resources>

@@ -17,13 +17,11 @@ import android.widget.Toast;
 import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.start.SchoolListTask;
-import com.xixi.util.AlertDialogManager;
-import com.xixi.util.ProgressDialogManager;
+import com.xixi.util.dialog.AlertDialogManager;
+import com.xixi.util.dialog.ProgressDialogManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class RegisterFragment extends Fragment {
 

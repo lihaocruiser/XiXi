@@ -34,9 +34,14 @@ public class ApplicationContext {
 	public static String sex;
 	public static String school;
 		
-	public void setContext(Context context) {
+	public static void setContext(Context context) {
 		ApplicationContext.context = context;
 	}
+
+    public static ApplicationContext getInstance(Context context) {
+        setContext(context);
+        return ApplicationContext.getInstance();
+    }
 
 	public static ApplicationContext getInstance() {
 		if (instance == null) {
@@ -46,15 +51,15 @@ public class ApplicationContext {
 	}
 
 	private SharedPreferences getSP() {
-		if (ApplicationContext.sp == null) {
+		if (sp == null) {
 			try {
-				ApplicationContext.sp = context.getSharedPreferences(
+				sp = context.getSharedPreferences(
 						SP_NAME, Context.MODE_PRIVATE);
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
 		}
-		return ApplicationContext.sp;
+		return sp;
 	}
 
 	public void saveUserInfo(JSONObject obj) {
@@ -114,7 +119,7 @@ public class ApplicationContext {
     }
 
     public int getAge() {
-        return getSP().getInt(USER_AGE, -1);
+        return getSP().getInt(USER_AGE, 0);
     }
 
     public void setAge(int age) {
@@ -141,7 +146,7 @@ public class ApplicationContext {
     }
 
     public String getNickname() {
-        return getSP().getString(USER_NICK_NAME, null);
+        return getSP().getString(USER_NICK_NAME, "");
     }
 
     public void setNickName(String nickname) {
@@ -150,7 +155,7 @@ public class ApplicationContext {
     }
 
     public String getSex() {
-        return getSP().getString(USER_SEX, null);
+        return getSP().getString(USER_SEX, "");
     }
 
     public void setSex(String sex) {
@@ -159,7 +164,7 @@ public class ApplicationContext {
     }
 
     public String getSchool() {
-        return getSP().getString(USER_SCHOOL, null);
+        return getSP().getString(USER_SCHOOL, "");
     }
 
     public void setSchool(String school) {

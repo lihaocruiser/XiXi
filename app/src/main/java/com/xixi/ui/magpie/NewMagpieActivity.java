@@ -17,7 +17,7 @@ import com.xixi.net.image.ImageUploader;
 import com.xixi.net.magpie.MagpieSendTask;
 import com.xixi.ui.image.ImageBucketFragment;
 import com.xixi.ui.image.ImageGridFragment;
-import com.xixi.util.ProgressDialogManager;
+import com.xixi.util.dialog.ProgressDialogManager;
 
 import org.json.JSONObject;
 
