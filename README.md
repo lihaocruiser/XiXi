@@ -1,4 +1,6 @@
 # XiXi
+Android for XiXi, still under development, intended to be released before August 2015.
+
 XiXi is a social app for campus only. Students may look for boy/girl friends, as well as share their moments here.
 
 ## main function
