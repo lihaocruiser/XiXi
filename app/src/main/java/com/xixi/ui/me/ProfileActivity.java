@@ -45,8 +45,6 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
     TextAlertDialogManager textAlertDialogManager;
     ProgressDialogManager progressDialogManager;
 
-    EditText etTextAlertDialog;
-
     int id;
     int age;
     String headerUrl;
@@ -113,7 +111,11 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         nickname = textAlertDialogManager.getText();
-                        modifyProfile();
+                        if (nickname.equals("")) {
+                            Toast.makeText(ProfileActivity.this, "can't be empty", Toast.LENGTH_SHORT).show();
+                        } else {
+                            modifyProfile();
+                        }
                     }
                 });
                 break;
@@ -147,13 +149,12 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != 0) {
+        if (data == null || requestCode != 0) {
             return;
         }
         String[] urls = data.getStringArrayExtra("urls");
-        if (urls == null) return;
         String url;
-        if (urls != null && urls.length != 0 && urls[0] != null) {
+        if (urls.length != 0 && urls[0] != null) {
             url = urls[0];
             ImageUploader imageUploader = ImageUploader.getInstance();
             imageUploader.setOnUploadFinishListener(new ImageUploader.OnUploadFinishListener() {
