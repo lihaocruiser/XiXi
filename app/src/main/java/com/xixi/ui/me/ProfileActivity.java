@@ -210,7 +210,6 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
@@ -219,9 +218,7 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

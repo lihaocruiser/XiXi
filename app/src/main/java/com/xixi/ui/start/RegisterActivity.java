@@ -1,14 +1,18 @@
 package com.xixi.ui.start;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
@@ -16,86 +20,32 @@ import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.start.RegisterTask;
-import com.xixi.ui.image.ImageBucketFragment;
-import com.xixi.ui.image.ImageGridFragment;
+import com.xixi.net.start.SchoolListTask;
+import com.xixi.ui.imagebrowse.ImageBrowseActivity;
+import com.xixi.util.dialog.AlertDialogManager;
 import com.xixi.util.dialog.ProgressDialogManager;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
 public class RegisterActivity extends ActionBarActivity {
 
-    RegisterFragment registerFragment;
-    ImageBucketFragment imageBucketFragment;
-    ImageGridFragment imageGridFragment;
-    Fragment currentFragment;
+    ImageView imHeader;
+    RadioButton rbBoy;
+    RadioButton rbGirl;
+    Button btnSchool;
+    EditText etNickname;
+    EditText etAge;
+    EditText etEmail;
+    EditText etPassword;
+    EditText etPasswordConfirm;
+    Button btnRegister;
+    Button btnLogin;
 
-    MenuItem menuFinish;
-
-    ProgressDialogManager dialogManager;
-
-    HashMap<Long, String> checkedMap = new HashMap<>();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        dialogManager = new ProgressDialogManager(this);
-
-        registerFragment = new RegisterFragment();
-        imageBucketFragment = new ImageBucketFragment();
-        imageGridFragment = new ImageGridFragment();
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, registerFragment)
-                .add(R.id.fragment_container, imageBucketFragment)
-                .add(R.id.fragment_container, imageGridFragment)
-                .show(registerFragment)
-                .commit();
-        currentFragment = registerFragment;
-        registerFragment.setOnAddPhotoListener(new RegisterFragment.OnAddPhotoListener() {
-            @Override
-            public void onAddPhoto() {
-                switchFragment(registerFragment, imageBucketFragment);
-            }
-        });
-        registerFragment.setOnRegisterListener(new RegisterFragment.OnRegisterListener() {
-            @Override
-            public void onRegister() {
-                register();
-            }
-        });
-
-        imageBucketFragment.setOnBucketClickedListener(new ImageBucketFragment.OnBucketClickListener() {
-            @Override
-            public void onBucketClick(int position) {
-                switchFragment(imageBucketFragment, imageGridFragment);
-                imageGridFragment.setImageBucket(imageBucketFragment.bucketList.get(position));
-                imageGridFragment.setMaxImageCount(1);
-            }
-        });
-    }
-
-    private void switchFragment(Fragment from, Fragment to) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.hide(from).show(to);
-        currentFragment = to;
-        if (to == registerFragment) {
-            transaction.disallowAddToBackStack().commit();
-            menuFinish.setVisible(false);
-        } else if (to == imageBucketFragment) {
-            transaction.addToBackStack(null).commit();
-            menuFinish.setVisible(false);
-        } else if (to == imageGridFragment) {
-            transaction.commit();
-            menuFinish.setVisible(true);
-        }
-    }
+    AlertDialogManager alertDialogManager;
+    ProgressDialogManager progressDialogManager;
 
     private String sex;
     private String nickname;
@@ -103,18 +53,94 @@ public class RegisterActivity extends ActionBarActivity {
     private String school;
     private String email;
     private String password;
-    private String passwordConfirm;
+    private String localUrl;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        alertDialogManager = new AlertDialogManager(this);
+        progressDialogManager = new ProgressDialogManager(this);
+
+        imHeader = (ImageView) findViewById(R.id.im_header);
+        rbBoy = (RadioButton) findViewById(R.id.rb_boy);
+        rbGirl = (RadioButton) findViewById(R.id.rb_girl);
+        etNickname = (EditText) findViewById(R.id.et_nickname);
+        etAge = (EditText) findViewById(R.id.et_age);
+        etEmail = (EditText) findViewById(R.id.et_email);
+        etPassword = (EditText) findViewById(R.id.et_password);
+        etPasswordConfirm = (EditText) findViewById(R.id.et_password_confirm);
+        btnSchool = (Button) findViewById(R.id.btn_school);
+        btnRegister = (Button) findViewById(R.id.btn_register);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+
+        imHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, ImageBrowseActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        btnSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialogManager.show("loading school list");
+                new SchoolListTask(null, new JSONReceiver() {
+                    @Override
+                    public void onFailure(JSONObject obj) {
+                        String[] s = new String[]{"中国科学技术大学","b"};  // for text only
+                        selectSchool(s);                                    // for test only
+                        progressDialogManager.dismiss();
+                        Toast.makeText(RegisterActivity.this, "request school list fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onSuccess(JSONObject obj) {
+                        JSONArray array = obj.optJSONArray("list");
+                        int length = array.length();
+                        String[] schools = new String[length];
+                        String school;
+                        for (int i = 0; i < length; i++) {
+                            school = array.optString(i);
+                            schools[i] = school;
+                        }
+                        selectSchool(schools);
+                        progressDialogManager.dismiss();
+                    }
+                }).execute();
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register();
+            }
+        });
+    }
 
     private void register() {
-        nickname = registerFragment.etNickname.getText().toString();
-        age = registerFragment.etAge.getText().toString();
-        school = registerFragment.btnSchool.getText().toString();
-        email = registerFragment.etEmail.getText().toString();
-        password = registerFragment.etPassword.getText().toString();
-        passwordConfirm = registerFragment.etPasswordConfirm.getText().toString();
-        if (registerFragment.rbBoy.isChecked()) {
+        nickname = etNickname.getText().toString();
+        age = etAge.getText().toString();
+        school = btnSchool.getText().toString();
+        email = etEmail.getText().toString();
+        password = etPassword.getText().toString();
+        String  passwordConfirm = etPasswordConfirm.getText().toString();
+        if (rbBoy.isChecked()) {
             sex = "male";
-        } else if (registerFragment.rbGirl.isChecked()) {
+        } else if (rbGirl.isChecked()) {
             sex = "female";
         }
         if (nickname.equals("") || age.equals("") || school.equals("") || email.equals("") || password.equals("") || sex == null) {
@@ -127,8 +153,7 @@ public class RegisterActivity extends ActionBarActivity {
         }
 
         // upload image
-        final ArrayList<String> localUrls = new ArrayList<>(checkedMap.values());
-        if (localUrls.size() == 0) {
+        if (localUrl == null) {
             executeRegisterTask(nickname, age, school, email, password, sex, null);
         } else {
             ImageUploader imageUploader = ImageUploader.getInstance();
@@ -144,8 +169,8 @@ public class RegisterActivity extends ActionBarActivity {
                     executeRegisterTask(nickname, age, school, email, password, sex, headPic);
                 }
             });
-            dialogManager.show("uploading");
-            imageUploader.execute(localUrls);
+            progressDialogManager.show("uploading");
+            imageUploader.execute(localUrl);
         }
     }
 
@@ -159,17 +184,17 @@ public class RegisterActivity extends ActionBarActivity {
         params.put("password", password);
         params.put("sex", sex);
         params.put("headPic", headPic);
-        dialogManager.show("uploading");
+        progressDialogManager.show("uploading");
         new RegisterTask(params, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                dialogManager.dismiss();
+                progressDialogManager.dismiss();
                 Toast.makeText(RegisterActivity.this, "register fail", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
-                dialogManager.dismiss();
+                progressDialogManager.dismiss();
                 Toast.makeText(RegisterActivity.this, "register succeed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -179,44 +204,39 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
 
+    private void selectSchool(final String[] schools) {
+        alertDialogManager.show(schools, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                btnSchool.setText(schools[which]);
+            }
+        });
+    }
+
+
     @Override
-    public void onBackPressed() {
-        if (currentFragment == registerFragment) {
-            super.onBackPressed();
-        } else {
-            switchFragment(currentFragment, registerFragment);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null || requestCode != 0) {
+            return;
+        }
+        String[] urls = data.getStringArrayExtra("urls");
+        if (urls.length != 0 && urls[0] != null) {
+            localUrl = urls[0];
+            Bitmap bitmap = BitmapFactory.decodeFile(localUrl);
+            imHeader.setImageBitmap(bitmap);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_register, menu);
-        menuFinish = menu.findItem(R.id.action_finish);
-        menuFinish.setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                if (currentFragment == registerFragment) {
-                    finish();
-                } else {
-                    switchFragment(currentFragment, registerFragment);
-                }
-                return true;
-
-            case R.id.action_finish:
-                switchFragment(currentFragment, registerFragment);
-                checkedMap = imageGridFragment.checkedMap;
-                Collection<String> paths = checkedMap.values();
-                for (String path:paths) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(path);
-                    registerFragment.imHeader.setImageBitmap(bitmap);
-                }
-                return true;
+        if (id == android.R.id.home) {
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
