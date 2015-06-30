@@ -28,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
     ImageView ivDiscover;
     ImageView ivMe;
 
+    MenuItem menuAdd;
+
     // drawable for bottom bar when unselected
     private final int[] navigationBar =
             {R.drawable.ic_main_magpie, R.drawable.ic_main_discover, R.drawable.ic_main_me};
@@ -83,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     /**
-     * Change bottom navigation bar effect according to current fragment
+     * Change bottom navigation bar and option menu effect according to current fragment
      */
     private class MainOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -95,6 +97,11 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onPageSelected(int position) {
+            if (position == 0) {
+                menuAdd.setVisible(true);
+            } else {
+                menuAdd.setVisible(false);
+            }
             for (int i = 0; i < fragmentList.size(); i++) {
                 if (position == i) {
                     imageViewList.get(i).setImageResource(navigationBar[i]);
@@ -110,13 +117,14 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menuAdd = menu.findItem(R.id.action_new_magpie);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_new) {
+        if (id == R.id.action_new_magpie) {
             Intent intent = new Intent(MainActivity.this, NewMagpieActivity.class);
             startActivity(intent);
             return true;
