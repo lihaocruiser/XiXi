@@ -1,13 +1,16 @@
 package com.xixi.ui.magpie;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
@@ -15,29 +18,28 @@ import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.magpie.MagpieSendTask;
-import com.xixi.ui.image.ImageBucketFragment;
-import com.xixi.ui.image.ImageGridFragment;
+import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.ProgressDialogManager;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 public class NewMagpieActivity extends ActionBarActivity {
 
-    NewMagpieFragment newMagpieFragment;
-    ImageBucketFragment imageBucketFragment;
-    ImageGridFragment imageGridFragment;
-    Fragment currentFragment;
+    EditText etTitle;
+    EditText etBasic;
+    EditText etHobby;
+    EditText etCondition;
+    Button btnAddPhoto;
+    ImageView[] imSelected = new ImageView[3];
 
     MenuItem menuSend;
-    MenuItem menuFinish;
 
-    ProgressDialogManager dialogManager;
+    ProgressDialogManager progressDialogManager;
 
-    HashMap<Long, String> checkedMap = new HashMap<>();
+    String[] localImageUrls;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -45,65 +47,36 @@ public class NewMagpieActivity extends ActionBarActivity {
         setContentView(R.layout.activity_new_magpie);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dialogManager = new ProgressDialogManager(this);
+        progressDialogManager = new ProgressDialogManager(this);
 
-        newMagpieFragment = new NewMagpieFragment();
-        imageBucketFragment = new ImageBucketFragment();
-        imageGridFragment = new ImageGridFragment();
+        etTitle = (EditText) findViewById(R.id.et_title);
+        etBasic = (EditText) findViewById(R.id.et_basic);
+        etHobby = (EditText) findViewById(R.id.et_hobby);
+        etCondition = (EditText) findViewById(R.id.et_condition);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, newMagpieFragment)
-                   .add(R.id.fragment_container, imageBucketFragment)
-                   .add(R.id.fragment_container, imageGridFragment)
-                   .show(newMagpieFragment)
-                   .commit();
-        currentFragment = newMagpieFragment;
+        btnAddPhoto = (Button) findViewById(R.id.btn_add_photo);
 
-        newMagpieFragment.setOnAddPhotoListener(new NewMagpieFragment.OnAddPhotoListener() {
+        imSelected[0] = (ImageView) findViewById(R.id.im1);
+        imSelected[1] = (ImageView) findViewById(R.id.im2);
+        imSelected[2] = (ImageView) findViewById(R.id.im3);
+
+        btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAddPhoto() {
-                switchFragment(newMagpieFragment, imageBucketFragment);
+            public void onClick(View v) {
+                Intent intent = new Intent(NewMagpieActivity.this, ImageBrowseActivity.class);
+                intent.putExtra("maxImageCount", imSelected.length);
+                startActivityForResult(intent, 0);
             }
         });
-
-        imageBucketFragment.setOnBucketClickedListener(new ImageBucketFragment.OnBucketClickListener() {
-            @Override
-            public void onBucketClick(int position) {
-                switchFragment(imageBucketFragment, imageGridFragment);
-                imageGridFragment.setImageBucket(imageBucketFragment.bucketList.get(position));
-                imageGridFragment.setMaxImageCount(3);
-            }
-        });
-
-    }
-
-
-    private void switchFragment(Fragment from, Fragment to) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.hide(from).show(to);
-        currentFragment = to;
-        if (to == newMagpieFragment) {
-            transaction.disallowAddToBackStack().commit();
-            menuSend.setVisible(true);
-            menuFinish.setVisible(false);
-        } else if (to == imageBucketFragment) {
-            transaction.addToBackStack(null).commit();
-            menuSend.setVisible(false);
-            menuFinish.setVisible(false);
-        } else if (to == imageGridFragment) {
-            transaction.commit();
-            menuSend.setVisible(false);
-            menuFinish.setVisible(true);
-        }
     }
 
 
     private void sendMagpie() {
         final int publisherID = 0;    // TODO get publisher ID
-        final String title = newMagpieFragment.etTitle.getText().toString();
-        final String basic = newMagpieFragment.etBasic.getText().toString();
-        final String hobby = newMagpieFragment.etHobby.getText().toString();
-        final String condition = newMagpieFragment.etCondition.getText().toString();
+        final String title = etTitle.getText().toString();
+        final String basic = etBasic.getText().toString();
+        final String hobby = etHobby.getText().toString();
+        final String condition = etCondition.getText().toString();
         final String content = "基本情况\n" + basic + "\n兴趣爱好\n" + hobby + "\n心动条件\n" + condition;
         if (title.equals("") || basic.equals("") || hobby.equals("") || condition.equals("")) {
             Toast.makeText(NewMagpieActivity.this, "empty content!", Toast.LENGTH_SHORT).show();
@@ -111,28 +84,29 @@ public class NewMagpieActivity extends ActionBarActivity {
         }
 
         // upload image
-        ArrayList<String> localUrls = new ArrayList<>(checkedMap.values());
-        if (localUrls.size() == 0) {
-            executeSendMagpieTask(publisherID, title, content, null);
-        } else {
-            ImageUploader imageUploader = ImageUploader.getInstance();
+        if (localImageUrls != null && localImageUrls.length != 0) {
+            List<String> urls = Arrays.asList(localImageUrls);
+            final ImageUploader imageUploader = ImageUploader.getInstance();
             imageUploader.setOnUploadFinishListener(new ImageUploader.OnUploadFinishListener() {
                 @Override
                 public void onFailure() {
+                    progressDialogManager.dismiss();
                     Toast.makeText(NewMagpieActivity.this, "upload image fail", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onSuccess(ArrayList<String> receivedUrls) {
+                public void onSuccess(List<String> receivedUrls) {
                     executeSendMagpieTask(publisherID, title, content, receivedUrls);
                 }
             });
-            dialogManager.show("uploading");
-            imageUploader.execute(localUrls);
+            progressDialogManager.show("uploading");
+            imageUploader.execute(urls);
+        } else {
+            executeSendMagpieTask(publisherID, title, content, null);
         }
     }
 
-    private void executeSendMagpieTask(int publisherID, String title, String content, ArrayList<String> imageUrls) {
+    private void executeSendMagpieTask(int publisherID, String title, String content, List<String> imageUrls) {
         StringBuilder stringBuilder = new StringBuilder(content);
         if (imageUrls != null) {
             for (String url : imageUrls) {
@@ -143,17 +117,17 @@ public class NewMagpieActivity extends ActionBarActivity {
         params.put("publisherID", publisherID);
         params.put("title", title);
         params.put("content", stringBuilder);
-        dialogManager.show("uploading");
+        progressDialogManager.show("uploading");
         new MagpieSendTask(params, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                dialogManager.dismiss();
+                progressDialogManager.dismiss();
                 Toast.makeText(NewMagpieActivity.this, "sending fail", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
-                dialogManager.dismiss();
+                progressDialogManager.dismiss();
                 Toast.makeText(NewMagpieActivity.this, "sending succeed", Toast.LENGTH_SHORT).show();
                 NewMagpieActivity.this.finish();
             }
@@ -161,12 +135,22 @@ public class NewMagpieActivity extends ActionBarActivity {
     }
 
 
+    /**
+     * get local image url from image browser and show image thumb
+     */
     @Override
-    public void onBackPressed() {
-        if (currentFragment == newMagpieFragment) {
-            super.onBackPressed();
-        } else {
-            switchFragment(currentFragment, newMagpieFragment);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null || requestCode != 0) {
+            return;
+        }
+        localImageUrls = data.getStringArrayExtra("localImageUrls");
+        for (int i = 0; i < imSelected.length; i++) {
+            if (i < localImageUrls.length) {
+                Bitmap bitmap = BitmapFactory.decodeFile(localImageUrls[i]);
+                imSelected[i].setImageBitmap(bitmap);
+            } else {
+                imSelected[i].setImageBitmap(null);
+            }
         }
     }
 
@@ -174,9 +158,7 @@ public class NewMagpieActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_magpie, menu);
         menuSend = menu.findItem(R.id.action_send);
-        menuFinish = menu.findItem(R.id.action_finish);
         menuSend.setVisible(true);
-        menuFinish.setVisible(false);
         return true;
     }
 
@@ -185,22 +167,7 @@ public class NewMagpieActivity extends ActionBarActivity {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                if (currentFragment == newMagpieFragment) {
-                    finish();
-                } else {
-                    switchFragment(currentFragment, newMagpieFragment);
-                }
-                return true;
-
-            case R.id.action_finish:
-                switchFragment(currentFragment, newMagpieFragment);
-                checkedMap = imageGridFragment.checkedMap;
-                Collection<String> paths = checkedMap.values();
-                int i = 0;
-                for (String path:paths) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(path);
-                    newMagpieFragment.imSelected[i++].setImageBitmap(bitmap);
-                }
+                onBackPressed();
                 return true;
 
             case R.id.action_send:

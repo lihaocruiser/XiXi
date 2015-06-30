@@ -2,7 +2,6 @@ package com.xixi.ui.me;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,14 +19,14 @@ import com.xixi.bean.ApplicationContext;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.me.ModifyProfileTask;
-import com.xixi.ui.imagebrowse.ImageBrowseActivity;
+import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.ProgressDialogManager;
 import com.xixi.util.dialog.TextAlertDialogManager;
 import com.xixi.widget.CircleImageView;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -152,7 +150,7 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
         if (data == null || requestCode != 0) {
             return;
         }
-        String[] urls = data.getStringArrayExtra("urls");
+        String[] urls = data.getStringArrayExtra("localImageUrls");
         String url;
         if (urls.length != 0 && urls[0] != null) {
             url = urls[0];
@@ -165,7 +163,7 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
                 }
 
                 @Override
-                public void onSuccess(ArrayList<String> receivedUrls) {
+                public void onSuccess(List<String> receivedUrls) {
                     headerUrl = receivedUrls.get(0);
                     modifyProfile();
                 }

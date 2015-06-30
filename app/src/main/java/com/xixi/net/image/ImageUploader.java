@@ -9,14 +9,15 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * upload multiple images in one time sequentially
  */
 public class ImageUploader {
 
-    ArrayList<String> localUrls;
-    ArrayList<String> receivedUrls;
+    List<String> localUrls;
+    List<String> receivedUrls;
 
     int imageCount;
 
@@ -32,7 +33,7 @@ public class ImageUploader {
 
     public interface OnUploadFinishListener {
         public void onFailure();
-        public void onSuccess(ArrayList<String> receivedUrls);
+        public void onSuccess(List<String> receivedUrls);
     }
 
     JSONReceiver receiver = new JSONReceiver() {
@@ -77,7 +78,6 @@ public class ImageUploader {
 
     /**
      * upload one picture
-     * @param localUrl
      */
     public void execute(String localUrl) {
         ArrayList<String > urls = new ArrayList<>();
@@ -88,9 +88,8 @@ public class ImageUploader {
 
     /**
      * upload a bunch of picture
-     * @param localUrls
      */
-    public void execute(ArrayList<String> localUrls) {
+    public void execute(List<String> localUrls) {
         imageCount = 0;
         this.localUrls = localUrls;
         receivedUrls = new ArrayList<>();

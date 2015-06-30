@@ -4,12 +4,6 @@
     tools:context="com.xixi.ui.magpie.NewMagpieActivity">
 
     <item
-        android:id="@+id/action_finish"
-        android:title="finish"
-        android:orderInCategory="100"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_send"
         android:title="send"
         android:orderInCategory="100"

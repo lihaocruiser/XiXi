@@ -59,7 +59,7 @@
             android:label="@string/title_activity_start" >
         </activity>
         <activity
-            android:name=".ui.imagebrowse.ImageBrowseActivity"
+            android:name=".ui.image.ImageBrowseActivity"
             android:label="@string/title_activity_image_browse" >
         </activity>
     </application>

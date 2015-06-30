@@ -1,4 +1,4 @@
-package com.xixi.ui.imagebrowse;
+package com.xixi.ui.image;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -93,12 +93,12 @@ public class ImageBrowseActivity extends ActionBarActivity {
                 Intent intent = new Intent();
                 Collection<String> paths = imageGridFragment.checkedMap.values();
                 if (paths.size() > 0) {
-                    String[] urls = new String[paths.size()];
+                    String[] localImageUrls = new String[paths.size()];
                     int i = 0;
                     for (String path:paths) {
-                        urls[i++] = path;
+                        localImageUrls[i++] = path;
                     }
-                    intent.putExtra("urls", urls);
+                    intent.putExtra("localImageUrls", localImageUrls);
                     setResult(0, intent);
                     finish();
                 } else {

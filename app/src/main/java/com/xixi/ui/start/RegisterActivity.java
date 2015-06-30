@@ -21,14 +21,14 @@ import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.start.RegisterTask;
 import com.xixi.net.start.SchoolListTask;
-import com.xixi.ui.imagebrowse.ImageBrowseActivity;
+import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.AlertDialogManager;
 import com.xixi.util.dialog.ProgressDialogManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterActivity extends ActionBarActivity {
 
@@ -164,7 +164,7 @@ public class RegisterActivity extends ActionBarActivity {
                 }
 
                 @Override
-                public void onSuccess(ArrayList<String> receivedUrls) {
+                public void onSuccess(List<String> receivedUrls) {
                     String headPic = receivedUrls.get(0);
                     executeRegisterTask(nickname, age, school, email, password, sex, headPic);
                 }
