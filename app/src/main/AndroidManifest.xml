@@ -62,6 +62,10 @@
             android:name=".ui.image.ImageBrowseActivity"
             android:label="@string/title_activity_image_browse" >
         </activity>
+        <activity
+            android:name=".ui.image.LocalImageShowActivity"
+            android:label="@string/title_activity_local_image_show" >
+        </activity>
     </application>
 
 </manifest>

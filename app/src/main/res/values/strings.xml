@@ -13,5 +13,6 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_image_browse">ImageBrowseActivity</string>
+    <string name="title_activity_local_image_show">LocalImageShowActivity</string>
 
 </resources>

@@ -19,6 +19,7 @@ import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.magpie.MagpieSendTask;
 import com.xixi.ui.image.ImageBrowseActivity;
+import com.xixi.ui.image.LocalImageShowActivity;
 import com.xixi.util.dialog.ProgressDialogManager;
 
 import org.json.JSONObject;
@@ -146,8 +147,17 @@ public class NewMagpieActivity extends ActionBarActivity {
         localImageUrls = data.getStringArrayExtra("localImageUrls");
         for (int i = 0; i < imSelected.length; i++) {
             if (i < localImageUrls.length) {
+                final String localImageUrl = localImageUrls[i];
                 Bitmap bitmap = BitmapFactory.decodeFile(localImageUrls[i]);
                 imSelected[i].setImageBitmap(bitmap);
+                imSelected[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(NewMagpieActivity.this, LocalImageShowActivity.class);
+                        intent.putExtra("localImageUrl", localImageUrl);
+                        startActivity(intent);
+                    }
+                });
             } else {
                 imSelected[i].setImageBitmap(null);
             }
