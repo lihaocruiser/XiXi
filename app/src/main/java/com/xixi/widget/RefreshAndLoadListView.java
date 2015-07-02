@@ -193,11 +193,11 @@ public class RefreshAndLoadListView extends ListView implements OnScrollListener
 
     public void onLoadOver() {
         isLoadingOver = true;
-        tv_footer.setText("No More Data.");
+        tv_footer.setText(R.string.txt_no_more_data);
     }
 
     public void onError() {
-        tv_footer.setText("Unknown Error.");
+        tv_footer.setText(R.string.error_network);
     }
 
 

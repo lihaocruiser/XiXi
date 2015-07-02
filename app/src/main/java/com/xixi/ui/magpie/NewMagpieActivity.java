@@ -80,7 +80,7 @@ public class NewMagpieActivity extends ActionBarActivity {
         final String condition = etCondition.getText().toString();
         final String content = "基本情况\n" + basic + "\n兴趣爱好\n" + hobby + "\n心动条件\n" + condition;
         if (title.equals("") || basic.equals("") || hobby.equals("") || condition.equals("")) {
-            Toast.makeText(NewMagpieActivity.this, "empty content!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewMagpieActivity.this, R.string.error_empty_content, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -92,7 +92,7 @@ public class NewMagpieActivity extends ActionBarActivity {
                 @Override
                 public void onFailure() {
                     progressDialogManager.dismiss();
-                    Toast.makeText(NewMagpieActivity.this, "upload image fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewMagpieActivity.this, R.string.error_network, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -100,7 +100,7 @@ public class NewMagpieActivity extends ActionBarActivity {
                     executeSendMagpieTask(publisherID, title, content, receivedUrls);
                 }
             });
-            progressDialogManager.show("uploading");
+            progressDialogManager.show(R.string.txt_uploading);
             imageUploader.execute(urls);
         } else {
             executeSendMagpieTask(publisherID, title, content, null);
@@ -118,18 +118,18 @@ public class NewMagpieActivity extends ActionBarActivity {
         params.put("publisherID", publisherID);
         params.put("title", title);
         params.put("content", stringBuilder);
-        progressDialogManager.show("uploading");
+        progressDialogManager.show(R.string.txt_sending);
         new MagpieSendTask(params, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
                 progressDialogManager.dismiss();
-                Toast.makeText(NewMagpieActivity.this, "sending fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewMagpieActivity.this, R.string.error_network, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
                 progressDialogManager.dismiss();
-                Toast.makeText(NewMagpieActivity.this, "sending succeed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewMagpieActivity.this, R.string.txt_send_successfully, Toast.LENGTH_SHORT).show();
                 NewMagpieActivity.this.finish();
             }
         }).execute();

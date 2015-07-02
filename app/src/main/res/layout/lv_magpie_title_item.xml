@@ -7,18 +7,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300px"
+        android:layout_height="80dp"
         android:paddingLeft="@dimen/abc_action_bar_default_padding_material"
         android:paddingRight="@dimen/abc_action_bar_default_padding_material" >
 
-        <ImageView
+        <com.xixi.widget.CircleImageView
             android:id="@+id/head"
             android:layout_width="@dimen/abc_action_bar_default_height_material"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:layout_centerVertical="true"
             android:scaleType="centerCrop"
             android:contentDescription="@null"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_zhanjun" />
 
         <TextView
             android:id="@+id/title"

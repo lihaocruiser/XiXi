@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="title"/>
+            android:text="@string/txt_title"/>
 
         <EditText
             android:id="@+id/et_title"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="basic"/>
+            android:text="@string/txt_basic"/>
 
         <EditText
             android:id="@+id/et_basic"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="hobby"/>
+            android:text="@string/txt_hobby"/>
 
         <EditText
             android:id="@+id/et_hobby"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="condition"/>
+            android:text="@string/txt_condition"/>
 
         <EditText
             android:id="@+id/et_condition"
@@ -58,7 +58,7 @@
         <Button
             android:id="@+id/btn_add_photo"
             style="@style/btn_blue_large"
-            android:text="add photo" />
+            android:text="@string/btn_add_photo" />
 
         <LinearLayout
             android:layout_width="match_parent"

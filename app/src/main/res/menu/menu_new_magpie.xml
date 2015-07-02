@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_send"
-        android:title="send"
+        android:title="@string/btn_send"
         android:orderInCategory="100"
         app:showAsAction="always" />
 

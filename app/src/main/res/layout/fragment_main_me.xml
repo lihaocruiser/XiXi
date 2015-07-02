@@ -21,7 +21,7 @@
 
         <TextView
             style="@style/item_im_tv_right"
-            android:text="Homepage"/>
+            android:text="@string/txt_profile"/>
 
     </LinearLayout>
 
@@ -36,7 +36,7 @@
 
         <TextView
             style="@style/item_im_tv_right"
-            android:text="Messages"/>
+            android:text="@string/txt_message"/>
 
     </LinearLayout>
 
@@ -51,7 +51,7 @@
 
         <TextView
             style="@style/item_im_tv_right"
-            android:text="Settings"/>
+            android:text="@string/txt_settings"/>
 
     </LinearLayout>
 

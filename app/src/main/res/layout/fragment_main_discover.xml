@@ -17,7 +17,7 @@
 
         <TextView
             style="@style/item_im_tv_right"
-            android:text="circle"/>
+            android:text="@string/txt_circle"/>
 
     </LinearLayout>
 
@@ -32,7 +32,7 @@
 
         <TextView
             style="@style/item_im_tv_right"
-            android:text="weekend"/>
+            android:text="@string/txt_weekend"/>
 
     </LinearLayout>
 
@@ -47,7 +47,7 @@
 
         <TextView
             style="@style/item_im_tv_right"
-            android:text="help"/>
+            android:text="@string/txt_help"/>
 
     </LinearLayout>
 

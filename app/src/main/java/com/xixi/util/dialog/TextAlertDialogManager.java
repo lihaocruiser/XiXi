@@ -37,8 +37,8 @@ public class TextAlertDialogManager {
         etDialog = (EditText) ll.findViewById(R.id.et_dialog);
         etDialog.setInputType(inputType);
         builder.setView(ll);
-        builder.setPositiveButton("confirm", listener);
-        builder.setNegativeButton("cancel", null);
+        builder.setPositiveButton(R.string.btn_confirm, listener);
+        builder.setNegativeButton(R.string.btn_cancel, null);
         alertDialog = builder.create();
         alertDialog.show();
         alertDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);

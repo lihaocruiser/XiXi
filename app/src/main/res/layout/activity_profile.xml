@@ -19,7 +19,7 @@
 
         <TextView
             style="@style/item_tv_tv_left"
-            android:text="nickname"/>
+            android:text="@string/txt_nickname"/>
 
         <TextView
             android:id="@+id/tv_nickname"
@@ -35,7 +35,7 @@
 
         <TextView
             style="@style/item_tv_tv_left"
-            android:text="age"/>
+            android:text="@string/txt_age"/>
 
         <TextView
             android:id="@+id/tv_age"
@@ -51,7 +51,7 @@
 
         <TextView
             style="@style/item_tv_tv_left"
-            android:text="school"/>
+            android:text="@string/txt_school"/>
 
         <TextView
             android:id="@+id/tv_school"
@@ -67,7 +67,7 @@
 
         <TextView
             style="@style/item_tv_tv_left"
-            android:text="label"/>
+            android:text="@string/txt_label"/>
 
         <TextView
             android:id="@+id/tv_label"

@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_finish"
         android:icon="@drawable/btn_finish"
-        android:title="finish"
+        android:title="@string/btn_finish"
         android:orderInCategory="100"
         app:showAsAction="always" />
 </menu>
