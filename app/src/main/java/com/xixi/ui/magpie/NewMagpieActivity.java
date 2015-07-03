@@ -148,7 +148,10 @@ public class NewMagpieActivity extends ActionBarActivity {
         for (int i = 0; i < imSelected.length; i++) {
             if (i < localImageUrls.length) {
                 final String localImageUrl = localImageUrls[i];
-                Bitmap bitmap = BitmapFactory.decodeFile(localImageUrls[i]);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.outHeight = 128;
+                options.outWidth = 128;
+                Bitmap bitmap = BitmapFactory.decodeFile(localImageUrls[i], options);
                 imSelected[i].setImageBitmap(bitmap);
                 imSelected[i].setOnClickListener(new View.OnClickListener() {
                     @Override

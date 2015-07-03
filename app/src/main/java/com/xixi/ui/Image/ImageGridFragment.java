@@ -69,7 +69,7 @@ public class ImageGridFragment extends Fragment {
                 if (checkedMap.containsKey(imageId)) {
                     checkedMap.remove(imageId);
                 } else if (checkedMap.size() >= maxImageCount) {
-                    Toast.makeText(getActivity(), "exceeds max number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.error_image_exceed, Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     checkedMap.put(imageId, imagePath);

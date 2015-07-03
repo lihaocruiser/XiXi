@@ -12,10 +12,21 @@
         android:scaleType="centerCrop" />
 
     <ImageView
+        android:id="@+id/im_check_back"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:alpha="0.9"
+        android:src="@drawable/widget_checkbox_back" />
+
+    <ImageView
         android:id="@+id/im_check"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:src="@drawable/ic_launcher"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/widget_checkbox_front"
         android:visibility="gone"/>
 
 </FrameLayout>
