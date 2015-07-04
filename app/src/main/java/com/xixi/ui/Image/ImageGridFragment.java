@@ -3,6 +3,7 @@ package com.xixi.ui.image;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore.Images.Thumbnails;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import com.xixi.util.Image.ImageItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class ImageGridFragment extends Fragment {
@@ -95,6 +98,7 @@ public class ImageGridFragment extends Fragment {
     private class ImageGridAdapter extends BaseAdapter {
 
         private final int CAPACITY = 48;
+        Set<Long> taskSet = new TreeSet<>();
         ArrayBlockingQueue<Long> queue = new ArrayBlockingQueue<>(CAPACITY);
         HashMap<Long, Bitmap> thumbMap = new HashMap<>();
 
@@ -125,26 +129,27 @@ public class ImageGridFragment extends Fragment {
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
-                holder.imImage.setImageResource(R.drawable.ic_launcher);
+                holder.imImage.setImageBitmap(null);
+            }
+
+            // if the number of images exceeds CAPACITY, remove the earliest one
+            if (queue.size() >= CAPACITY - 1) {
+                Long earliestId = queue.poll();
+                thumbMap.remove(earliestId);
             }
 
             long imageId = imageItem.imageId;
+            holder.imImage.setTag(imageId);
 
             // get bitmap
             Bitmap bitmap;
             if (thumbMap.containsKey(imageId)) {
                 bitmap = thumbMap.get(imageId);
-            } else {
-                // if the number of images exceeds CAPACITY, remove the earliest one
-                if (queue.size() >= CAPACITY - 1) {
-                    Long earliestId = queue.poll();
-                    thumbMap.remove(earliestId);
-                }
-                bitmap = Thumbnails.getThumbnail(cr, imageId, bucketId, Thumbnails.MINI_KIND, null);
-                queue.offer(imageId);
-                thumbMap.put(imageId, bitmap);
+                holder.imImage.setImageBitmap(bitmap);
+            } else if (!taskSet.contains(imageId)) {
+                taskSet.add(imageId);
+                new ThumbnailTask().execute(imageId);
             }
-            holder.imImage.setImageBitmap(bitmap);
 
             // deal with imCheck
             if (checkedMap.containsKey(imageId)) {
@@ -159,6 +164,31 @@ public class ImageGridFragment extends Fragment {
         private class ViewHolder {
             ImageView imImage;
             ImageView imCheck;
+        }
+
+        /**
+         * AsyncTask: Retrieve thumbnail
+         */
+        private class ThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
+
+            Long imageId;
+
+            @Override
+            protected Bitmap doInBackground(Long... params) {
+                imageId = params[0];
+                return Thumbnails.getThumbnail(cr, params[0], bucketId, Thumbnails.MINI_KIND, null);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                queue.offer(imageId);
+                thumbMap.put(imageId, result);
+                taskSet.remove(imageId);
+                ImageView imageView = (ImageView) gridView.findViewWithTag(imageId);
+                if (imageView != null) {
+                    imageView.setImageBitmap(result);
+                }
+            }
         }
     }
 

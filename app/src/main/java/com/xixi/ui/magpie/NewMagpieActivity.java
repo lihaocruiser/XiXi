@@ -3,6 +3,7 @@ package com.xixi.ui.magpie;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -152,8 +153,9 @@ public class NewMagpieActivity extends ActionBarActivity {
                 final String localImageUrl = localImageUrls[i];
                 int width = imSelected[i].getWidth();
                 int height = imSelected[i].getHeight();
-                Bitmap bitmap = BitmapUtil.decodeScaledBitmap(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
-                imSelected[i].setImageBitmap(bitmap);
+                new BitmapTask(imSelected[i], localImageUrl, width, height).execute();
+                //Bitmap bitmap = BitmapUtil.decodeScaledBitmap(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
+                //imSelected[i].setImageBitmap(bitmap);
                 imSelected[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -165,6 +167,32 @@ public class NewMagpieActivity extends ActionBarActivity {
             } else {
                 imSelected[i].setImageBitmap(null);
             }
+        }
+    }
+
+
+    private class BitmapTask extends AsyncTask<Void, Void, Bitmap> {
+
+        ImageView imageView;
+        String localImageUrl;
+        int width;
+        int height;
+
+        public BitmapTask(ImageView imageView, String localImageUrl, int width, int height) {
+            this.imageView = imageView;
+            this.localImageUrl = localImageUrl;
+            this.width = width;
+            this.height = height;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            return BitmapUtil.decodeScaledBitmap(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
         }
     }
 
