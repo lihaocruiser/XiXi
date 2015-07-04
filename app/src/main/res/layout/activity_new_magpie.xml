@@ -69,7 +69,8 @@
                 android:id="@+id/im1"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/im2"
@@ -77,13 +78,15 @@
                 android:layout_height="120dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/im3"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:scaleType="centerCrop"/>
 
         </LinearLayout>
 

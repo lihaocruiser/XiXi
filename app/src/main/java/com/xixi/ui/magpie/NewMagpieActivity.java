@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.xixi.net.image.ImageUploader;
 import com.xixi.net.magpie.MagpieSendTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.ui.image.LocalImageShowActivity;
+import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.dialog.ProgressDialogManager;
 
 import org.json.JSONObject;
@@ -148,10 +150,9 @@ public class NewMagpieActivity extends ActionBarActivity {
         for (int i = 0; i < imSelected.length; i++) {
             if (i < localImageUrls.length) {
                 final String localImageUrl = localImageUrls[i];
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.outHeight = 128;
-                options.outWidth = 128;
-                Bitmap bitmap = BitmapFactory.decodeFile(localImageUrls[i], options);
+                int width = imSelected[i].getWidth();
+                int height = imSelected[i].getHeight();
+                Bitmap bitmap = BitmapUtil.decodeScaledBitmap(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
                 imSelected[i].setImageBitmap(bitmap);
                 imSelected[i].setOnClickListener(new View.OnClickListener() {
                     @Override

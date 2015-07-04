@@ -3,12 +3,15 @@ package com.xixi.ui.image;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.xixi.R;
+import com.xixi.util.Image.BitmapUtil;
 
 public class LocalImageShowActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -16,8 +19,7 @@ public class LocalImageShowActivity extends ActionBarActivity implements View.On
 
     String localImageUrl;
 
-    Bitmap bitmap;
-    BitmapFactory.Options options;
+    //Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +33,16 @@ public class LocalImageShowActivity extends ActionBarActivity implements View.On
         imImage = (ImageView) findViewById(R.id.im_image);
         imImage.setOnClickListener(this);
 
-        options = new BitmapFactory.Options();
-        options.outWidth = 256;
-        options.outHeight = 256;
-        bitmap = BitmapFactory.decodeFile(localImageUrl, options);
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+
+        Bitmap bitmap = BitmapUtil.decodeScaledBitmap(localImageUrl, point.x, point.y, ImageView.ScaleType.CENTER_INSIDE);
+
         imImage.setImageBitmap(bitmap);
     }
 
     @Override
     public void onClick(View v) {
-        bitmap = null;
-        imImage.setImageBitmap(null);
         finish();
     }
 }
