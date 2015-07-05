@@ -60,6 +60,7 @@ public class ImageBrowseActivity extends ActionBarActivity {
             menuFinish.setVisible(false);
         }
         if (to == imageGridFragment) {
+            imageGridFragment.isFirstEnter = true;
             transaction.commit();
             menuFinish.setVisible(true);
         }

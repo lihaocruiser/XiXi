@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -22,9 +23,9 @@ import com.xixi.util.Image.ImageItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class ImageGridFragment extends Fragment {
@@ -35,11 +36,12 @@ public class ImageGridFragment extends Fragment {
     private long bucketId;
     private int maxImageCount;
 
-    private Context context;
     private LayoutInflater inflater;
     private ContentResolver cr;
     private ImageGridAdapter imageGridAdapter;
     private GridView gridView;
+
+    public boolean isFirstEnter = true;
 
     public ImageGridFragment() {
         imageList = new ArrayList<>();
@@ -55,14 +57,15 @@ public class ImageGridFragment extends Fragment {
     }
 
     @Override
-    public  void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        context = getActivity();
+        Context context = getActivity();
         cr = context.getContentResolver();
         inflater = LayoutInflater.from(context);
 
         imageGridAdapter = new ImageGridAdapter();
         gridView.setAdapter(imageGridAdapter);
+        gridView.setOnScrollListener(imageGridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -83,7 +86,6 @@ public class ImageGridFragment extends Fragment {
 
     }
 
-
     public void setImageBucket(ImageBucket imageBucket) {
         imageList = imageBucket.imageList;
         bucketId = imageBucket.bucketId;
@@ -95,12 +97,21 @@ public class ImageGridFragment extends Fragment {
         this.maxImageCount = maxImageCount;
     }
 
-    private class ImageGridAdapter extends BaseAdapter {
+    private class ImageGridAdapter extends BaseAdapter implements AbsListView.OnScrollListener{
 
-        private final int CAPACITY = 48;
-        Set<Long> taskSet = new TreeSet<>();
-        ArrayBlockingQueue<Long> queue = new ArrayBlockingQueue<>(CAPACITY);
-        HashMap<Long, Bitmap> thumbMap = new HashMap<>();
+        private final int CAPACITY = 24;
+        private int firstVisibleItem;
+        private int visibleItemCount;
+
+        Set<ThumbnailTask> taskSet;
+        HashMap<Long, Bitmap> thumbMap;
+        ArrayBlockingQueue<Long> queue;
+
+        public ImageGridAdapter() {
+            taskSet = new HashSet<>();
+            queue = new ArrayBlockingQueue<>(CAPACITY);
+            thumbMap = new HashMap<>();
+        }
 
         @Override
         public int getCount() {
@@ -129,29 +140,26 @@ public class ImageGridFragment extends Fragment {
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
-                holder.imImage.setImageBitmap(null);
             }
 
             // if the number of images exceeds CAPACITY, remove the earliest one
-            if (queue.size() >= CAPACITY - 1) {
-                Long earliestId = queue.poll();
-                thumbMap.remove(earliestId);
-            }
+//            Long earliestId = queue.peek();
+//            if (queue.size() >= CAPACITY - 1 && inScreen(earliestId)) {
+//                queue.poll();
+//                thumbMap.remove(earliestId);
+//            }
 
             long imageId = imageItem.imageId;
             holder.imImage.setTag(imageId);
 
-            // get bitmap
-            Bitmap bitmap;
-            if (thumbMap.containsKey(imageId)) {
-                bitmap = thumbMap.get(imageId);
+            if (thumbMap.containsKey(imageId)) {    // in cache: fetch it
+                Bitmap bitmap = thumbMap.get(imageId);
                 holder.imImage.setImageBitmap(bitmap);
-            } else if (!taskSet.contains(imageId)) {
-                taskSet.add(imageId);
-                new ThumbnailTask().execute(imageId);
+            } else {
+                holder.imImage.setImageBitmap(null);
             }
 
-            // deal with imCheck
+                // deal with imCheck
             if (checkedMap.containsKey(imageId)) {
                 holder.imCheck.setVisibility(View.VISIBLE);
             } else {
@@ -166,6 +174,52 @@ public class ImageGridFragment extends Fragment {
             ImageView imCheck;
         }
 
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            if (scrollState == SCROLL_STATE_IDLE) {
+                Long earliestId = queue.peek();
+                if (queue.size() >= CAPACITY - 1 && inScreen(earliestId)) {
+                    queue.poll();
+                    thumbMap.remove(earliestId);
+                }
+                loadBitmaps(firstVisibleItem, visibleItemCount);
+            } else {
+                cancelAllTasks();
+            }
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                             int totalItemCount) {
+            this.firstVisibleItem = firstVisibleItem;
+            this.visibleItemCount = visibleItemCount;
+
+            if (isFirstEnter && visibleItemCount > 0) {
+                isFirstEnter = false;
+                taskSet.clear();
+                loadBitmaps(firstVisibleItem, visibleItemCount);
+            }
+        }
+
+        private void loadBitmaps(int firstItem, int itemCount) {
+            ImageItem imageItem;
+            Long imageId;
+            for (int i = firstItem; i < firstItem + itemCount; i++) {
+                imageItem = imageList.get(i);
+                imageId = imageItem.imageId;
+                if (thumbMap.containsKey(imageId)) {
+                    ImageView imageView = (ImageView) gridView.findViewWithTag(imageId);
+                    if (imageView != null) {
+                        imageView.setImageBitmap(thumbMap.get(imageId));
+                    }
+                } else if (getTaskById(imageId) == null) {   // neither in cache nor in taskSet: start task
+                    ThumbnailTask task = new ThumbnailTask();
+                    task.execute(imageId);
+                    taskSet.add(task);
+                }
+            }
+        }
+
         /**
          * AsyncTask: Retrieve thumbnail
          */
@@ -174,22 +228,54 @@ public class ImageGridFragment extends Fragment {
             Long imageId;
 
             @Override
-            protected Bitmap doInBackground(Long... params) {
-                imageId = params[0];
-                return Thumbnails.getThumbnail(cr, params[0], bucketId, Thumbnails.MINI_KIND, null);
+            protected Bitmap doInBackground(Long... id) {
+                if (isCancelled()) {
+                    return null;
+                }
+                imageId = id[0];
+                return Thumbnails.getThumbnail(cr, id[0], bucketId, Thumbnails.MINI_KIND, null);
             }
 
             @Override
             protected void onPostExecute(Bitmap result) {
+                taskSet.remove(getTaskById(imageId));
+                if (result == null) {
+                    return;
+                }
                 queue.offer(imageId);
                 thumbMap.put(imageId, result);
-                taskSet.remove(imageId);
                 ImageView imageView = (ImageView) gridView.findViewWithTag(imageId);
                 if (imageView != null) {
                     imageView.setImageBitmap(result);
                 }
             }
         }
+
+        private ThumbnailTask getTaskById(Long imageId) {
+            for (ThumbnailTask task : taskSet) {
+                if (imageId.equals(task.imageId)) {
+                    return task;
+                }
+            }
+            return null;
+        }
+
+        private void cancelAllTasks() {
+            for (ThumbnailTask task : taskSet) {
+                task.cancel(false);
+            }
+            taskSet.clear();
+        }
+
+        private boolean inScreen(Long imageId) {
+            for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
+                if (imageId.equals(imageList.get(i).imageId)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
 }
