@@ -3,13 +3,12 @@ package com.xixi.net.me;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.xixi.net.API;
 import com.xixi.net.JSONReceiver;
 
 import org.apache.http.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ModifyProfileTask {
@@ -18,37 +17,28 @@ public class ModifyProfileTask {
 
 	private JSONReceiver receiver;
 
-	private AsyncHttpResponseHandler asyncHandler = new AsyncHttpResponseHandler() {
+    private JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
 
-        @Override
-        public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-                              Throwable arg3) {
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             Log.i(getClass().toString(), "onFailure");
             receiver.onFailure(null);
         }
 
-        @Override
-        public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             Log.i(getClass().toString(), "onSuccess");
-            if (arg2 == null) {
+            if (response == null) {
                 receiver.onFailure(null);
                 return;
             }
-            try {
-                String str = new String(arg2);
-                JSONObject obj = new JSONObject(str);
-                int checked = obj.optInt("checked", 1);
-                if (checked == 0) {
-                    receiver.onSuccess(null);
-                } else {
-                    receiver.onFailure(null);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            int checked = response.optInt("checked", 1);
+            if (checked == 0) {
+                receiver.onSuccess(response);
+            } else {
+                receiver.onFailure(null);
             }
         }
 
-	};
+    };
 
 	public ModifyProfileTask(RequestParams params, JSONReceiver receiver) {
 		this.params = params;
@@ -57,7 +47,7 @@ public class ModifyProfileTask {
 	
 	public void execute() {
 		String url = API.HOST + "customer/update";
-		new AsyncHttpClient().post(url, params, asyncHandler );
+		new AsyncHttpClient().post(url, params, jsonHttpResponseHandler );
 	}
 
 }
