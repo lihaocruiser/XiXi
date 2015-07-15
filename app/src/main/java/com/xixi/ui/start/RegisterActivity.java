@@ -21,7 +21,7 @@ import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.start.RegisterTask;
 import com.xixi.net.start.SchoolListTask;
-import com.xixi.ui.images.ImageBrowseActivity;
+import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.AlertDialogManager;
 import com.xixi.util.dialog.ProgressDialogManager;
 

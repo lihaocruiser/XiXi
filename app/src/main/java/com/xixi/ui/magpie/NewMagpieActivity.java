@@ -18,8 +18,8 @@ import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.magpie.MagpieSendTask;
-import com.xixi.ui.images.ImageBrowseActivity;
-import com.xixi.ui.images.LocalImageShowActivity;
+import com.xixi.ui.image.ImageBrowseActivity;
+import com.xixi.ui.image.LocalImageShowActivity;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.dialog.ProgressDialogManager;
 

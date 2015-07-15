@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.xixi.ui.images.ImageBrowseActivity">
+    tools:context="com.xixi.ui.image.ImageBrowseActivity">
 
 </LinearLayout>
