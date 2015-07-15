@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/black"
-    tools:context="com.xixi.ui.image.LocalImageShowActivity">
+    tools:context="com.xixi.ui.images.LocalImageShowActivity">
 
     <ImageView
         android:id="@+id/im_image"

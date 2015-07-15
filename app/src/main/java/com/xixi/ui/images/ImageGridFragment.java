@@ -1,4 +1,4 @@
-package com.xixi.ui.image;
+package com.xixi.ui.images;
 
 import android.content.ContentResolver;
 import android.content.Context;

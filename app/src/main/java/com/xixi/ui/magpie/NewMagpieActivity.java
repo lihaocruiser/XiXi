@@ -2,11 +2,9 @@ package com.xixi.ui.magpie;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +18,8 @@ import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.magpie.MagpieSendTask;
-import com.xixi.ui.image.ImageBrowseActivity;
-import com.xixi.ui.image.LocalImageShowActivity;
+import com.xixi.ui.images.ImageBrowseActivity;
+import com.xixi.ui.images.LocalImageShowActivity;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.dialog.ProgressDialogManager;
 

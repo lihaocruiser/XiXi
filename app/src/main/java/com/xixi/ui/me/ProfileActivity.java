@@ -19,7 +19,7 @@ import com.xixi.bean.ApplicationContext;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
 import com.xixi.net.me.ModifyProfileTask;
-import com.xixi.ui.image.ImageBrowseActivity;
+import com.xixi.ui.images.ImageBrowseActivity;
 import com.xixi.util.dialog.ProgressDialogManager;
 import com.xixi.util.dialog.TextAlertDialogManager;
 import com.xixi.widget.CircleImageView;
