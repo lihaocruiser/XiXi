@@ -33,3 +33,6 @@ proguard/
 # Log Files
 *.log
 *.txt
+
+# Mac
+*.DS_Store
