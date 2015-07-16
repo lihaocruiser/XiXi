@@ -13,12 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.RequestParams;
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
-import com.xixi.net.me.ModifyProfileTask;
+import com.xixi.net.me.ModifyProfileJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.ProgressDialogManager;
 import com.xixi.util.dialog.TextAlertDialogManager;
@@ -178,14 +177,11 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
      * upload profile
      */
     private void modifyProfile() {
-        RequestParams params = new RequestParams();
-        params.put("id", id);
-        params.put("headPic", headerUrl);
-        params.put("nickname", nickname);
-        params.put("age", age);
-        params.put("label", label);
+
         progressDialogManager.show("modifying profile");
-        new ModifyProfileTask(params, new JSONReceiver() {
+
+        new ModifyProfileJSONTask(id, age, headerUrl, nickname, label, new JSONReceiver() {
+
             @Override
             public void onFailure(JSONObject obj) {
                 progressDialogManager.dismiss();
@@ -203,6 +199,7 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
                 progressDialogManager.dismiss();
             }
         }).execute();
+
     }
 
 

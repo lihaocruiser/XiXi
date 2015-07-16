@@ -178,7 +178,7 @@ public class ImageGridFragment extends Fragment {
         public void onScrollStateChanged(AbsListView view, int scrollState) {
             if (scrollState == SCROLL_STATE_IDLE) {
                 Long earliestId = queue.peek();
-                if (queue.size() >= CAPACITY - 1 && inScreen(earliestId)) {
+                if (queue.size() >= CAPACITY - 1 && !inScreen(earliestId)) {
                     queue.poll();
                     thumbMap.remove(earliestId);
                 }

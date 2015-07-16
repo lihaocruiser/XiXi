@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.xixi.net.API;
+import com.xixi.net.RequestUrl;
 import com.xixi.net.BitmapReceiver;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -48,7 +48,7 @@ public class ImageDownloadTask {
 
     public ImageDownloadTask(String url, BitmapReceiver bitmapReceiver) {
         this.url = url;
-        this.absUrl = API.HOST + url;
+        this.absUrl = RequestUrl.HOST + url;
         this.bitmapReceiver = bitmapReceiver;
         count++;
     }

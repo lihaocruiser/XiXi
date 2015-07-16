@@ -2,7 +2,7 @@ package com.xixi.net.magpie;
 
 import android.util.Log;
 
-import com.xixi.net.API;
+import com.xixi.net.RequestUrl;
 import com.xixi.net.JSONReceiver;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -51,7 +51,7 @@ public class MagpieListTask {
 	}
 	
 	public void execute() {
-		String url = API.HOST + "post/postlist";
+		String url = RequestUrl.HOST + "post/postlist";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 

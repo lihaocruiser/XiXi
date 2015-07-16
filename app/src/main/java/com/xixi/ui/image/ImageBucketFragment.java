@@ -118,7 +118,7 @@ public class ImageBucketFragment extends Fragment {
             if (thumbMap.containsKey(imageId)) {
                 bitmap = thumbMap.get(imageId);
             } else {
-                bitmap = Thumbnails.getThumbnail(cr, imageId, bucketId, Thumbnails.MINI_KIND , null);
+                bitmap = Thumbnails.getThumbnail(cr, imageId, bucketId, Thumbnails.MICRO_KIND , null);
                 thumbMap.put(imageId, bitmap);
             }
             holder.imThumbnail.setImageBitmap(bitmap);

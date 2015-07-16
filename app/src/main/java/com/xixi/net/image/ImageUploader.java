@@ -60,14 +60,7 @@ public class ImageUploader {
     };
 
     private void uploadImage(int imageCount) {
-        RequestParams params = new RequestParams();
-        File file = new File(localUrls.get(imageCount));
-        try {
-            params.put("file", file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        new ImageUploadTask(params, receiver).execute();
+        new UploadImageJSONTask(localUrls.get(imageCount), receiver);
     }
 
 

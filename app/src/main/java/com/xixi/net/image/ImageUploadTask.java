@@ -5,13 +5,17 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.API;
+import com.xixi.net.RequestUrl;
 import com.xixi.net.JSONReceiver;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @Deprecated
+ * replaced by UploadImageJSONTask
+ */
 public class ImageUploadTask {
 
 	private RequestParams params;
@@ -51,7 +55,7 @@ public class ImageUploadTask {
 	}
 	
 	public void execute() {
-		String url = API.HOST + "customer/uploadImg";
+		String url = RequestUrl.HOST + "customer/uploadImg";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 
