@@ -15,14 +15,12 @@ import android.widget.TextView;
 import com.xixi.R;
 import com.xixi.bean.MagpieTitleBean;
 import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.net.magpie.MagpieListTask;
+import com.xixi.net.magpie.MagpieListJSONTask;
 import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.net.BitmapReceiver;
 import com.xixi.net.JSONReceiver;
 import com.xixi.util.StringUtil;
 import com.xixi.widget.RefreshAndLoadListView;
-
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,19 +90,13 @@ public class FragmentMagpie extends Fragment implements AdapterView.OnItemClickL
     // refresh
     private void refreshData(int pageSize) {
         isRefreshing = true;
-        RequestParams params = new RequestParams();
-        params.put("pageIndex", 0);
-        params.put("pageSize", pageSize);
-        new MagpieListTask(params, refreshReceiver).execute();
+        new MagpieListJSONTask(0, pageSize, refreshReceiver).execute();
     }
 
     // load more
     private void loadData(int pageIndex, int pageSize) {
         isRefreshing = true;
-        RequestParams params = new RequestParams();
-        params.put("pageIndex", pageIndex);
-        params.put("pageSize", pageSize);
-        new MagpieListTask(params, loadReceiver).execute();
+        new MagpieListJSONTask(pageIndex, pageSize, loadReceiver).execute();
     }
 
     private JSONReceiver refreshReceiver = new JSONReceiver() {

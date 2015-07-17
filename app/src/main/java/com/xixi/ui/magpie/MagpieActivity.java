@@ -16,17 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.RequestParams;
 import com.xixi.R;
 import com.xixi.bean.MagpieBean;
 import com.xixi.bean.MagpieCommentBean;
 import com.xixi.net.BitmapReceiver;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.net.magpie.MagpieCommentTask;
-import com.xixi.net.magpie.MagpieSendCommentTask;
-import com.xixi.net.magpie.MagpieSendReplyMagpieTask;
-import com.xixi.net.magpie.MagpieTask;
+import com.xixi.net.magpie.MagpieCommentJSONTask;
+import com.xixi.net.magpie.MagpieJSONTask;
+import com.xixi.net.magpie.SendCommentJSONTask;
+import com.xixi.net.magpie.SendReplyMagpieJSONTask;
 import com.xixi.widget.LoadListView;
 
 import org.json.JSONArray;
@@ -149,8 +148,6 @@ public class MagpieActivity extends ActionBarActivity {
         if (id < 0) {
             return;
         }
-        RequestParams params = new RequestParams();
-        params.put("id", id);
         JSONReceiver receiver = new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
@@ -166,7 +163,7 @@ public class MagpieActivity extends ActionBarActivity {
                 LoadMagpiePic(magpieBean.getPicUrl());
             }
         };
-        new MagpieTask(params, receiver).execute();
+        new MagpieJSONTask(id, receiver).execute();
     }
 
     private void FillHeaderView(MagpieBean magpieBean) {
@@ -225,11 +222,6 @@ public class MagpieActivity extends ActionBarActivity {
             isLoading = true;
         }
 
-        RequestParams params = new RequestParams();
-        params.put("postID", id + "");
-        params.put("pageIndex", pageIndex);
-        params.put("pageSize", pageSize);
-
         JSONReceiver receiver = new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
@@ -263,7 +255,7 @@ public class MagpieActivity extends ActionBarActivity {
             }
         };
 
-        new MagpieCommentTask(params, receiver).execute();
+        new MagpieCommentJSONTask(id, pageIndex, pageSize, receiver).execute();
     }
 
 
@@ -359,29 +351,15 @@ public class MagpieActivity extends ActionBarActivity {
     }
 
     private void sendComment(String content, int commenterID) {
-        RequestParams params = new RequestParams();
-        params.put("postID", id);
-        params.put("content", content);
-        params.put("publisherID", commenterID);
-        new MagpieSendCommentTask(params, sendingReceiver).execute();
+        new SendCommentJSONTask(id, content, commenterID, sendingReceiver).execute();
     }
 
     private void replyMagpie(String content, int parentReplierID, int replierID) {
-        RequestParams params = new RequestParams();
-        params.put("postID", id);
-        params.put("content", content);
-        params.put("parentReplierID", parentReplierID);
-        params.put("replierID", replierID);
-        new MagpieSendReplyMagpieTask(params, sendingReceiver).execute();
+        new SendReplyMagpieJSONTask(id, content, parentReplierID, replierID, sendingReceiver).execute();
     }
 
     private void replyComment(int commentID, String content, int parentReplierID, int replierID) {
-        RequestParams params = new RequestParams();
-        params.put("commentID", commentID);
-        params.put("content", content);
-        params.put("parentReplierID", parentReplierID);
-        params.put("replierID", replierID);
-        new MagpieSendReplyMagpieTask(params,sendingReceiver).execute();
+        new SendReplyMagpieJSONTask(commentID, content, parentReplierID, replierID,sendingReceiver).execute();
     }
 
     JSONReceiver sendingReceiver = new JSONReceiver() {

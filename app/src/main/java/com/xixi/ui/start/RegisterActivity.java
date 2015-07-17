@@ -15,12 +15,11 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.loopj.android.http.RequestParams;
 import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
-import com.xixi.net.start.RegisterTask;
-import com.xixi.net.start.SchoolListTask;
+import com.xixi.net.start.RegisterJSONTask;
+import com.xixi.net.start.SchoolListJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.AlertDialogManager;
 import com.xixi.util.dialog.ProgressDialogManager;
@@ -87,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialogManager.show("loading school list");
-                new SchoolListTask(null, new JSONReceiver() {
+                new SchoolListJSONTask(new JSONReceiver() {
                     @Override
                     public void onFailure(JSONObject obj) {
                         String[] s = new String[]{"中国科学技术大学","b"};  // for text only
@@ -175,16 +174,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void executeRegisterTask(String nickname, String age, String school, String email,
                                      String password, String sex, String headPic) {
-        RequestParams params = new RequestParams();
-        params.put("nickname", nickname);
-        params.put("age", age);
-        params.put("school", school);
-        params.put("email", email);
-        params.put("password", password);
-        params.put("sex", sex);
-        params.put("headPic", headPic);
         progressDialogManager.show("uploading");
-        new RegisterTask(params, new JSONReceiver() {
+        new RegisterJSONTask(nickname, age, school, email, password, sex, headPic, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
                 progressDialogManager.dismiss();

@@ -13,11 +13,10 @@ import android.widget.Toast;
 
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
-import com.xixi.net.start.LoginTask;
+import com.xixi.net.start.LoginJSONTask;
 import com.xixi.ui.main.MainActivity;
 import com.xixi.net.JSONReceiver;
 import com.xixi.util.SafeJSON;
-import com.loopj.android.http.*;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
@@ -58,10 +57,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void login(String email, String password) {
-		RequestParams params = new RequestParams();
-		params.put("email", email);
-		params.put("password", password);
-		new LoginTask(params, jsonReceiver).execute();
+		new LoginJSONTask(email, password, jsonReceiver).execute();
 	}
 
     private JSONReceiver jsonReceiver = new JSONReceiver() {

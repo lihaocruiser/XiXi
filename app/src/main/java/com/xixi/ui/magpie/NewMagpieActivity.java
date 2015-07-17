@@ -14,11 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.loopj.android.http.RequestParams;
 import com.xixi.R;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageUploader;
-import com.xixi.net.magpie.MagpieSendTask;
+import com.xixi.net.magpie.SendMagpieJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.ui.image.LocalImageShowActivity;
 import com.xixi.util.Image.BitmapUtil;
@@ -121,12 +120,8 @@ public class NewMagpieActivity extends AppCompatActivity {
                 stringBuilder.append("@|").append(url);
             }
         }
-        RequestParams params = new RequestParams();
-        params.put("publisherID", publisherID);
-        params.put("title", title);
-        params.put("content", stringBuilder);
         progressDialogManager.show(R.string.txt_sending);
-        new MagpieSendTask(params, new JSONReceiver() {
+        new SendMagpieJSONTask(publisherID, title, stringBuilder.toString(), new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
                 progressDialogManager.dismiss();
