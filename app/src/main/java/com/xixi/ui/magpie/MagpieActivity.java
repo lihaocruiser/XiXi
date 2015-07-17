@@ -3,6 +3,7 @@ package com.xixi.ui.magpie;
 import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class MagpieActivity extends ActionBarActivity {
+public class MagpieActivity extends AppCompatActivity {
 
     int id;
     LinearLayout llHeader;
@@ -76,8 +77,9 @@ public class MagpieActivity extends ActionBarActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_magpie);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         inflater = getLayoutInflater();
         id = getIntent().getIntExtra("id", -1);
 
