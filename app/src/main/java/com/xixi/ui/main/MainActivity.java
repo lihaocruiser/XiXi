@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
     private List<Fragment> fragmentList;
     private List<ImageView> imageViewList;
 
+    Toolbar toolbar;
     ImageView ivMagpie;
     ImageView ivDiscover;
     ImageView ivMe;
@@ -42,6 +44,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // init toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // init bottom bar
         ivMagpie = (ImageView) findViewById(R.id.iv_magpie);

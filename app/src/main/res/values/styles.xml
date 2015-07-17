@@ -1,12 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- colorPrimary is used for the default action bar background -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/blue_deep</item>
-        <!-- colorPrimaryDark is used for the status bar -->
         <item name="colorPrimaryDark">@color/blue_light</item>
-        <!-- colorAccent is used as the default value for colorControlActivated which is used to tint widgets -->
-        <item name="colorAccent">@color/grey_deep</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large</item>
     </style>
 
 
