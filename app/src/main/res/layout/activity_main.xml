@@ -8,6 +8,8 @@
 
     <include layout="@layout/toolbar" />
 
+    <include layout="@layout/pager_sliding_tab_strip" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -15,37 +17,38 @@
         android:layout_weight="1"/>
 
     <!-- bottom navigation -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/material_blue_grey_800">
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="@color/material_blue_grey_800">-->
+    <!--</LinearLayout>-->
 
-        <ImageView
-            android:id="@+id/iv_magpie"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_main_magpie"/>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/abc_action_bar_default_height_material">-->
 
-        <ImageView
-            android:id="@+id/iv_discover"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_main_discover_white"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_magpie"-->
+            <!--android:layout_width="0px"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/ic_main_magpie"/>-->
 
-        <ImageView
-            android:id="@+id/iv_me"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_main_magpie_white"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_discover"-->
+            <!--android:layout_width="0px"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/ic_main_discover_white"/>-->
 
-    </LinearLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_me"-->
+            <!--android:layout_width="0px"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/ic_main_magpie_white"/>-->
+
+    <!--</LinearLayout>-->
 
 </LinearLayout>

@@ -3,8 +3,9 @@ package com.xixi.ui.image;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,7 +14,9 @@ import com.xixi.R;
 
 import java.util.Collection;
 
-public class ImageBrowseActivity extends ActionBarActivity {
+public class ImageBrowseActivity extends AppCompatActivity {
+
+    Toolbar toolbar;
 
     ImageBucketFragment imageBucketFragment;
     ImageGridFragment imageGridFragment;
@@ -27,6 +30,10 @@ public class ImageBrowseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_browse);
+
+        // init toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         maxImageCount = getIntent().getIntExtra("maxImageCount", 1);

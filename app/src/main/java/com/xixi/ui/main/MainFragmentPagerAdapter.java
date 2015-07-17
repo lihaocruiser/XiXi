@@ -24,4 +24,10 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return fragmentList.size();
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return fragmentList.get(position).toString().substring(8);
+    }
+
 }

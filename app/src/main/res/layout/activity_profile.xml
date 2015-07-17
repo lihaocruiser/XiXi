@@ -5,6 +5,8 @@
     android:orientation="vertical"
     tools:context="com.xixi.ui.me.ProfileActivity">
 
+    <include layout="@layout/toolbar" />
+
     <com.xixi.widget.CircleImageView
         android:id="@+id/im_header"
         android:layout_width="100dp"

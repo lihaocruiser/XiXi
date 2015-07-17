@@ -5,13 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.xixi.R;
 import com.xixi.util.Image.BitmapUtil;
 
-public class LocalImageShowActivity extends ActionBarActivity implements View.OnClickListener {
+public class LocalImageShowActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView imImage;
 
@@ -23,7 +24,6 @@ public class LocalImageShowActivity extends ActionBarActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_image_show);
-        getSupportActionBar().hide();
 
         Intent intent = getIntent();
         localImageUrl = intent.getStringExtra("localImageUrl");

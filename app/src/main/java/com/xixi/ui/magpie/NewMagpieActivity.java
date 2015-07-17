@@ -3,8 +3,9 @@ package com.xixi.ui.magpie;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,8 +29,9 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
 
-public class NewMagpieActivity extends ActionBarActivity {
+public class NewMagpieActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     EditText etTitle;
     EditText etBasic;
     EditText etHobby;
@@ -47,6 +49,10 @@ public class NewMagpieActivity extends ActionBarActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_magpie);
+
+        // init toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         progressDialogManager = new ProgressDialogManager(this);

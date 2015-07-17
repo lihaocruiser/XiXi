@@ -44,7 +44,7 @@
 
         <Button
             android:id="@+id/btn_school"
-            style="@style/btn_blue_mid"
+            style="@style/btn_blue_large"
             android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
             android:hint="select school"
             android:textColorHint="@color/white"
