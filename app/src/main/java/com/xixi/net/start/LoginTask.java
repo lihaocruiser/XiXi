@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.xixi.net.API;
+import com.xixi.net.RequestUrl;
 import com.xixi.net.JSONReceiver;
 import com.loopj.android.http.*;
 
@@ -49,7 +49,7 @@ public class LoginTask {
 	}
 	
 	public void execute() {
-		String url = API.HOST + "customer/login";
+		String url = RequestUrl.HOST + "customer/login";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 

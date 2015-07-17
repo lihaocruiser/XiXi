@@ -1,17 +1,24 @@
-package com.xixi.net.me;
+package com.xixi.net;
 
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.RequestUrl;
-import com.xixi.net.JSONReceiver;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
 
-public class ModifyProfileTask {
+/**
+ * 2015-7-16 20:16:44
+ * Base class POST requests that return a JSONObject
+ * extend this class, call init() to initialize parameters
+ * client: call constructor and execute()
+ */
+
+public class JSONTask {
+
+    String url;
 
 	private RequestParams params;
 
@@ -40,14 +47,15 @@ public class ModifyProfileTask {
 
     };
 
-	public ModifyProfileTask(RequestParams params, JSONReceiver receiver) {
+	protected void init(String url, RequestParams params, JSONReceiver receiver) {
+        this.url = url;
 		this.params = params;
 		this.receiver = receiver;
 	}
-	
-	public void execute() {
-		String url = RequestUrl.HOST + "customer/update";
-		new AsyncHttpClient().post(url, params, jsonHttpResponseHandler );
-	}
+
+    public void execute() {
+        String url = RequestUrl.HOST + this.url;
+        new AsyncHttpClient().post(url, params, jsonHttpResponseHandler);
+    }
 
 }

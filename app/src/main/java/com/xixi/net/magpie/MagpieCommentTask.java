@@ -5,7 +5,7 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.API;
+import com.xixi.net.RequestUrl;
 import com.xixi.net.JSONReceiver;
 
 import org.apache.http.Header;
@@ -51,7 +51,7 @@ public class MagpieCommentTask {
 	}
 	
 	public void execute() {
-		String url = API.HOST + "comment/commentlist";
+		String url = RequestUrl.HOST + "comment/commentlist";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 

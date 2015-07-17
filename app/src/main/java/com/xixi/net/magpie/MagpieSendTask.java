@@ -5,7 +5,7 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.API;
+import com.xixi.net.RequestUrl;
 import com.xixi.net.JSONReceiver;
 
 import org.apache.http.Header;
@@ -56,7 +56,7 @@ public class MagpieSendTask {
 	}
 	
 	public void execute() {
-		String url = API.HOST + "post/releasepost";
+		String url = RequestUrl.HOST + "post/releasepost";
 		new AsyncHttpClient().post(url, params, asyncHandler );
 	}
 
