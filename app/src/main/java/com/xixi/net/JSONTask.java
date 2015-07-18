@@ -12,8 +12,8 @@ import org.json.JSONObject;
 /**
  * 2015-7-16 20:16:44
  * Base class POST requests that return a JSONObject
- * extend this class, call init() to initialize parameters
- * client: call constructor and execute()
+ * Usage: extend this class, call init() to initialize parameters
+ * Client: call constructor and execute()
  */
 
 public class JSONTask {
@@ -26,7 +26,7 @@ public class JSONTask {
 
     private JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
 
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             Log.i(getClass().toString(), "onFailure");
             receiver.onFailure(null);
         }
