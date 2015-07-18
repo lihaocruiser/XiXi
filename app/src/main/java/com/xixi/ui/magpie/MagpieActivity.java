@@ -184,7 +184,7 @@ public class MagpieActivity extends AppCompatActivity {
         }
         BitmapReceiver receiver = new BitmapReceiver() {
             @Override
-            public void onFailure() {
+            public void onFailure(String url) {
                 imUserHeader.setImageResource(R.drawable.ic_launcher);
             }
             @Override
@@ -201,7 +201,7 @@ public class MagpieActivity extends AppCompatActivity {
         }
         BitmapReceiver receiver = new BitmapReceiver() {
             @Override
-            public void onFailure() {
+            public void onFailure(String url) {
                 imMagpiePic.setImageResource(R.drawable.ic_launcher);
             }
             @Override
@@ -332,7 +332,7 @@ public class MagpieActivity extends AppCompatActivity {
 
                     new ImageDownloadTask(headerUrl, new BitmapReceiver() {
                         @Override
-                        public void onFailure() {
+                        public void onFailure(String url) {
                             taskSet.remove(headerUrl);
                         }
 

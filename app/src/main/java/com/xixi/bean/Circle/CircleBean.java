@@ -77,5 +77,9 @@ public class CircleBean {
         return publisherHeadPic;
     }
 
+    public void setPublisherHeadPic(String publisherHeadPic) {
+        this.publisherHeadPic = publisherHeadPic;
+    }
+
 
 }

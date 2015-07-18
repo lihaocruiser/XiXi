@@ -49,7 +49,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
         if (headPic != null) {
             new ImageDownloadTask(headPic, new BitmapReceiver() {
                 @Override
-                public void onFailure() {
+                public void onFailure(String url) {
                     Toast.makeText(getActivity(), "getHeadPic fail", Toast.LENGTH_SHORT).show();
                 }
 

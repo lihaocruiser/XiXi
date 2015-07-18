@@ -27,7 +27,7 @@ public class ImageDownloadTask {
         public void onFailure(int arg0, Header[] arg1, byte[] arg2,
                               Throwable arg3) {
             Log.i(getClass().toString(), "onFailure");
-            bitmapReceiver.onFailure();
+            bitmapReceiver.onFailure(url);
             count--;
         }
 
@@ -35,7 +35,7 @@ public class ImageDownloadTask {
         public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
             Log.i(getClass().toString(), "onSuccess");
             if (arg2 == null) {
-                bitmapReceiver.onFailure();
+                bitmapReceiver.onFailure(url);
                 return;
             }
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -49,6 +49,7 @@ public class ImageDownloadTask {
     public ImageDownloadTask(String url, BitmapReceiver bitmapReceiver) {
         this.url = url;
         this.absUrl = RequestUrl.HOST + url;
+        this.absUrl = url;  // TODO for test only
         this.bitmapReceiver = bitmapReceiver;
         count++;
     }

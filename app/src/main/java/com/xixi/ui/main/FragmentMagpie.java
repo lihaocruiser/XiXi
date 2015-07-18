@@ -212,7 +212,7 @@ public class FragmentMagpie extends Fragment implements AdapterView.OnItemClickL
                 if (!StringUtil.isInCollection(url, taskSet) & !url.equals("")) {
                     BitmapReceiver bitmapReceiver = new BitmapReceiver() {
                         @Override
-                        public void onFailure() {
+                        public void onFailure(String url) {
                             taskSet.remove(url);
                         }
                         @Override

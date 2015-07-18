@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 public interface BitmapReceiver {
 
-    public void onFailure();
+    public void onFailure(String url);
 
     public void onSuccess(String url, Bitmap bitmap);
 
