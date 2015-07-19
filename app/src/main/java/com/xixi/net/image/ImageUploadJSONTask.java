@@ -11,9 +11,9 @@ import java.io.FileNotFoundException;
 /**
  * Created  on 2015-7-16.
  */
-public class UploadImageJSONTask extends JSONTask {
+public class ImageUploadJSONTask extends JSONTask {
 
-    public UploadImageJSONTask(String localUrl, JSONReceiver receiver) {
+    public ImageUploadJSONTask(String localUrl, JSONReceiver receiver) {
 
         String url = RequestUrl.UPLOAD_IMAGE;
 

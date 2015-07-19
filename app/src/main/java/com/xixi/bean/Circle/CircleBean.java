@@ -1,9 +1,13 @@
 package com.xixi.bean.Circle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
- * Created by lihao on 7/18/15.
+ * Created by LiHao on 7/18/15.
  */
 public class CircleBean {
 
@@ -40,6 +44,39 @@ public class CircleBean {
             publisherHeadPic = publisher.optString("headPic");
         }
     }
+
+    /**
+     * get an ArrayList of CircleBean from JSONArray
+     */
+    public static ArrayList<CircleBean> getBeanList(JSONArray array ) {
+        ArrayList<CircleBean> beanList = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject o = (JSONObject) array.get(i);
+                CircleBean circleBean = new CircleBean(o);
+                beanList.add(circleBean);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return beanList;
+    }
+
+    /**
+     * get an ArrayList of CircleBean from JSONArray and append it to an existed ArrayList
+     */
+    public static void appendBeanList(ArrayList<CircleBean> beanList, JSONArray array) {
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject o = (JSONObject) array.get(i);
+                CircleBean circleBean = new CircleBean(o);
+                beanList.add(circleBean);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public int getId() {
         return id;

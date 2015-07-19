@@ -67,8 +67,8 @@ public class BitmapUtil {
      */
     private static int getInSampleSize(int outWidth, int outHeight, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
 
-        int inSampleX = outWidth / viewWidth;
-        int inSampleY = outHeight / viewHeight;
+        int inSampleX = viewWidth != 0 ? outWidth / viewWidth : 1;
+        int inSampleY = viewHeight != 0 ? outHeight / viewHeight : 1;
 
         switch (scaleType) {
             case CENTER_CROP:

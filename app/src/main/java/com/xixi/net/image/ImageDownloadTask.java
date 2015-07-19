@@ -12,6 +12,9 @@ import com.xixi.util.Image.BitmapUtil;
 
 import org.apache.http.Header;
 
+/**
+ * download image online, return a Bitmap
+ */
 public class ImageDownloadTask {
 
     public int count = 0;
@@ -52,12 +55,19 @@ public class ImageDownloadTask {
 
     };
 
+    /**
+     * return a Bitmap with its original size by default
+     */
     public ImageDownloadTask(String url, BitmapReceiver bitmapReceiver) {
         this.url = url;
         this.bitmapReceiver = bitmapReceiver;
         count++;
     }
 
+    /**
+     * return a resized Bitmap that fits an ImageView with the given viewWidth, viewHeight and scaleType
+     * aims at saving memory
+     */
     public ImageDownloadTask(String url, int viewWidth, int viewHeight,
                              ImageView.ScaleType scaleType, BitmapReceiver bitmapReceiver) {
         this(url, bitmapReceiver);

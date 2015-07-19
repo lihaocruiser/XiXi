@@ -16,22 +16,17 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.bean.Circle.CircleBean;
-import com.xixi.net.BitmapReceiver;
 import com.xixi.net.circle.CircleListJSONTask;
 import com.xixi.net.JSONReceiver;
-import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.net.start.SchoolListJSONTask;
+import com.xixi.net.image.ImageDownloader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -44,9 +39,9 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    List<CircleBean> beanList = new ArrayList<>();
-    Collection<String> taskSet = new HashSet<>();
-    Map<String, Bitmap> imageMap = new HashMap<>();
+    ArrayList<CircleBean> beanList = new ArrayList<>();
+    HashSet<String> taskSet = new HashSet<>();
+    HashMap<String, Bitmap> imageMap = new HashMap<>();
 
     int pageIndex = 0;
     int pageSize = 8;
@@ -87,7 +82,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
             public void onFailure(JSONObject obj) {
                 swipeRefreshLayout.setRefreshing(false);
                 // test only
-                List<CircleBean> refreshedBeanList = new ArrayList<>();
+                ArrayList<CircleBean> refreshedBeanList = new ArrayList<>();
                 for (int i = 0; i < pageSize; i++) {
                     CircleBean circleBean = new CircleBean();
                     circleBean.setPublisherHeadPic(base + i + ".jpg");
@@ -104,17 +99,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                 if (array == null || array.length() == 0) {
                     return;
                 }
-                List<CircleBean> refreshedBeanList = new ArrayList<>();
-                for (int i = 0; i < array.length(); i++) {
-                    try {
-                        JSONObject o = (JSONObject) array.get(i);
-                        CircleBean circleBean = new CircleBean(o);
-                        refreshedBeanList.add(circleBean);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                beanList = refreshedBeanList;
+                beanList = CircleBean.getBeanList(array);
                 adapter.notifyDataSetChanged();
             }
         }).execute();
@@ -142,7 +127,8 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
             } else {
                 int viewWidth = viewHolder.imHeader.getLayoutParams().width;
                 int viewHeight = viewHolder.imHeader.getLayoutParams().height;
-                fetchBitmap(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
+                ImageDownloader.fetchBitmap(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP,
+                        taskSet, imageMap, recyclerView);
             }
         }
 
@@ -187,39 +173,8 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                     noMore = true;
                     return;
                 }
-                for (int i = 0; i < array.length(); i++) {
-                    try {
-                        JSONObject o = (JSONObject) array.get(i);
-                        CircleBean circleBean = new CircleBean(o);
-                        beanList.add(circleBean);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                CircleBean.appendBeanList(beanList, array);
                 adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }).execute();
-    }
-
-    private void fetchBitmap(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
-        if (taskSet.contains(url)) {
-            return;
-        }
-        new ImageDownloadTask(url, viewWidth, viewHeight, scaleType, new BitmapReceiver() {
-            @Override
-            public void onFailure(String url) {
-                taskSet.remove(url);
-            }
-
-            @Override
-            public void onSuccess(String url, Bitmap bitmap) {
-                taskSet.remove(url);
-                imageMap.put(url, bitmap);
-                ImageView imageView = (ImageView) recyclerView.findViewWithTag(url);
-                if (imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                }
             }
         }).execute();
     }

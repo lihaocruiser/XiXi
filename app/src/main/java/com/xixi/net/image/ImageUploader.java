@@ -1,13 +1,10 @@
 package com.xixi.net.image;
 
-import com.loopj.android.http.RequestParams;
 import com.xixi.net.JSONReceiver;
 import com.xixi.util.SafeJSON;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +57,7 @@ public class ImageUploader {
     };
 
     private void uploadImage(int imageCount) {
-        new UploadImageJSONTask(localUrls.get(imageCount), receiver);
+        new ImageUploadJSONTask(localUrls.get(imageCount), receiver);
     }
 
 
