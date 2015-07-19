@@ -142,13 +142,6 @@ public class ImageGridFragment extends Fragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            // if the number of images exceeds CAPACITY, remove the earliest one
-//            Long earliestId = queue.peek();
-//            if (queue.size() >= CAPACITY - 1 && inScreen(earliestId)) {
-//                queue.poll();
-//                thumbMap.remove(earliestId);
-//            }
-
             long imageId = imageItem.imageId;
             holder.imImage.setTag(imageId);
 

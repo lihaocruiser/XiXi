@@ -3,7 +3,6 @@ package com.xixi.ui.image;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -34,7 +33,7 @@ public class LocalImageShowActivity extends AppCompatActivity implements View.On
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
 
-        Bitmap bitmap = BitmapUtil.decodeScaledBitmap(localImageUrl, point.x, point.y, ImageView.ScaleType.CENTER_INSIDE);
+        Bitmap bitmap = BitmapUtil.decodeFileScaled(localImageUrl, point.x, point.y, ImageView.ScaleType.CENTER_INSIDE);
 
         imImage.setImageBitmap(bitmap);
     }

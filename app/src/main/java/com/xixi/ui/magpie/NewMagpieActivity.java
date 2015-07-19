@@ -153,8 +153,6 @@ public class NewMagpieActivity extends AppCompatActivity {
                 int width = imSelected[i].getWidth();
                 int height = imSelected[i].getHeight();
                 new BitmapTask(imSelected[i], localImageUrl, width, height).execute();
-                //Bitmap bitmap = BitmapUtil.decodeScaledBitmap(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
-                //imSelected[i].setImageBitmap(bitmap);
                 imSelected[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -186,7 +184,7 @@ public class NewMagpieActivity extends AppCompatActivity {
 
         @Override
         protected Bitmap doInBackground(Void... params) {
-            return BitmapUtil.decodeScaledBitmap(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
+            return BitmapUtil.decodeFileScaled(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
         }
 
         @Override

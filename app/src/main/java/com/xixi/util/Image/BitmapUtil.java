@@ -7,34 +7,72 @@ import android.widget.ImageView;
 
 /**
  * Created by LiHao on 2015/7/4.
- * Decode Bitmap with proper size, aims at avoid OOM
+ * Decode Bitmap with proper size, aims at avoiding OOM
  */
 public class BitmapUtil {
 
+
     /**
+     * decode bitmap from File
      * default ScaleType is CENTER_CROP
-     * @param viewWidth width of the view where you want to show the bitmap
-     * @param viewHeight height of the view where you want to show the bitmap
+     * @param viewWidth width of the view holding the bitmap
+     * @param viewHeight height of the view holding the bitmap
      */
-    public static Bitmap decodeScaledBitmap(String pathName, int viewWidth, int viewHeight) {
-        return decodeScaledBitmap(pathName, viewWidth, viewHeight, ImageView.ScaleType.CENTER_INSIDE);
+    public static Bitmap decodeFileScaled(String pathName, int viewWidth, int viewHeight) {
+        return decodeFileScaled(pathName, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
     }
 
-    public static Bitmap decodeScaledBitmap(String pathName, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+    public static Bitmap decodeFileScaled(String pathName, int viewWidth, int viewHeight,
+                                          ImageView.ScaleType scaleType) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(pathName, options);
+        options.inSampleSize = getInSampleSize(options.outWidth, options.outHeight, viewWidth, viewHeight, scaleType);
+        Log.i("inSampleSize", options.inSampleSize + "");
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(pathName, options);
+    }
 
-        int bitmapWidth = options.outWidth;
-        int bitmapHeight = options.outHeight;
 
-        int inSampleX = bitmapWidth / viewWidth;
-        int inSampleY = bitmapHeight / viewHeight;
+    /**
+     * decode bitmap from ByteArray
+     * default ScaleType is CENTER_CROP
+     * @param viewWidth width of the view holding the bitmap
+     * @param viewHeight height of the view holding the bitmap
+     */
+    public static Bitmap decodeByteArrayScaled(byte[] data, int offset, int length, int viewWidth, int viewHeight) {
+        return decodeByteArrayScaled(data, offset, length, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
+    }
+
+    public static Bitmap decodeByteArrayScaled(byte[] data, int offset, int length, int viewWidth, int viewHeight,
+                                               ImageView.ScaleType scaleType) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, offset, length, options);
+        options.inSampleSize = getInSampleSize(options.outWidth, options.outHeight, viewWidth, viewHeight, scaleType);
+        Log.i("inSampleSize", options.inSampleSize + "");
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeByteArray(data, offset, length, options);
+    }
+
+
+    /**
+     *
+     * @param outWidth width of the original bitmap
+     * @param outHeight height of the original bitmap
+     * @param viewWidth width of the view holding the bitmap
+     * @param viewHeight height of the view holding the bitmap
+     * @param scaleType scaleType
+     * @return inSampleSize
+     */
+    private static int getInSampleSize(int outWidth, int outHeight, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+
+        int inSampleX = outWidth / viewWidth;
+        int inSampleY = outHeight / viewHeight;
 
         switch (scaleType) {
             case CENTER_CROP:
-                options.inSampleSize = Math.min(inSampleX, inSampleY);
-                break;
+                return Math.min(inSampleX, inSampleY);
 
             case CENTER:
             case CENTER_INSIDE:
@@ -44,12 +82,9 @@ public class BitmapUtil {
             case FIT_XY:
             case MATRIX:
             default:
-                options.inSampleSize = Math.max(inSampleX, inSampleY);
+                return Math.max(inSampleX, inSampleY);
         }
 
-        Log.i("inSampleSize", options.inSampleSize + "");
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(pathName, options);
     }
 
 }

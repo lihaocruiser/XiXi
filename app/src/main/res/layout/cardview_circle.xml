@@ -17,7 +17,8 @@
             android:id="@+id/im_header"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/tv_content"

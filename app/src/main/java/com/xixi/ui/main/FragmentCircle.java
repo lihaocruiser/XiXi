@@ -20,6 +20,7 @@ import com.xixi.net.BitmapReceiver;
 import com.xixi.net.circle.CircleListJSONTask;
 import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageDownloadTask;
+import com.xixi.net.start.SchoolListJSONTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,7 +121,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    private class CircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class CircleAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
         @Override
         public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -129,17 +130,19 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(CardViewHolder viewHolder, int i) {
             String url = beanList.get(i).getPublisherHeadPic();
-            ((CardViewHolder) viewHolder).tvContent.setText(beanList.get(i).getPublisherHeadPic());
-            ((CardViewHolder) viewHolder).imHeader.setTag(url);
+            viewHolder.tvContent.setText(beanList.get(i).getPublisherHeadPic());
+            viewHolder.imHeader.setTag(url);
             if (i == beanList.size() - 1 && !loading) {
                 loadMore();
             }
             if (imageMap.containsKey(url)) {
-                ((CardViewHolder) viewHolder).imHeader.setImageBitmap(imageMap.get(url));
+                viewHolder.imHeader.setImageBitmap(imageMap.get(url));
             } else {
-                fetchBitmap(url);
+                int viewWidth = viewHolder.imHeader.getLayoutParams().width;
+                int viewHeight = viewHolder.imHeader.getLayoutParams().height;
+                fetchBitmap(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
             }
         }
 
@@ -199,11 +202,11 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
         }).execute();
     }
 
-    private void fetchBitmap(String url) {
+    private void fetchBitmap(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
         if (taskSet.contains(url)) {
             return;
         }
-        new ImageDownloadTask(url, new BitmapReceiver() {
+        new ImageDownloadTask(url, viewWidth, viewHeight, scaleType, new BitmapReceiver() {
             @Override
             public void onFailure(String url) {
                 taskSet.remove(url);
