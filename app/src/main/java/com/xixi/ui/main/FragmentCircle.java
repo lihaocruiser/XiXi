@@ -21,7 +21,6 @@ import com.xixi.net.JSONReceiver;
 import com.xixi.net.image.ImageDownloader;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -40,8 +39,6 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
     private RecyclerView.Adapter adapter;
 
     ArrayList<CircleBean> beanList = new ArrayList<>();
-    HashSet<String> taskSet = new HashSet<>();
-    HashMap<String, Bitmap> imageMap = new HashMap<>();
 
     int pageIndex = 0;
     int pageSize = 8;
@@ -105,50 +102,6 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
         }).execute();
     }
 
-
-    private class CircleAdapter extends RecyclerView.Adapter<CardViewHolder> {
-
-        @Override
-        public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_circle, null);
-            return new CardViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(CardViewHolder viewHolder, int i) {
-            String url = beanList.get(i).getPublisherHeadPic();
-            viewHolder.tvContent.setText(beanList.get(i).getPublisherHeadPic());
-            viewHolder.imHeader.setTag(url);
-            if (i == beanList.size() - 1 && !loading) {
-                loadMore();
-            }
-            if (imageMap.containsKey(url)) {
-                viewHolder.imHeader.setImageBitmap(imageMap.get(url));
-            } else {
-                int viewWidth = viewHolder.imHeader.getLayoutParams().width;
-                int viewHeight = viewHolder.imHeader.getLayoutParams().height;
-                ImageDownloader.fetchBitmap(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP,
-                        taskSet, imageMap, recyclerView);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return beanList.size();
-        }
-
-    }
-
-    public static class CardViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imHeader;
-        public TextView tvContent;
-        public CardViewHolder(CardView v) {
-            super(v);
-            tvContent = (TextView) v.findViewById(R.id.tv_content);
-            imHeader = (ImageView) v.findViewById(R.id.im_header);
-        }
-    }
-
     private void loadMore() {
         loading = true;
         new CircleListJSONTask(userID, pageIndex, pageSize, new JSONReceiver() {
@@ -177,6 +130,54 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                 adapter.notifyDataSetChanged();
             }
         }).execute();
+    }
+
+
+    private class CircleAdapter extends RecyclerView.Adapter<CardViewHolder> {
+
+        HashSet<String> taskSet = new HashSet<>();
+        HashMap<String, Bitmap> imageMap = new HashMap<>();
+
+        ImageDownloader imageDownloader = new ImageDownloader(getActivity(), taskSet, imageMap, recyclerView);
+
+        @Override
+        public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_circle, null);
+            return new CardViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(CardViewHolder viewHolder, int i) {
+            String url = beanList.get(i).getPublisherHeadPic();
+            viewHolder.tvContent.setText(beanList.get(i).getPublisherHeadPic());
+            viewHolder.imHeader.setTag(url);
+            if (i == beanList.size() - 1 && !loading) {
+                loadMore();
+            }
+            if (imageMap.containsKey(url)) {
+                viewHolder.imHeader.setImageBitmap(imageMap.get(url));
+            } else {
+                int viewWidth = viewHolder.imHeader.getLayoutParams().width;
+                int viewHeight = viewHolder.imHeader.getLayoutParams().height;
+                imageDownloader.getImage(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return beanList.size();
+        }
+
+    }
+
+    public static class CardViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imHeader;
+        public TextView tvContent;
+        public CardViewHolder(CardView v) {
+            super(v);
+            tvContent = (TextView) v.findViewById(R.id.tv_content);
+            imHeader = (ImageView) v.findViewById(R.id.im_header);
+        }
     }
 
 }

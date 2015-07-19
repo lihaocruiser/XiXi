@@ -2,6 +2,7 @@ package com.xixi.util.Image;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -10,7 +11,6 @@ import android.widget.ImageView;
  * Decode Bitmap with proper size, aims at avoiding OOM
  */
 public class BitmapUtil {
-
 
     /**
      * decode bitmap from File
@@ -32,6 +32,7 @@ public class BitmapUtil {
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(pathName, options);
     }
+
 
 
     /**
@@ -56,13 +57,32 @@ public class BitmapUtil {
     }
 
 
+
+    /**
+     * resize a bitmap
+     * @param bitmap the Bitmap to be resized
+     * @param viewWidth width of the view holding the bitmap
+     * @param viewHeight height of the view holding the bitmap
+     */
+    public static Bitmap resize(Bitmap bitmap, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+        float scale;
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int inSampleSize = getInSampleSize(width, height, viewWidth, viewHeight, scaleType);
+        scale = 1f / inSampleSize;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
+
+
+
     /**
      *
      * @param outWidth width of the original bitmap
      * @param outHeight height of the original bitmap
      * @param viewWidth width of the view holding the bitmap
      * @param viewHeight height of the view holding the bitmap
-     * @param scaleType scaleType
      * @return inSampleSize
      */
     private static int getInSampleSize(int outWidth, int outHeight, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
