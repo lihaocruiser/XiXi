@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.util.Image.BucketManager;
-import com.xixi.util.Image.ImageBucket;
+import com.xixi.bean.image.ImageBucket;
 
 import java.util.HashMap;
 import java.util.List;

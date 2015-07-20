@@ -1,4 +1,4 @@
-package com.xixi.util.Image;
+package com.xixi.bean.image;
 
 import java.io.Serializable;
 

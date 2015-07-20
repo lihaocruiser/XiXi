@@ -1,4 +1,4 @@
-package com.xixi.bean.Circle;
+package com.xixi.bean.circle;
 
 import org.json.JSONArray;
 import org.json.JSONException;

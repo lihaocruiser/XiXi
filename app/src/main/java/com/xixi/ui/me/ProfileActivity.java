@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.net.JSONReceiver;
-import com.xixi.net.image.ImageUploader;
+import com.xixi.util.Image.ImageUploader;
 import com.xixi.net.me.ModifyProfileJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.ProgressDialogManager;

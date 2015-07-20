@@ -18,8 +18,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.xixi.R;
-import com.xixi.util.Image.ImageBucket;
-import com.xixi.util.Image.ImageItem;
+import com.xixi.bean.image.ImageBucket;
+import com.xixi.bean.image.ImageItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

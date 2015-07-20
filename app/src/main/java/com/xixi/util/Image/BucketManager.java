@@ -4,14 +4,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore.Images.Media;
-import android.provider.MediaStore.Images.Thumbnails;
 import android.util.Log;
+
+import com.xixi.bean.image.ImageBucket;
+import com.xixi.bean.image.ImageItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class BucketManager {

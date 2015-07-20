@@ -1,31 +1,26 @@
 package com.xixi.ui.main;
 
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xixi.R;
-import com.xixi.bean.Circle.CircleBean;
+import com.xixi.adapter.CircleAdapter;
+import com.xixi.bean.circle.CircleBean;
 import com.xixi.net.circle.CircleListJSONTask;
 import com.xixi.net.JSONReceiver;
-import com.xixi.net.image.ImageDownloader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -36,9 +31,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-
-    ArrayList<CircleBean> beanList = new ArrayList<>();
+    private CircleAdapter adapter;
 
     int pageIndex = 0;
     int pageSize = 8;
@@ -46,13 +39,21 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
     boolean noMore = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_circle, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
 
-        adapter = new CircleAdapter();
+        adapter = new CircleAdapter(recyclerView);
+        adapter.setOnLoadMoreListener(new CircleAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!loading) {
+                    loadMore();
+                }
+            }
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -85,7 +86,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                     circleBean.setPublisherHeadPic(base + i + ".jpg");
                     refreshedBeanList.add(circleBean);
                 }
-                beanList = refreshedBeanList;
+                adapter.setBeanList(refreshedBeanList);
                 adapter.notifyDataSetChanged();
             }
 
@@ -96,13 +97,13 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                 if (array == null || array.length() == 0) {
                     return;
                 }
-                beanList = CircleBean.getBeanList(array);
+                adapter.setBeanList(CircleBean.getBeanList(array));
                 adapter.notifyDataSetChanged();
             }
         }).execute();
     }
 
-    private void loadMore() {
+    public void loadMore() {
         loading = true;
         new CircleListJSONTask(userID, pageIndex, pageSize, new JSONReceiver() {
             @Override
@@ -113,7 +114,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                     int j = i + 8;
                     CircleBean circleBean = new CircleBean();
                     circleBean.setPublisherHeadPic(base + j + ".jpg");
-                    beanList.add(circleBean);
+                    adapter.getBeanList().add(circleBean);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -126,55 +127,10 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                     noMore = true;
                     return;
                 }
-                CircleBean.appendBeanList(beanList, array);
+                CircleBean.appendBeanList(adapter.getBeanList(), array);
                 adapter.notifyDataSetChanged();
             }
         }).execute();
-    }
-
-
-    private class CircleAdapter extends RecyclerView.Adapter<CardViewHolder> {
-
-        ImageDownloader imageDownloader = new ImageDownloader(getActivity(), recyclerView);
-
-        @Override
-        public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_circle, null);
-            return new CardViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(CardViewHolder viewHolder, int i) {
-            String url = beanList.get(i).getPublisherHeadPic();
-            viewHolder.tvContent.setText(beanList.get(i).getPublisherHeadPic());
-            viewHolder.imHeader.setTag(url);
-            if (i == beanList.size() - 1 && !loading) {
-                loadMore();
-            }
-            if (imageDownloader.containsBitmap(url)) {
-                viewHolder.imHeader.setImageBitmap(imageDownloader.getBitmap(url));
-            } else {
-                int viewWidth = viewHolder.imHeader.getLayoutParams().width;
-                int viewHeight = viewHolder.imHeader.getLayoutParams().height;
-                imageDownloader.fetchImage(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return beanList.size();
-        }
-
-    }
-
-    public static class CardViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imHeader;
-        public TextView tvContent;
-        public CardViewHolder(CardView v) {
-            super(v);
-            tvContent = (TextView) v.findViewById(R.id.tv_content);
-            imHeader = (ImageView) v.findViewById(R.id.im_header);
-        }
     }
 
 }

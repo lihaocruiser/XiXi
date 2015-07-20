@@ -1,4 +1,4 @@
-package com.xixi.net.image;
+package com.xixi.util.Image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xixi.net.BitmapReceiver;
+import com.xixi.net.image.ImageDownloadTask;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.file.FileUtil;
 
@@ -31,9 +32,8 @@ public class ImageDownloader {
 
     private ViewGroup viewGroup;
 
-    public ImageDownloader(Context context, ViewGroup viewGroup) {
+    public ImageDownloader(ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
-        FileUtil.init(context);
     }
 
     // 判断图片是否在内存

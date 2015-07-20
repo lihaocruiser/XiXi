@@ -11,8 +11,11 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.xixi.R;
+import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
+import com.xixi.util.file.FileUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FileUtil.init(MainActivity.this);
 
         // init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
