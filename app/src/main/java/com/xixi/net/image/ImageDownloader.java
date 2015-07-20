@@ -2,7 +2,8 @@ package com.xixi.net.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
+import android.os.AsyncTask;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xixi.net.BitmapReceiver;
@@ -11,49 +12,90 @@ import com.xixi.util.file.FileUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 /**
  * Created by LiHao on 7/19/15.
- * manage async loading of images in RecyclerView
+ * manage async loading and caching of images in a ViewGroup
  */
 public class ImageDownloader {
 
-    Set<String> taskSet;
-    HashMap<String, Bitmap> imageMap;
-    RecyclerView recyclerView;
+    private Set<String> taskSet = new HashSet<>();
+    private Queue<String> imageQueue = new ArrayDeque<>();
+    private Map<String, Bitmap> imageMap = new HashMap<>();
 
-    public ImageDownloader(Context context, Set<String> taskSet, HashMap<String, Bitmap> imageMap,
-                           RecyclerView recyclerView) {
-        this.taskSet = taskSet;
-        this.imageMap = imageMap;
-        this.recyclerView = recyclerView;
+    private ViewGroup viewGroup;
+
+    public ImageDownloader(Context context, ViewGroup viewGroup) {
+        this.viewGroup = viewGroup;
         FileUtil.init(context);
     }
 
-    public void getImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
-        Bitmap bitmap = getFile(url, viewWidth ,viewHeight, scaleType);
-        if (bitmap != null) {
-            imageMap.put(url, bitmap);
-            updateImageView(url, bitmap);
+    // 判断图片是否在内存
+    public boolean containsBitmap(String url) {
+        return imageMap.containsKey(url);
+    }
+
+    // 从内存获取图片
+    public Bitmap getBitmap(String url) {
+        return imageMap.get(url);
+    }
+
+    // 如果文件存在则getFile()从文件获取，否则getOnline()从网络获取
+    public void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+        String circlePath = FileUtil.getCirclePath();
+        String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
+        File imageFile = new File(imagePath);
+        if (imageFile.exists()) {
+            getFile(url, imagePath, viewWidth, viewHeight, scaleType);
         } else {
             getOnline(url, viewWidth, viewHeight, scaleType);
         }
     }
 
-    public Bitmap getFile(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
-        Bitmap bitmap = null;
-        String circlePath = FileUtil.getCirclePath();
-        String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
-        File imageFile = new File(imagePath);
-        if (imageFile.exists()) {
-            bitmap = BitmapUtil.decodeFileScaled(imagePath, viewWidth, viewHeight, scaleType);
-        }
-        return bitmap;
+
+
+    // 发起AsyncTask从文件获取图片
+    private void getFile(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+        new FileTask(url, imagePath, viewWidth, viewHeight, scaleType).execute();
     }
 
-    public void getOnline(String url, final int viewWidth, final int viewHeight, final ImageView.ScaleType scaleType)  {
+    private class FileTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private String url;
+        private String imagePath;
+        private int viewWidth;
+        private int viewHeight;
+        private ImageView.ScaleType scaleType;
+
+        public FileTask(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+            this.url = url;
+            this.imagePath = imagePath;
+            this.viewWidth = viewWidth;
+            this.viewHeight = viewHeight;
+            this.scaleType = scaleType;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            return BitmapUtil.decodeFileScaled(imagePath, viewWidth, viewHeight, scaleType);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            updateCache(url, result);
+            updateImageView(url, result);
+        }
+    }
+
+
+    // 发起AsyncHttpRequest从网络获取图片
+    private void getOnline(String url, final int viewWidth, final int viewHeight, final ImageView.ScaleType scaleType)  {
 
         if (taskSet.contains(url)) {
             return;
@@ -69,18 +111,11 @@ public class ImageDownloader {
                 // 先保存原图到SD卡，然后压缩显示到屏幕
                 saveImage(url, bitmap);
                 bitmap = BitmapUtil.resize(bitmap, viewWidth, viewHeight, scaleType);
-                taskSet.remove(url);
-                imageMap.put(url, bitmap);
+                updateCache(url, bitmap);
                 updateImageView(url, bitmap);
+                taskSet.remove(url);
             }
         }).execute();
-    }
-
-    private void updateImageView(String url, Bitmap bitmap) {
-        ImageView imageView = (ImageView) recyclerView.findViewWithTag(url);
-        if (imageView != null) {
-            imageView.setImageBitmap(bitmap);
-        }
     }
 
     private void saveImage(String url, Bitmap bitmap) {
@@ -100,6 +135,29 @@ public class ImageDownloader {
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    // 获取到图片后更新内存
+    private void updateCache(String url, Bitmap bitmap) {
+        // 如果图片数量超过阈值且最早加载的图片不在屏幕中，则清除最早的一张
+        if (imageQueue.size() > 50) {
+            String earliest = imageQueue.peek();
+            if (viewGroup.findViewWithTag(earliest) == null) {
+                imageQueue.poll();
+                imageMap.remove(url);
+            }
+        }
+        imageQueue.offer(url);
+        imageMap.put(url, bitmap);
+    }
+
+    // 获取到图片后更新UI
+    private void updateImageView(String url, Bitmap bitmap) {
+        ImageView imageView = (ImageView) viewGroup.findViewWithTag(url);
+        if (imageView != null) {
+            imageView.setImageBitmap(bitmap);
         }
     }
 

@@ -135,10 +135,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
 
     private class CircleAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
-        HashSet<String> taskSet = new HashSet<>();
-        HashMap<String, Bitmap> imageMap = new HashMap<>();
-
-        ImageDownloader imageDownloader = new ImageDownloader(getActivity(), taskSet, imageMap, recyclerView);
+        ImageDownloader imageDownloader = new ImageDownloader(getActivity(), recyclerView);
 
         @Override
         public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -154,12 +151,12 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
             if (i == beanList.size() - 1 && !loading) {
                 loadMore();
             }
-            if (imageMap.containsKey(url)) {
-                viewHolder.imHeader.setImageBitmap(imageMap.get(url));
+            if (imageDownloader.containsBitmap(url)) {
+                viewHolder.imHeader.setImageBitmap(imageDownloader.getBitmap(url));
             } else {
                 int viewWidth = viewHolder.imHeader.getLayoutParams().width;
                 int viewHeight = viewHolder.imHeader.getLayoutParams().height;
-                imageDownloader.getImage(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
+                imageDownloader.fetchImage(url, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP);
             }
         }
 
