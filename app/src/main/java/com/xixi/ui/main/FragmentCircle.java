@@ -1,6 +1,5 @@
 package com.xixi.ui.main;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.adapter.CircleAdapter;
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // test
-    String base = "http://home.ustc.edu.cn/~lihao90/android/u";
+    String base = "http://home.ustc.edu.cn/~lihao90/android/";
 
     int userID;
 
@@ -34,7 +32,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
     private CircleAdapter adapter;
 
     int pageIndex = 0;
-    int pageSize = 8;
+    int pageSize = 28;
     boolean loading = false;
     boolean noMore = false;
 
@@ -84,6 +82,9 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                 for (int i = 0; i < pageSize; i++) {
                     CircleBean circleBean = new CircleBean();
                     circleBean.setPublisherHeadPic(base + i + ".jpg");
+                    circleBean.setPic(base + "u" + i + ".jpg");
+                    circleBean.setPublisherNickname("Nickname");
+                    circleBean.setContent(base + i + "jpg");
                     refreshedBeanList.add(circleBean);
                 }
                 adapter.setBeanList(refreshedBeanList);
@@ -111,9 +112,11 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                 loading = false;
                 // test only
                 for (int i = 0; i < pageSize; i++) {
-                    int j = i + 8;
                     CircleBean circleBean = new CircleBean();
-                    circleBean.setPublisherHeadPic(base + j + ".jpg");
+                    circleBean.setPublisherHeadPic(base + i + ".jpg");
+                    circleBean.setPic(base + "u" + i + ".jpg");
+                    circleBean.setPublisherNickname("Nickname");
+                    circleBean.setContent(base + i + "jpg");
                     adapter.getBeanList().add(circleBean);
                 }
                 adapter.notifyDataSetChanged();

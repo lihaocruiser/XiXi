@@ -33,6 +33,7 @@ public class LocalImageShowActivity extends AppCompatActivity implements View.On
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
 
+        // TODO
         Bitmap bitmap = BitmapUtil.decodeFileScaled(localImageUrl, point.x, point.y, ImageView.ScaleType.CENTER_INSIDE);
 
         imImage.setImageBitmap(bitmap);

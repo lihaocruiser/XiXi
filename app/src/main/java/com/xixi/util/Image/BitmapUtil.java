@@ -6,6 +6,8 @@ import android.graphics.Matrix;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.xixi.util.WindowUtil;
+
 /**
  * Created by LiHao on 2015/7/4.
  * Decode Bitmap with proper size, aims at avoiding OOM
@@ -78,7 +80,7 @@ public class BitmapUtil {
 
 
     /**
-     *
+     * 限制了图片的最大尺寸，宽不超过屏幕的1/2，高不超过屏幕的1/3
      * @param outWidth width of the original bitmap
      * @param outHeight height of the original bitmap
      * @param viewWidth width of the view holding the bitmap
@@ -87,24 +89,40 @@ public class BitmapUtil {
      */
     private static int getInSampleSize(int outWidth, int outHeight, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
 
-        int inSampleX = viewWidth != 0 ? outWidth / viewWidth : 1;
-        int inSampleY = viewHeight != 0 ? outHeight / viewHeight : 1;
-
-        switch (scaleType) {
-            case CENTER_CROP:
-                return Math.min(inSampleX, inSampleY);
-
-            case CENTER:
-            case CENTER_INSIDE:
-            case FIT_CENTER:
-            case FIT_END:
-            case FIT_START:
-            case FIT_XY:
-            case MATRIX:
-            default:
-                return Math.max(inSampleX, inSampleY);
+        if (viewWidth <= 0 || viewWidth > WindowUtil.getWindowWidth()) {
+            viewWidth = WindowUtil.getWindowWidth() / 2;
         }
 
+        if (viewHeight <= 0 || viewHeight > WindowUtil.getWindowHeight()) {
+            viewHeight = WindowUtil.getWindowHeight() / 3;
+        }
+
+        int inSampleX = outWidth / viewWidth;
+        int inSampleY = outHeight / viewHeight;
+
+        int inSampleSize;
+
+        // 使用max则压缩程度大，使用min则压缩程度小
+        switch (scaleType) {
+            case CENTER_CROP:
+            case CENTER:
+            case FIT_XY:
+            case MATRIX:
+                inSampleSize = Math.min(inSampleX, inSampleY);
+                break;
+
+            case CENTER_INSIDE:
+            case FIT_START:
+            case FIT_END:
+            case FIT_CENTER:
+                inSampleSize = Math.max(inSampleX, inSampleY);
+                break;
+
+            default:
+                inSampleSize = Math.max(inSampleX, inSampleY);
+        }
+        // inSampleSize在使用时会被变为2的幂次，所以这里乘以2
+        return inSampleSize * 2;
     }
 
 }

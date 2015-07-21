@@ -5,6 +5,7 @@
     android:id="@+id/news_list_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    card_view:cardBackgroundColor="@color/color_selector_grey"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp">
 
@@ -30,8 +31,7 @@
             android:layout_toRightOf="@+id/im_header"
             android:layout_alignParentTop="true"
             android:textColor="@color/blue_dark"
-            android:textStyle="bold"
-            android:text="@string/txt_nickname"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tv_content"
@@ -49,10 +49,7 @@
             android:layout_below="@+id/tv_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:maxHeight="100dp"
-            android:maxWidth="100dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_zhanjun"/>
+            android:scaleType="centerInside"/>
 
         <TextView
             android:id="@+id/tv_comment_count"
@@ -60,8 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/im_pic"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
-            android:text="0"/>
+            android:layout_marginRight="8dp"/>
 
         <ImageView
             android:id="@+id/im_comment"
@@ -73,20 +69,19 @@
             android:src="@drawable/ic_circle_comment"/>
 
         <TextView
-            android:id="@+id/im_like_count"
+            android:id="@+id/tv_like_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/im_pic"
             android:layout_toLeftOf="@+id/im_comment"
-            android:layout_marginRight="16dp"
-            android:text="0"/>
+            android:layout_marginRight="16dp"/>
 
         <ImageView
             android:id="@+id/im_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/im_pic"
-            android:layout_toLeftOf="@+id/im_like_count"
+            android:layout_toLeftOf="@+id/tv_like_count"
             android:layout_marginRight="4dp"
             android:src="@drawable/ic_circle_unlike"/>
 

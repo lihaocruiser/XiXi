@@ -31,6 +31,11 @@ public class JSONTask {
             receiver.onFailure(null);
         }
 
+        public void onFailure(int statueCode, Header[] headers, Throwable throwable, JSONObject response) {
+            Log.i(getClass().toString(), "onFailure");
+            receiver.onFailure(null);
+        }
+
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             Log.i(getClass().toString(), "onSuccess");
             if (response == null) {

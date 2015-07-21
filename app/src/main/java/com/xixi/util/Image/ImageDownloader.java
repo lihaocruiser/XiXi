@@ -1,6 +1,5 @@
 package com.xixi.util.Image;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.ViewGroup;
@@ -8,7 +7,6 @@ import android.widget.ImageView;
 
 import com.xixi.net.BitmapReceiver;
 import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.file.FileUtil;
 
 import java.io.File;
@@ -158,6 +156,7 @@ public class ImageDownloader {
         ImageView imageView = (ImageView) viewGroup.findViewWithTag(url);
         if (imageView != null) {
             imageView.setImageBitmap(bitmap);
+            imageView.invalidate();
         }
     }
 

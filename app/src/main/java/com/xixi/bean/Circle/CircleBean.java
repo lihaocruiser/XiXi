@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by LiHao on 7/18/15.
@@ -12,15 +14,17 @@ import java.util.ArrayList;
 public class CircleBean {
 
     private int id;
-    private String content;
-    private String time;
+    private String content = "";
+    private String time = "";
+    private String pic = "";
 
-    private int repliesCount;
+    private int commentCount;
     private int likeCount;
+    private List<Integer> likeIds = new LinkedList<>();
 
     private int publisherId;
-    private String publisherNickname;
-    private String publisherHeadPic;
+    private String publisherNickname = "";
+    private String publisherHeadPic = "";
 
     public CircleBean() {}
 
@@ -33,9 +37,15 @@ public class CircleBean {
         id = obj.optInt("id");
         content = obj.optString("content");
         time = obj.optString("publishTime");
+        pic = obj.optString("pic");
 
-        repliesCount = obj.optInt("repliesCount");
+        commentCount = obj.optInt("repliesCount");
         likeCount = obj.optInt("likeCount");
+
+        String[] likeStr = obj.optString("likeIds").split(",");
+        for (String str : likeStr) {
+            likeIds.add(Integer.parseInt(str));
+        }
 
         JSONObject publisher = obj.optJSONObject("publisher");
         if (publisher != null) {
@@ -94,12 +104,32 @@ public class CircleBean {
         return time;
     }
 
-    public int getRepliesCount() {
-        return repliesCount;
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     public int getLikeCount() {
         return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public List<Integer> getLikeIds() {
+        return likeIds;
     }
 
     public int getPublisherId() {
@@ -108,6 +138,10 @@ public class CircleBean {
 
     public String getPublisherNickname() {
         return publisherNickname;
+    }
+
+    public void setPublisherNickname(String publisherNickname) {
+        this.publisherNickname = publisherNickname;
     }
 
     public String getPublisherHeadPic() {

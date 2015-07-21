@@ -13,6 +13,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.xixi.R;
 import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
+import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FileUtil.init(MainActivity.this);
+        WindowUtil.init(MainActivity.this);
 
         // init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
