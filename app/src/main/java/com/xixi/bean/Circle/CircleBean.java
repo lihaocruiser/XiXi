@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by LiHao on 7/18/15.
  */
-public class CircleBean {
+public class CircleBean implements Serializable {
 
     private int id;
     private String content = "";

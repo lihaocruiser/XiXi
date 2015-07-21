@@ -23,7 +23,7 @@ public interface RequestUrl {
 
     // circle
     String CIRCLE_LIST = "xqz/xqzlist";                         //小圈子列表分页查询
-    String CIRCLE = "xqz/lookpost";                             //小圈子查看
+    String CIRCLE = "xqz/lookxqz";                             //小圈子查看
     String SEND_CIRCLE = "xqz/releasexqz";                      //小圈子发布
     String SEND_LIKE = "xqz/likexqz";                           //小圈子点赞
     String CANCEL_LIKE = "xqz/cancellikexqz";                   //小圈子取消点赞

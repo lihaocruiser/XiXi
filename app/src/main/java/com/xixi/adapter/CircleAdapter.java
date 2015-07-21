@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.bean.circle.CircleBean;
+import com.xixi.ui.circle.CircleActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
 import com.xixi.util.Image.ImageDownloader;
 
@@ -54,7 +55,8 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.CardViewHo
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(viewGroup.getContext(), NewMagpieActivity.class);
+                Intent intent = new Intent(viewGroup.getContext(), CircleActivity.class);
+                intent.putExtra("CircleBean", beanList.get(i));
                 viewGroup.getContext().startActivity(intent);
             }
         });
