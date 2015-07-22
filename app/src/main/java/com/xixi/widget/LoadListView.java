@@ -1,17 +1,11 @@
 package com.xixi.widget;
 
-import android.R.color;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,7 +49,7 @@ public class LoadListView extends ListView implements OnScrollListener {
         this.context = context;
         inflater = LayoutInflater.from(context);
 
-        footer = (FrameLayout) inflater.inflate(R.layout.lv_load_footer, null);
+        footer = (FrameLayout) inflater.inflate(R.layout.lv_refresh_and_load_footer, null);
         tv_footer = (TextView) footer.findViewById(R.id.tv_footer);
         this.addFooterView(footer);
 

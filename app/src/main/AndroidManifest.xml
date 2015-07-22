@@ -77,7 +77,9 @@
         </activity>
         <activity
             android:name=".ui.circle.CircleActivity"
-            android:label="@string/title_activity_circle" >
+            android:label="@string/title_activity_circle"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar">
         </activity>
     </application>
 

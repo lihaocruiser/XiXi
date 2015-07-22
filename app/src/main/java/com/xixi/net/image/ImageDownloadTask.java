@@ -22,6 +22,7 @@ public class ImageDownloadTask {
     private int viewWidth;
     private int viewHeight;
     private ImageView.ScaleType scaleType;
+    private BitmapUtil.Size size;
 
     private String url;
     private BitmapReceiver bitmapReceiver;
@@ -47,7 +48,7 @@ public class ImageDownloadTask {
             if (viewWidth == 0) {
                 bitmap = BitmapFactory.decodeByteArray(arg2, 0, arg2.length);
             } else {
-                bitmap = BitmapUtil.decodeByteArrayScaled(arg2, 0, arg2.length, viewWidth, viewHeight, scaleType);
+                bitmap = BitmapUtil.decodeByteArrayScaled(arg2, 0, arg2.length, viewWidth, viewHeight, scaleType, size);
             }
             bitmapReceiver.onSuccess(url, bitmap);
             count--;
@@ -69,11 +70,13 @@ public class ImageDownloadTask {
      * aims at saving memory
      */
     public ImageDownloadTask(String url, int viewWidth, int viewHeight,
-                             ImageView.ScaleType scaleType, BitmapReceiver bitmapReceiver) {
+                             ImageView.ScaleType scaleType, BitmapUtil.Size size,
+                             BitmapReceiver bitmapReceiver) {
         this(url, bitmapReceiver);
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
         this.scaleType = scaleType;
+        this.size = size;
     }
 
     public void execute() {

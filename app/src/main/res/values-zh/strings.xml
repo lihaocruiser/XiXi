@@ -41,6 +41,7 @@
     <string name="txt_nickname">昵称</string>
     <string name="txt_no_more_data">没有更多数据</string>
     <string name="txt_profile">个人资料</string>
+    <string name="txt_reply">回复</string>
     <string name="txt_school">学校</string>
     <string name="txt_send_successfully">发送成功</string>
     <string name="txt_sending">发送中</string>

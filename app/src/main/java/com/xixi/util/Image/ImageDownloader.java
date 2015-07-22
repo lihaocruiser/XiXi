@@ -1,12 +1,14 @@
 package com.xixi.util.Image;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xixi.net.BitmapReceiver;
 import com.xixi.net.image.ImageDownloadTask;
+import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;
 
 import java.io.File;
@@ -45,22 +47,22 @@ public class ImageDownloader {
     }
 
     // 如果文件存在则getFile()从文件获取，否则getOnline()从网络获取
-    public void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+    public void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
         String circlePath = FileUtil.getCirclePath();
         String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
         File imageFile = new File(imagePath);
         if (imageFile.exists()) {
-            getFile(url, imagePath, viewWidth, viewHeight, scaleType);
+            getFile(url, imagePath, viewWidth, viewHeight, scaleType, size);
         } else {
-            getOnline(url, viewWidth, viewHeight, scaleType);
+            getOnline(url, viewWidth, viewHeight, scaleType, size);
         }
     }
 
 
 
     // 发起AsyncTask从文件获取图片
-    private void getFile(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
-        new FileTask(url, imagePath, viewWidth, viewHeight, scaleType).execute();
+    private void getFile(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
+        new FileTask(url, imagePath, viewWidth, viewHeight, scaleType, size).execute();
     }
 
     private class FileTask extends AsyncTask<Void, Void, Bitmap> {
@@ -70,30 +72,32 @@ public class ImageDownloader {
         private int viewWidth;
         private int viewHeight;
         private ImageView.ScaleType scaleType;
+        private BitmapUtil.Size size;
 
-        public FileTask(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
+        public FileTask(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
             this.url = url;
             this.imagePath = imagePath;
             this.viewWidth = viewWidth;
             this.viewHeight = viewHeight;
             this.scaleType = scaleType;
+            this.size = size;
         }
 
         @Override
         protected Bitmap doInBackground(Void... voids) {
-            return BitmapUtil.decodeFileScaled(imagePath, viewWidth, viewHeight, scaleType);
+            return BitmapUtil.decodeFileScaled(imagePath, viewWidth, viewHeight, scaleType, size);
         }
 
         @Override
         protected void onPostExecute(Bitmap result) {
             updateCache(url, result);
-            updateImageView(url, result);
+            updateImageView(url, result, size);
         }
     }
 
 
     // 发起AsyncHttpRequest从网络获取图片
-    private void getOnline(String url, final int viewWidth, final int viewHeight, final ImageView.ScaleType scaleType)  {
+    private void getOnline(String url, final int viewWidth, final int viewHeight, final ImageView.ScaleType scaleType, final BitmapUtil.Size size)  {
 
         if (taskSet.contains(url)) {
             return;
@@ -108,9 +112,9 @@ public class ImageDownloader {
             public void onSuccess(String url, Bitmap bitmap) {
                 // 先保存原图到SD卡，然后压缩显示到屏幕
                 saveImage(url, bitmap);
-                bitmap = BitmapUtil.resize(bitmap, viewWidth, viewHeight, scaleType);
+                bitmap = BitmapUtil.resize(bitmap, viewWidth, viewHeight, scaleType, size);
                 updateCache(url, bitmap);
-                updateImageView(url, bitmap);
+                updateImageView(url, bitmap, size);
                 taskSet.remove(url);
             }
         }).execute();
@@ -152,12 +156,39 @@ public class ImageDownloader {
     }
 
     // 获取到图片后更新UI
-    private void updateImageView(String url, Bitmap bitmap) {
+    private void updateImageView(String url, Bitmap bitmap, BitmapUtil.Size size) {
         ImageView imageView = (ImageView) viewGroup.findViewWithTag(url);
         if (imageView != null) {
             imageView.setImageBitmap(bitmap);
             imageView.invalidate();
         }
+    }
+
+    /**
+     * 头大，这函数没用过
+     */
+    private Bitmap resizeIfNeeded(Bitmap bitmap, ImageView imageView) {
+
+        boolean xExceeds = (bitmap.getWidth() > imageView.getMaxWidth());
+        boolean yExceeds = (bitmap.getHeight() > imageView.getMaxHeight());
+
+        if (xExceeds || yExceeds) {
+            int bitmapWidth = bitmap.getWidth();
+            int viewWidth = Math.min(imageView.getMaxWidth(), WindowUtil.getWindowWidth());
+            float scaleX = (float) viewWidth / (float) bitmapWidth;
+
+            int bitmapHeight = bitmap.getHeight();
+            int viewHeight = Math.min(imageView.getMaxHeight(), WindowUtil.getWindowHeight());
+            float scaleY = (float) viewHeight / (float) bitmapHeight;
+
+            float scale = Math.min(scaleX, scaleY);
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+            imageView.measure(bitmap.getWidth(), bitmap.getHeight());
+        }
+        return bitmap;
     }
 
 }

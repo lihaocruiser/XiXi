@@ -184,7 +184,7 @@ public class NewMagpieActivity extends AppCompatActivity {
 
         @Override
         protected Bitmap doInBackground(Void... params) {
-            return BitmapUtil.decodeFileScaled(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP);
+            return BitmapUtil.decodeFileScaled(localImageUrl, width, height, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.MIDDLE);
         }
 
         @Override
