@@ -5,6 +5,8 @@
     android:orientation="vertical"
     tools:context="com.xixi.ui.magpie.MagpieActivity">
 
+    <include layout="@layout/toolbar"/>
+
     <com.xixi.widget.LoadListView
         android:id="@+id/magpie_listview"
         android:layout_width="0dp"

@@ -65,7 +65,7 @@ public class CircleActivity extends AppCompatActivity {
         btnSend = (Button) findViewById(R.id.btn_send);
 
         loadListView = (LoadListView) findViewById(R.id.list_view);
-        cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_circle, null);
+        cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_circle_list, null);
         loadListView.addHeaderView(cardView);
 
         adapter = new CircleAdapter();

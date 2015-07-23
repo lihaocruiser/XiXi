@@ -9,34 +9,35 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xixi.R;
+import com.xixi.bean.MagpieBean;
 import com.xixi.bean.circle.CircleBean;
 import com.xixi.ui.circle.CircleActivity;
+import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 
 import java.util.ArrayList;
 
 /**
- * Created by LiHao on 2015-7-20.
+ * Created by LiHao on 2015-7-23.
  */
-public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
+public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
 
-    private static int userID;
 
-    private ArrayList<CircleBean> beanList = new ArrayList<>();
+    private ArrayList<MagpieBean> beanList = new ArrayList<>();
     private ImageDownloader imageDownloader;
     private OnLoadMoreListener onLoadMoreListener;
 
-    public CircleAdapter(RecyclerView recyclerView) {
+    public MagpieAdapter(RecyclerView recyclerView) {
         super();
         imageDownloader = new ImageDownloader(recyclerView);
     }
 
-    public void setBeanList(ArrayList<CircleBean> beanList) {
+    public void setBeanList(ArrayList<MagpieBean> beanList) {
         this.beanList = beanList;
     }
 
-    public ArrayList<CircleBean> getBeanList() {
+    public ArrayList<MagpieBean> getBeanList() {
         return beanList;
     }
 
@@ -49,36 +50,27 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
     }
 
     @Override
-    public CircleCardViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
-        CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_circle_list, null);
-        return new CircleCardViewHolder(v);
+    public MagpieCardViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
+        CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_magpie_list, null);
+        return new MagpieCardViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final CircleCardViewHolder viewHolder, final int i) {
-        CircleBean bean = beanList.get(i);
-        viewHolder.bindBean(bean, userID);
+    public void onBindViewHolder(final MagpieCardViewHolder viewHolder, final int i) {
+        MagpieBean bean = beanList.get(i);
+        viewHolder.bindBean(bean);
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CircleActivity.class);
-                intent.putExtra("CircleBean", beanList.get(i));
+                Intent intent = new Intent(v.getContext(), MagpieActivity.class);
+                intent.putExtra("MagpieBean", beanList.get(i));
                 v.getContext().startActivity(intent);
             }
         });
 
         // set header pic
-        String headUrl = bean.getPublisherHeadPic();
+        String headUrl = bean.getUserHeaderUrl();
         loadPic(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
-
-        // set moment pic
-        String picUrl = bean.getPic();
-        if (picUrl == null) {
-            viewHolder.imPic.setVisibility(View.GONE);
-        } else {
-            viewHolder.imPic.setVisibility(View.VISIBLE);
-            loadPic(picUrl, viewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
-        }
 
         // load more if scrolled to bottom
         if (i == beanList.size() - 1) {
@@ -102,4 +94,6 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
         }
     }
 
+
 }
+

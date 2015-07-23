@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 public class CircleImageView extends ImageView {
 
-    private Paint bitmapPaint;
+    private Paint bitmapPaint = new Paint();
     private BitmapShader bitmapShader;
 
     private Bitmap bitmap;

@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         // init fragment
         fragmentList = new ArrayList<>();
         fragmentList.add(new FragmentMagpie());
+        fragmentList.add(new FragmentCircle());
         fragmentList.add(new FragmentDiscover());
         fragmentList.add(new FragmentMe());
-        fragmentList.add(new FragmentCircle());
 
         // init pager
         viewPager = (ViewPager)findViewById(R.id.viewpager);

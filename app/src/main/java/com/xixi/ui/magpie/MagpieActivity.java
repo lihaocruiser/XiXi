@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +43,8 @@ import java.util.Map;
 
 public class MagpieActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
+
     int id;
     LinearLayout llHeader;
     LoadListView listView;
@@ -78,6 +81,10 @@ public class MagpieActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magpie);
+
+        // init toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         inflater = getLayoutInflater();

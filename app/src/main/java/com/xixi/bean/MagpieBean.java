@@ -2,9 +2,14 @@ package com.xixi.bean;
 
 import com.xixi.util.SafeJSON;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MagpieBean {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class MagpieBean implements Serializable {
 
     private int id;
     private String title;
@@ -43,12 +48,48 @@ public class MagpieBean {
         }
     }
 
+    /**
+     * get an ArrayList of CircleBean from JSONArray
+     */
+    public static ArrayList<MagpieBean> getBeanList(JSONArray array ) {
+        ArrayList<MagpieBean> beanList = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject o = (JSONObject) array.get(i);
+                MagpieBean circleBean = new MagpieBean(o);
+                beanList.add(circleBean);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return beanList;
+    }
+
+    /**
+     * get an ArrayList of CircleBean from JSONArray and append it to an existed ArrayList
+     */
+    public static void appendBeanList(ArrayList<MagpieBean> beanList, JSONArray array) {
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject o = (JSONObject) array.get(i);
+                MagpieBean circleBean = new MagpieBean(o);
+                beanList.add(circleBean);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public int getId() {
         return id;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -79,12 +120,20 @@ public class MagpieBean {
         return userName;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getUserSex() {
         return userSex;
     }
 
     public String getUserHeaderUrl() {
         return userHeaderUrl;
+    }
+
+    public void setUserHeaderUrl(String userHeaderUrl) {
+        this.userHeaderUrl = userHeaderUrl;
     }
 
 }
