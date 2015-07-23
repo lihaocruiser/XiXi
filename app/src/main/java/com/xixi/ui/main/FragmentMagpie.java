@@ -30,7 +30,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
     private MagpieAdapter adapter;
 
     int pageIndex = 0;
-    int pageSize = 28;
+    int pageSize = 10;
     boolean loading = false;
     boolean noMore = false;
 
@@ -81,7 +81,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
                     MagpieBean magpieBean = new MagpieBean();
                     magpieBean.setUserName("李浩");
                     magpieBean.setTitle(base + i + ".jpg");
-                    magpieBean.setUserHeaderUrl(base + "u" + i + ".jpg");
+                    magpieBean.setUserHeaderUrl(base + i + ".jpg");
                     refreshedBeanList.add(magpieBean);
                 }
                 adapter.setBeanList(refreshedBeanList);
@@ -107,11 +107,11 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onFailure(JSONObject obj) {
                 loading = false;
-                for (int i = 0; i < pageSize; i++) {
+                for (int i = 10; i < 10 + pageSize; i++) {
                     MagpieBean magpieBean = new MagpieBean();
                     magpieBean.setUserName("李浩");
                     magpieBean.setTitle(base + i + ".jpg");
-                    magpieBean.setUserHeaderUrl(base + "u" + i + ".jpg");
+                    magpieBean.setUserHeaderUrl(base + i + ".jpg");
                     adapter.getBeanList().add(magpieBean);
                 }
                 adapter.notifyDataSetChanged();

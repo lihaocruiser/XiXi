@@ -74,10 +74,10 @@ public class ImageDownloader {
 
     // 发起AsyncTask从文件获取图片
     private void getFile(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
-        new FileTask(url, imagePath, viewWidth, viewHeight, scaleType, size).execute();
+        new ReadFileTask(url, imagePath, viewWidth, viewHeight, scaleType, size).execute();
     }
 
-    private class FileTask extends AsyncTask<Void, Void, Bitmap> {
+    private class ReadFileTask extends AsyncTask<Void, Void, Bitmap> {
 
         private String url;
         private String imagePath;
@@ -86,7 +86,7 @@ public class ImageDownloader {
         private ImageView.ScaleType scaleType;
         private BitmapUtil.Size size;
 
-        public FileTask(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
+        public ReadFileTask(String url, String imagePath, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
             this.url = url;
             this.imagePath = imagePath;
             this.viewWidth = viewWidth;
@@ -123,32 +123,45 @@ public class ImageDownloader {
             @Override
             public void onSuccess(String url, Bitmap bitmap) {
                 // 先保存原图到SD卡，然后压缩显示到屏幕
-                saveImage(url, bitmap);
-                bitmap = BitmapUtil.resize(bitmap, viewWidth, viewHeight, scaleType, size);
-                updateCache(url, bitmap);
-                updateImageView(url, bitmap, size);
+                new WriteFileTask(url, bitmap).execute();
+                Bitmap bitmapCompress = BitmapUtil.resize(bitmap, viewWidth, viewHeight, scaleType, size);
+                updateCache(url, bitmapCompress);
+                updateImageView(url, bitmapCompress, size);
                 taskSet.remove(url);
             }
         }).execute();
     }
 
-    private void saveImage(String url, Bitmap bitmap) {
-        String circlePath = FileUtil.getCirclePath();
-        String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
-        File imageFile = new File(imagePath);
-        FileOutputStream outputStream;
-        try {
-            outputStream = new FileOutputStream(imageFile);
-            if (url.contains(".png") || url.contains(".PNG")) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+    private class WriteFileTask extends AsyncTask<Void, Void, Void> {
+
+        private String url;
+        private Bitmap bitmap;
+
+        public WriteFileTask(String url, Bitmap bitmap) {
+            this.url = url;
+            this.bitmap = bitmap;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String circlePath = FileUtil.getCirclePath();
+            String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
+            File imageFile = new File(imagePath);
+            FileOutputStream outputStream;
+            try {
+                outputStream = new FileOutputStream(imageFile);
+                if (url.contains(".png") || url.contains(".PNG")) {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+                }
+                else{
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                }
+                outputStream.flush();
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            else{
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
-            }
-            outputStream.flush();
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
     }
 

@@ -17,12 +17,10 @@ import org.apache.http.Header;
  */
 public class ImageDownloadTask {
 
-    public int count = 0;
-
     private int viewWidth;
     private int viewHeight;
-    private ImageView.ScaleType scaleType;
-    private BitmapUtil.Size size;
+    private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
+    private BitmapUtil.Size size = BitmapUtil.Size.FULL_SCREEN;
 
     private String url;
     private BitmapReceiver bitmapReceiver;
@@ -34,7 +32,6 @@ public class ImageDownloadTask {
                               Throwable arg3) {
             Log.i(getClass().toString(), "onFailure");
             bitmapReceiver.onFailure(url);
-            count--;
         }
 
         @Override
@@ -45,13 +42,8 @@ public class ImageDownloadTask {
                 return;
             }
             Bitmap bitmap;
-            if (viewWidth == 0) {
-                bitmap = BitmapFactory.decodeByteArray(arg2, 0, arg2.length);
-            } else {
-                bitmap = BitmapUtil.decodeByteArrayScaled(arg2, 0, arg2.length, viewWidth, viewHeight, scaleType, size);
-            }
+            bitmap = BitmapUtil.decodeByteArrayScaled(arg2, 0, arg2.length, viewWidth, viewHeight, scaleType, size);
             bitmapReceiver.onSuccess(url, bitmap);
-            count--;
         }
 
     };
@@ -62,7 +54,6 @@ public class ImageDownloadTask {
     public ImageDownloadTask(String url, BitmapReceiver bitmapReceiver) {
         this.url = url;
         this.bitmapReceiver = bitmapReceiver;
-        count++;
     }
 
     /**

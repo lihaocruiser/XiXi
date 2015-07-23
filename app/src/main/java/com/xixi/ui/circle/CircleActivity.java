@@ -119,12 +119,12 @@ public class CircleActivity extends AppCompatActivity {
                 loading = false;
                 loadListView.onLoadComplete();
                 // for test only
-                for (int i = 15; i < 27; i++) {
+                for (int i = 0; i < 10; i++) {
                     CircleCommentBean bean = new CircleCommentBean();
                     bean.setSenderNickname("李浩");
                     bean.setReceiverNickname("胡哲");
-                    bean.setSenderHeadPic(base + "u" + i + ".jpg");
-                    bean.setComment(base + "u" + i + ".jpg");
+                    bean.setSenderHeadPic(base + i + ".jpg");
+                    bean.setComment(base + i + ".jpg");
                     commentBeanList.add(bean);
                 }
                 adapter.notifyDataSetChanged();
