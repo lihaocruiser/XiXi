@@ -66,26 +66,20 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
                 v.getContext().startActivity(intent);
             }
         });
+
         // set header pic
         String headUrl = bean.getPublisherHeadPic();
-        if (imageDownloader.containsBitmap(headUrl)) {
-            viewHolder.imHeader.setImageBitmap(imageDownloader.getBitmap(headUrl));
-        } else {
-            viewHolder.imHeader.setImageBitmap(null);
-            int viewWidth = viewHolder.imHeader.getLayoutParams().width;
-            int viewHeight = viewHolder.imHeader.getLayoutParams().height;
-            imageDownloader.fetchImage(headUrl, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
-        }
+        loadPic(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+
         // set moment pic
         String picUrl = bean.getPic();
-        if (imageDownloader.containsBitmap(picUrl)) {
-            viewHolder.imPic.setImageBitmap(imageDownloader.getBitmap(picUrl));
+        if (picUrl == null) {
+            viewHolder.imPic.setVisibility(View.GONE);
         } else {
-            viewHolder.imPic.setImageBitmap(null);
-            int viewWidth = viewHolder.imPic.getLayoutParams().width;
-            int viewHeight = viewHolder.imPic.getLayoutParams().height;
-            imageDownloader.fetchImage(picUrl, viewWidth, viewHeight, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.MIDDLE);
+            viewHolder.imPic.setVisibility(View.VISIBLE);
+            loadPic(picUrl, viewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
         }
+
         // load more if scrolled to bottom
         if (i == beanList.size() - 1) {
             onLoadMoreListener.onLoadMore();
@@ -95,6 +89,17 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
     @Override
     public int getItemCount() {
         return beanList.size();
+    }
+
+    private void loadPic(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
+        if (imageDownloader.containsBitmap(picUrl)) {
+            imageView.setImageBitmap(imageDownloader.getBitmap(picUrl));
+        } else {
+            imageView.setImageBitmap(null);
+            int viewWidth = imageView.getLayoutParams().width;
+            int viewHeight = imageView.getLayoutParams().height;
+            imageDownloader.fetchImage(picUrl, viewWidth, viewHeight, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.MIDDLE);
+        }
     }
 
 
