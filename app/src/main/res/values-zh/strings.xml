@@ -7,6 +7,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_magpie">鹊桥</string>
     <string name="title_activity_new_magpie">新鹊桥</string>
+    <string name="title_activity_circle">小圈子</string>
     <string name="title_activity_profile">个人资料</string>
     <string name="title_activity_register">注册</string>
     <string name="title_activity_intro">介绍</string>

@@ -7,6 +7,7 @@
     <string name="title_activity_main">Main Activity</string>
     <string name="title_activity_magpie">Magpie Bridge</string>
     <string name="title_activity_new_magpie">New Magpie</string>
+    <string name="title_activity_circle">CircleActivity</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_intro">Introduction</string>
@@ -14,6 +15,7 @@
     <string name="title_activity_start">Start</string>
     <string name="title_activity_image_browse">Browse Image</string>
     <string name="title_activity_local_image_show">Show Image</string>
+
     <string name="btn_add_photo">Add Photo</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>
@@ -21,11 +23,13 @@
     <string name="btn_new">New</string>
     <string name="btn_send">Send</string>
     <string name="btn_upload">Upload</string>
+
     <string name="error_empty_content">can not be empty</string>
     <string name="error_empty_image">please select image</string>
     <string name="error_image_exceed">at most 3 images at one time</string>
     <string name="error_image_unique">only one image is allowed</string>
     <string name="error_network">Network Error</string>
+
     <string name="txt_age">Age</string>
     <string name="txt_basic">Basic</string>
     <string name="txt_circle">Circle</string>
@@ -46,6 +50,5 @@
     <string name="txt_title">Title</string>
     <string name="txt_uploading">Uploading</string>
     <string name="txt_weekend">Weekend</string>
-    <string name="title_activity_circle">CircleActivity</string>
 
 </resources>
