@@ -36,18 +36,30 @@ public class ImageDownloader {
         this.viewGroup = viewGroup;
     }
 
+    public void setBitmap(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
+        if (containsBitmap(picUrl)) {
+            imageView.setImageBitmap(getBitmap(picUrl));
+        } else {
+            imageView.setImageBitmap(null);
+            int viewWidth = imageView.getLayoutParams().width;
+            int viewHeight = imageView.getLayoutParams().height;
+            fetchImage(picUrl, viewWidth, viewHeight, scaleType, size);
+        }
+    }
+
+
     // 判断图片是否在内存
-    public boolean containsBitmap(String url) {
+    private boolean containsBitmap(String url) {
         return imageMap.containsKey(url);
     }
 
     // 从内存获取图片
-    public Bitmap getBitmap(String url) {
+    private Bitmap getBitmap(String url) {
         return imageMap.get(url);
     }
 
     // 如果文件存在则getFile()从文件获取，否则getOnline()从网络获取
-    public void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
+    private void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
         String circlePath = FileUtil.getCirclePath();
         String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
         File imageFile = new File(imagePath);

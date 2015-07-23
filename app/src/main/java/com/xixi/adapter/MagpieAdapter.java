@@ -70,7 +70,7 @@ public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
 
         // set header pic
         String headUrl = bean.getUserHeaderUrl();
-        loadPic(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+        imageDownloader.setBitmap(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
 
         // load more if scrolled to bottom
         if (i == beanList.size() - 1) {
@@ -83,17 +83,4 @@ public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
         return beanList.size();
     }
 
-    private void loadPic(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
-        if (imageDownloader.containsBitmap(picUrl)) {
-            imageView.setImageBitmap(imageDownloader.getBitmap(picUrl));
-        } else {
-            imageView.setImageBitmap(null);
-            int viewWidth = imageView.getLayoutParams().width;
-            int viewHeight = imageView.getLayoutParams().height;
-            imageDownloader.fetchImage(picUrl, viewWidth, viewHeight, scaleType, size);
-        }
-    }
-
-
 }
-

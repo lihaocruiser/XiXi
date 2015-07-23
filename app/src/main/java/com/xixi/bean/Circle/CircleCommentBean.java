@@ -15,6 +15,7 @@ public class CircleCommentBean {
 
     private int userId;
     private String senderNickname;
+    private String senderHeadPic;
     private String receiverNickname;
     private String comment;
 
@@ -70,6 +71,14 @@ public class CircleCommentBean {
 
     public void setSenderNickname(String senderNickname) {
         this.senderNickname = senderNickname;
+    }
+
+    public String getSenderHeadPic() {
+        return senderHeadPic;
+    }
+
+    public void setSenderHeadPic(String senderHeadPic) {
+        this.senderHeadPic = senderHeadPic;
     }
 
     public String getReceiverNickname() {

@@ -10,7 +10,7 @@ import android.content.SharedPreferences.Editor;
 
 public class ApplicationContext {
 
-	private static Context context;
+    private static Context context;
 	private static SharedPreferences sp;
 	private static ApplicationContext instance;
 

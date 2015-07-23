@@ -69,7 +69,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
 
         // set header pic
         String headUrl = bean.getPublisherHeadPic();
-        loadPic(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+        imageDownloader.setBitmap(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
 
         // set moment pic
         String picUrl = bean.getPic();
@@ -77,7 +77,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
             viewHolder.imPic.setVisibility(View.GONE);
         } else {
             viewHolder.imPic.setVisibility(View.VISIBLE);
-            loadPic(picUrl, viewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
+            imageDownloader.setBitmap(picUrl, viewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
         }
 
         // load more if scrolled to bottom
@@ -89,17 +89,6 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
     @Override
     public int getItemCount() {
         return beanList.size();
-    }
-
-    private void loadPic(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
-        if (imageDownloader.containsBitmap(picUrl)) {
-            imageView.setImageBitmap(imageDownloader.getBitmap(picUrl));
-        } else {
-            imageView.setImageBitmap(null);
-            int viewWidth = imageView.getLayoutParams().width;
-            int viewHeight = imageView.getLayoutParams().height;
-            imageDownloader.fetchImage(picUrl, viewWidth, viewHeight, scaleType, size);
-        }
     }
 
 }

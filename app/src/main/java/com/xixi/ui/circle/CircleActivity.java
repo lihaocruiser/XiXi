@@ -35,21 +35,27 @@ import java.util.List;
 
 public class CircleActivity extends AppCompatActivity {
 
-    private int userId;
+    // test
+    String base = "http://home.ustc.edu.cn/~lihao90/android/";
 
     Toolbar toolbar;
-    EditText etComment;
-    Button btnSend;
     CardView cardView;
     LoadListView loadListView;
+    EditText etComment;
+    Button btnSend;
     CircleCardViewHolder cardViewHolder;
-    int id;
+
     CircleBean circleBean = new CircleBean();
     List<CircleCommentBean> commentBeanList = new ArrayList<>();
-    CircleAdapter adapter = new CircleAdapter();
+    CircleCommentAdapter adapter = new CircleCommentAdapter();
+
+    ImageDownloader imageDownloader;
+
+    private int circleId;
+    private int userId;
 
     private boolean loading;
-    private int replyId;
+    private int receiverId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,31 +67,37 @@ public class CircleActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        circleBean = (CircleBean) getIntent().getSerializableExtra("CircleBean");
+        circleId = circleBean.getId();
+
         etComment = (EditText) findViewById(R.id.et_send);
         btnSend = (Button) findViewById(R.id.btn_send);
-
         loadListView = (LoadListView) findViewById(R.id.list_view);
-        cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_circle_list, null);
-        loadListView.addHeaderView(cardView);
 
-        adapter = new CircleAdapter();
+
+        // adapter
+        adapter = new CircleCommentAdapter();
         loadListView.setAdapter(adapter);
+        imageDownloader = new ImageDownloader(loadListView);
         loadListView.setDividerHeight(0);
         loadListView.setOnLoadListener(new LoadListView.OnLoadListener() {
             @Override
             public void onLoad() {
-                loadMore();
+                onLoadMore();
             }
         });
 
-        circleBean = (CircleBean) getIntent().getSerializableExtra("CircleBean");
-        id = circleBean.getId();
-
+        // add header view
+        cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_circle_list, null);
+        loadListView.addHeaderView(cardView);
         cardViewHolder = new CircleCardViewHolder(cardView);
         cardViewHolder.bindBean(circleBean, userId);
-        loadImage();
+        String headUrl = circleBean.getPublisherHeadPic();
+        imageDownloader.setBitmap(headUrl, cardViewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.LARGE);
+        String picUrl = circleBean.getPic();
+        imageDownloader.setBitmap(picUrl, cardViewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.LARGE);
 
-        loadMore();
+        onLoadMore();
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,53 +108,23 @@ public class CircleActivity extends AppCompatActivity {
     }
 
 
-    private void loadImage() {
-        ImageDownloader imageDownloader = new ImageDownloader(loadListView);
-        // set header pic
-        String headUrl = circleBean.getPublisherHeadPic();
-        if (imageDownloader.containsBitmap(headUrl)) {
-            cardViewHolder.imHeader.setImageBitmap(imageDownloader.getBitmap(headUrl));
-        } else {
-            cardViewHolder.imHeader.setImageBitmap(null);
-            int viewWidth = cardViewHolder.imHeader.getLayoutParams().width;
-            int viewHeight = cardViewHolder.imHeader.getLayoutParams().height;
-            imageDownloader.fetchImage(headUrl, viewWidth, viewHeight, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
-        }
-        // set moment pic
-        String picUrl = circleBean.getPic();
-        if (imageDownloader.containsBitmap(picUrl)) {
-            cardViewHolder.imPic.setImageBitmap(imageDownloader.getBitmap(picUrl));
-        } else {
-            cardViewHolder.imPic.setImageBitmap(null);
-            int viewWidth = cardViewHolder.imPic.getLayoutParams().width;
-            int viewHeight = cardViewHolder.imPic.getLayoutParams().height;
-            imageDownloader.fetchImage(picUrl, viewWidth, viewHeight, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.LARGE);
-        }
-    }
-
-
-    private void loadMore() {
+    private void onLoadMore() {
         if (loading) {
             return;
         }
         loading = true;
-        new CircleJSONTask(id, new JSONReceiver() {
+        new CircleJSONTask(circleId, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
                 loading = false;
                 loadListView.onLoadComplete();
                 // for test only
-                for (int i = 0; i < 5; i++) {
+                for (int i = 15; i < 27; i++) {
                     CircleCommentBean bean = new CircleCommentBean();
                     bean.setSenderNickname("李浩");
                     bean.setReceiverNickname("胡哲");
-                    bean.setComment("一二三四五，上山打老虎，老虎没打着，打着小松鼠。");
-                    commentBeanList.add(bean);
-                }
-                for (int i = 0; i < 5; i++) {
-                    CircleCommentBean bean = new CircleCommentBean();
-                    bean.setSenderNickname("丁鑫");
-                    bean.setComment("大炮");
+                    bean.setSenderHeadPic(base + "u" + i + ".jpg");
+                    bean.setComment(base + "u" + i + ".jpg");
                     commentBeanList.add(bean);
                 }
                 adapter.notifyDataSetChanged();
@@ -160,9 +142,7 @@ public class CircleActivity extends AppCompatActivity {
     }
 
 
-    private class CircleAdapter extends BaseAdapter {
-
-        private ImageDownloader imageDownloader = new ImageDownloader(loadListView);
+    private class CircleCommentAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -186,25 +166,16 @@ public class CircleActivity extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            CircleCommentBean bean = commentBeanList.get(position);
             ViewHolder holder;
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.lv_circle_item, null);
-                holder = new ViewHolder();
-                holder.tvComment = (TextView) convertView.findViewById(R.id.tv_comment);
+                holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.bindBean(commentBeanList.get(position));
-
-            holder.tvComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    replyId = commentBeanList.get(position).getUserId();
-                    etComment.setHint("@" + commentBeanList.get(position).getSenderNickname());
-                }
-            });
-
+            holder.bindBean(bean);
             return convertView;
         }
 
@@ -215,8 +186,14 @@ public class CircleActivity extends AppCompatActivity {
             ImageView imHeader;
             TextView tvComment;
 
-            public void bindBean(CircleCommentBean bean) {
+            public ViewHolder(View v) {
+                imHeader = (ImageView) v.findViewById(R.id.im_header);
+                tvComment = (TextView) v.findViewById(R.id.tv_comment);
+            }
 
+            public void bindBean(final CircleCommentBean bean) {
+
+                // set text
                 SpannableStringBuilder comment = new SpannableStringBuilder();
                 String sender, receiver, content;
 
@@ -234,7 +211,25 @@ public class CircleActivity extends AppCompatActivity {
                 comment.append("\n").append(content);
                 tvComment.setText(comment);
 
-                // TODO load avatar
+                // set image
+                imHeader.setTag(bean.getSenderHeadPic());
+                imageDownloader.setBitmap(bean.getSenderHeadPic(), imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+
+                // set OnClickListener
+                tvComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        receiverId = bean.getUserId();
+                        etComment.setHint("@" + bean.getSenderNickname());
+                    }
+                });
+
+                imHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO start ProfileActivity
+                    }
+                });
             }
         }
     }

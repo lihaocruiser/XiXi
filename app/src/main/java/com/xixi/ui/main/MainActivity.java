@@ -47,11 +47,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentList = new ArrayList<>();
         fragmentList.add(new FragmentMagpie());
         fragmentList.add(new FragmentCircle());
-        fragmentList.add(new FragmentDiscover());
         fragmentList.add(new FragmentMe());
 
         // init pager
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
         viewPager.setCurrentItem(0);
 

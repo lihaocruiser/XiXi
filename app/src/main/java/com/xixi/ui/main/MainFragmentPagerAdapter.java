@@ -27,7 +27,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return fragmentList.get(position).toString().substring(8);
+        return fragmentList.get(position).getClass().getSimpleName().substring(8);
     }
 
 }

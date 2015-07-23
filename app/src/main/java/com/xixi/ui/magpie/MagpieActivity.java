@@ -1,7 +1,7 @@
 package com.xixi.ui.magpie;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -399,8 +399,14 @@ public class MagpieActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_new) {
-            return true;
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_new_magpie:
+                Intent intent = new Intent(MagpieActivity.this, NewMagpieActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
