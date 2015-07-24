@@ -32,7 +32,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
     private CircleAdapter adapter;
 
     int pageIndex = 0;
-    int pageSize = 28;
+    int pageSize = 30;
     boolean loading = false;
     boolean noMore = false;
 

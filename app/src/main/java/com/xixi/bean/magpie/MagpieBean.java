@@ -1,4 +1,4 @@
-package com.xixi.bean;
+package com.xixi.bean.magpie;
 
 import com.xixi.util.SafeJSON;
 
@@ -16,7 +16,22 @@ public class MagpieBean implements Serializable {
     private String content;
     private int likeCount;
     private int[] likeId;
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    private int commentCount;
     private String time;
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
     private String picUrl;
 
     private int userId;

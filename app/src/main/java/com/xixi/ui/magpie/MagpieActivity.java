@@ -1,81 +1,58 @@
 package com.xixi.ui.magpie;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xixi.R;
-import com.xixi.bean.MagpieBean;
-import com.xixi.bean.MagpieCommentBean;
-import com.xixi.net.BitmapReceiver;
+import com.xixi.adapter.CommentAdapter;
+import com.xixi.adapter.MagpieHeaderCardViewHolder;
+import com.xixi.bean.CommentBean;
+import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.JSONReceiver;
-import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.net.magpie.MagpieCommentJSONTask;
-import com.xixi.net.magpie.MagpieJSONTask;
-import com.xixi.net.magpie.SendCommentJSONTask;
-import com.xixi.net.magpie.SendReplyMagpieJSONTask;
+import com.xixi.net.circle.CircleJSONTask;
+import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 public class MagpieActivity extends AppCompatActivity {
 
+    // test
+    String base = "http://home.ustc.edu.cn/~lihao90/android/";
+
     Toolbar toolbar;
-
-    int id;
-    LinearLayout llHeader;
     LoadListView listView;
-    MagpieCommentAdapter magpieCommentAdapter;
-    LayoutInflater inflater;
-
-    // HeaderView
-    ImageView imUserHeader;
-    ImageView imMagpiePic;
-    ImageView imSex;
-    TextView tvTitle;
-    TextView tvUserName;
-    TextView tvTime;
-    TextView tvLikeCount;
-    TextView tvReplyCount;
-    TextView tvContent;
-
-    // Bottom
-    EditText etContent;
+    EditText etComment;
     Button btnSend;
 
+    CommentAdapter adapter;
+    ImageDownloader imageDownloader;
+
     MagpieBean magpieBean;
-    List<MagpieCommentBean> beanList = new ArrayList<>();
-    Collection<String> taskSet = new HashSet<>();
-    Map<String, Bitmap> headMap = new HashMap<>();
+    List<CommentBean> commentBeanList = new ArrayList<>();
+
+    int magpieId;
+    int userId;
 
     int pageIndex = 0;
     int pageSize = 10;
-    boolean isLoading;
+    boolean loading;
     boolean noMoreItem;
-    int replyFloor = -1;
+    int receiverId = -1;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -87,308 +64,116 @@ public class MagpieActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        inflater = getLayoutInflater();
-        id = getIntent().getIntExtra("id", -1);
+        // get intent
+        magpieBean = (MagpieBean) getIntent().getSerializableExtra("MagpieBean");
+        magpieId = magpieBean.getId();
 
-        etContent = (EditText) findViewById(R.id.et_content);
+        // find view
+        etComment = (EditText) findViewById(R.id.et_send);
         btnSend = (Button) findViewById(R.id.btn_send);
+        listView = (LoadListView) findViewById(R.id.list_view);
 
-        listView = (LoadListView) findViewById(R.id.magpie_listview);
-        initHeaderView();
-        listView.addHeaderView(llHeader);
+        // set adapter
+        adapter = new CommentAdapter(listView);
+        listView.setAdapter(adapter);
+        imageDownloader = new ImageDownloader(listView);
+        listView.setDividerHeight(0);
         listView.setOnLoadListener(new LoadListView.OnLoadListener() {
             @Override
             public void onLoad() {
-                if (!noMoreItem && !isLoading) {
-                    loadComment();
-                }
+                onLoadMore();
             }
         });
-        MagpieCommentAdapter magpieCommentAdapter = new MagpieCommentAdapter();
-        listView.setAdapter(magpieCommentAdapter);
 
-        loadMagpie();
-        loadComment();
+        // add header view
+        CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_magpie_header, null);
+        listView.addHeaderView(cardView);
+        MagpieHeaderCardViewHolder cardViewHolder = new MagpieHeaderCardViewHolder(cardView, imageDownloader);
+        cardViewHolder.setData(magpieBean, userId);
+
+        // on click listener
+        adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {
+            @Override
+            public void onAvatarClick(int userId) {
+                Toast.makeText(MagpieActivity.this, "startActivity", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        adapter.setOnCommentClickListener(new CommentAdapter.OnCommentClickListener() {
+            @Override
+            public void onCommentClick(int receiverId, String receiverNickname) {
+                MagpieActivity.this.receiverId = receiverId;
+                etComment.setHint("@" + receiverNickname);
+            }
+        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = etContent.getText().toString();
-                if (content == null) {
-                    Toast.makeText(MagpieActivity.this, "cannot be empty!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int myID = 0;   // TODO get myID
-                switch (replyFloor) {
-                    case -1:
-                        sendComment(content, myID);
-                        break;
-                    case 0:
-                        int targetID = magpieBean.getUserId();
-                        if (targetID != 0) {
-                            replyMagpie(content, targetID, myID);
-                        }
-                        break;
-                    default:
-                        //replyComment(); TODO
-                }
+                // TODO send comment to receiverId
             }
         });
+
+        onLoadMore();
     }
 
-    private void initHeaderView() {
-        llHeader = (LinearLayout) LayoutInflater.from(MagpieActivity.this).inflate(R.layout.lv_magpie_header, null);
-        imUserHeader = (ImageView) findViewById(R.id.im_header);
-        imMagpiePic = (ImageView) findViewById(R.id.im_pic);
-        imSex = (ImageView) findViewById(R.id.im_sex);
-        tvTitle = (TextView) findViewById(R.id.tv_title);
-        tvUserName = (TextView) findViewById(R.id.tv_name);
-        tvTime = (TextView) findViewById(R.id.tv_time);
-        tvLikeCount = (TextView) findViewById(R.id.tv_like_count);
-        tvReplyCount = (TextView) findViewById(R.id.tv_reply_count);
-        tvContent = (TextView) findViewById(R.id.tv_content);
-    }
+//    private void initHeaderView() {
+//        LinearLayout llHeader;
+//        CardView cardView;
+//        ImageView imUserHeader;
+//        ImageView imMagpiePic;
+//        ImageView imSex;
+//        TextView tvTitle;
+//        TextView tvUserName;
+//        TextView tvTime;
+//        TextView tvLikeCount;
+//        TextView tvReplyCount;
+//        TextView tvContent;
+//        llHeader = (LinearLayout) LayoutInflater.from(MagpieActivity.this).inflate(R.layout.lv_magpie_header, null);
+//        imUserHeader = (ImageView) findViewById(R.id.im_header);
+//        imMagpiePic = (ImageView) findViewById(R.id.im_pic);
+//        imSex = (ImageView) findViewById(R.id.im_sex);
+//        tvTitle = (TextView) findViewById(R.id.tv_title);
+//        tvUserName = (TextView) findViewById(R.id.tv_name);
+//        tvTime = (TextView) findViewById(R.id.tv_time);
+//        tvLikeCount = (TextView) findViewById(R.id.tv_like_count);
+//        tvReplyCount = (TextView) findViewById(R.id.tv_reply_count);
+//        tvContent = (TextView) findViewById(R.id.tv_content);
+//    }
 
 
-    /**
-     *  load magpie content (header view)
-     */
-    private void loadMagpie() {
-        if (id < 0) {
+    private void onLoadMore() {
+        if (loading) {
             return;
         }
-        JSONReceiver receiver = new JSONReceiver() {
+        loading = true;
+        new CircleJSONTask(magpieId, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                Toast.makeText(MagpieActivity.this, "unknown error", Toast.LENGTH_SHORT).show();
+                loading = false;
+                listView.onLoadComplete();
+                // for test only
+                for (int i = 0; i < 10; i++) {
+                    CommentBean bean = new CommentBean();
+                    bean.setSenderNickname("Sender");
+                    bean.setSenderAvatar(base + i + ".jpg");
+                    bean.setComment(base + i + ".jpg");
+                    adapter.getBeanList().add(bean);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
-                if (obj == null) return;
-                magpieBean = new MagpieBean(obj);
-                FillHeaderView(magpieBean);
-                LoadHeadPic(magpieBean.getUserHeaderUrl());
-                LoadMagpiePic(magpieBean.getPicUrl());
-            }
-        };
-        new MagpieJSONTask(id, receiver).execute();
-    }
-
-    private void FillHeaderView(MagpieBean magpieBean) {
-        tvTitle.setText(magpieBean.getTitle());
-        tvUserName.setText(magpieBean.getUserName());
-        tvTime.setText(magpieBean.getTime());
-        tvLikeCount.setText(magpieBean.getLikeCount() + "");
-        tvContent.setText(magpieBean.getContent());
-        // TODO set imSex according to userSex
-        magpieBean.getUserSex();
-    }
-
-    private void LoadHeadPic(String headerUrl) {
-        if (headerUrl == null) {
-            return;
-        }
-        BitmapReceiver receiver = new BitmapReceiver() {
-            @Override
-            public void onFailure(String url) {
-                imUserHeader.setImageResource(R.drawable.ic_launcher);
-            }
-            @Override
-            public void onSuccess(String url, Bitmap bitmap) {
-                imUserHeader.setImageBitmap(bitmap);
-            }
-        };
-        new ImageDownloadTask(headerUrl, receiver).execute();
-    }
-
-    private void LoadMagpiePic(String picUrl) {
-        if (picUrl == null) {
-            return;
-        }
-        BitmapReceiver receiver = new BitmapReceiver() {
-            @Override
-            public void onFailure(String url) {
-                imMagpiePic.setImageResource(R.drawable.ic_launcher);
-            }
-            @Override
-            public void onSuccess(String url, Bitmap bitmap) {
-                imMagpiePic.setImageBitmap(bitmap);
-            }
-        };
-        new ImageDownloadTask(picUrl, receiver).execute();
-    }
-
-
-    /**
-     *  load comments content (list view)
-     */
-    private void loadComment() {
-
-        if (isLoading) {
-            return;
-        } else {
-            isLoading = true;
-        }
-
-        JSONReceiver receiver = new JSONReceiver() {
-            @Override
-            public void onFailure(JSONObject obj) {
-                isLoading = false;
-                Toast.makeText(MagpieActivity.this, "unknown error", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(JSONObject obj) {
-                isLoading = false;
-                if (obj == null) {return;}
+                loading = false;
+                listView.onLoadComplete();
                 JSONArray array = obj.optJSONArray("list");
-                if (array == null || array.length() == 0) {
-                    noMoreItem = true;
-                    listView.onLoadOver();
-                    return;
-                }
-                pageIndex++;
-                try {
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject item = (JSONObject) array.get(i);
-                        MagpieCommentBean bean = new MagpieCommentBean(item);
-                        if (!beanList.contains(bean)) {
-                            beanList.add(bean);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                magpieCommentAdapter.notifyDataSetChanged();
+                commentBeanList = CommentBean.getBeanList(array);
+                adapter.notifyDataSetChanged();
             }
-        };
-
-        new MagpieCommentJSONTask(id, pageIndex, pageSize, receiver).execute();
+        }).execute();
     }
 
-
-
-    private class MagpieCommentAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return beanList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            MagpieCommentBean bean = beanList.get(position);
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.lv_magpie_comment_item, null);
-                holder = new ViewHolder();
-                holder.createView(convertView);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            holder.fillData(bean);
-            return convertView;
-        }
-
-        private class ViewHolder {
-            ImageView imUserHeader;
-            ImageView imUserSex;
-            TextView tvUserName;
-            TextView tvTime;
-            TextView tvFloor;
-            TextView tvContent;
-            TextView tvLikeCount;
-
-            public void createView(View convertView) {
-                imUserHeader = (ImageView) convertView.findViewById(R.id.im_header);
-                imUserSex = (ImageView) convertView.findViewById(R.id.im_sex);
-                tvUserName = (TextView) convertView.findViewById(R.id.tv_name);
-                tvTime = (TextView) convertView.findViewById(R.id.tv_time);
-                tvFloor = (TextView) convertView.findViewById(R.id.tv_floor);
-                tvContent = (TextView) convertView.findViewById(R.id.tv_content);
-                tvLikeCount = (TextView) convertView.findViewById(R.id.tv_like_count);
-            }
-
-            public void fillData(MagpieCommentBean bean) {
-                tvTime.setText(bean.getTime());
-                tvUserName.setText(bean.getUserName());
-                tvFloor.setText(bean.getFloor() + "");
-                tvContent.setText(bean.getContent());
-                tvLikeCount.setText(bean.getLikeCount() + "");
-                // TODO set imSex according to userSex
-                String sex = bean.getUserSex();
-
-                final String headerUrl = bean.getUserHeaderUrl();
-                if (headMap.containsKey(headerUrl)) {
-                    imUserHeader.setImageBitmap(headMap.get(headerUrl));
-                } else if (!taskSet.contains(headerUrl)) {
-                    imUserHeader.setImageResource(R.drawable.ic_launcher);
-                    taskSet.add(headerUrl);
-
-                    new ImageDownloadTask(headerUrl, new BitmapReceiver() {
-                        @Override
-                        public void onFailure(String url) {
-                            taskSet.remove(headerUrl);
-                        }
-
-                        @Override
-                        public void onSuccess(String url, Bitmap bitmap) {
-                            taskSet.remove(headerUrl);
-                            headMap.put(url, bitmap);
-                            ImageView imUserHeader = (ImageView) listView.findViewWithTag(url);
-                            if (imUserHeader != null) {
-                                imUserHeader.setImageBitmap(bitmap);
-                            }
-                            magpieCommentAdapter.notifyDataSetChanged();
-                        }
-                    }).execute();
-                }
-            }
-        }
-    }
-
-    private void sendComment(String content, int commenterID) {
-        new SendCommentJSONTask(id, content, commenterID, sendingReceiver).execute();
-    }
-
-    private void replyMagpie(String content, int parentReplierID, int replierID) {
-        new SendReplyMagpieJSONTask(id, content, parentReplierID, replierID, sendingReceiver).execute();
-    }
-
-    private void replyComment(int commentID, String content, int parentReplierID, int replierID) {
-        new SendReplyMagpieJSONTask(commentID, content, parentReplierID, replierID,sendingReceiver).execute();
-    }
-
-    JSONReceiver sendingReceiver = new JSONReceiver() {
-        @Override
-        public void onFailure(JSONObject obj) {
-            Toast.makeText(MagpieActivity.this, "Sending Failed", Toast.LENGTH_SHORT).show();
-        }
-        @Override
-        public void onSuccess(JSONObject obj) {
-            etContent.setText(null);
-            refreshComment();
-            Toast.makeText(MagpieActivity.this, "Sending Succeeded", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private void refreshComment() {
-        pageIndex = 0;
-        beanList.clear();
-        loadComment();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

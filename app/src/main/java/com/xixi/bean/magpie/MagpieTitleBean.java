@@ -1,8 +1,7 @@
-package com.xixi.bean;
+package com.xixi.bean.magpie;
 
 import com.xixi.util.SafeJSON;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;

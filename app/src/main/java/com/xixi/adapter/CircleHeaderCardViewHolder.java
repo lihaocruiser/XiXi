@@ -14,7 +14,7 @@ import com.xixi.util.Image.ImageDownloader;
 /**
  * Created on 2015-7-22.
  */
-public class CircleCardViewHolder extends RecyclerView.ViewHolder {
+public class CircleHeaderCardViewHolder extends RecyclerView.ViewHolder {
 
     private ImageDownloader imageDownloader;
 
@@ -28,7 +28,7 @@ public class CircleCardViewHolder extends RecyclerView.ViewHolder {
     public TextView tvLikeCount;
     public TextView tvCommentCount;
 
-    public CircleCardViewHolder(CardView v, ImageDownloader imageDownloader) {
+    public CircleHeaderCardViewHolder(CardView v, ImageDownloader imageDownloader) {
         super(v);
         this.cardView = v;
         imHeader = (ImageView) v.findViewById(R.id.im_header);
@@ -54,7 +54,6 @@ public class CircleCardViewHolder extends RecyclerView.ViewHolder {
         } else {
             imLike.setImageResource(R.drawable.ic_circle_unlike);
         }
-
         // set header pic
         String headUrl = bean.getPublisherHeadPic();
         imageDownloader.setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);

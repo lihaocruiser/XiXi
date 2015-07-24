@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.xixi.R;
 import com.xixi.adapter.MagpieAdapter;
-import com.xixi.bean.MagpieBean;
+import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.magpie.MagpieListJSONTask;
 import com.xixi.net.JSONReceiver;
 
@@ -30,7 +30,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
     private MagpieAdapter adapter;
 
     int pageIndex = 0;
-    int pageSize = 10;
+    int pageSize = 30;
     boolean loading = false;
     boolean noMore = false;
 
@@ -80,6 +80,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
                 for (int i = 0; i < pageSize; i++) {
                     MagpieBean magpieBean = new MagpieBean();
                     magpieBean.setUserName("李浩");
+                    magpieBean.setPicUrl(base + "u" + i + ".jpg");
                     magpieBean.setTitle(base + i + ".jpg");
                     magpieBean.setUserHeaderUrl(base + i + ".jpg");
                     refreshedBeanList.add(magpieBean);
@@ -107,7 +108,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onFailure(JSONObject obj) {
                 loading = false;
-                for (int i = 10; i < 10 + pageSize; i++) {
+                for (int i = 0; i < pageSize; i++) {
                     MagpieBean magpieBean = new MagpieBean();
                     magpieBean.setUserName("李浩");
                     magpieBean.setTitle(base + i + ".jpg");

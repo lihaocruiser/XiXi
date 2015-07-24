@@ -6,14 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.xixi.R;
-import com.xixi.bean.MagpieBean;
-import com.xixi.bean.circle.CircleBean;
-import com.xixi.ui.circle.CircleActivity;
+import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.ui.magpie.MagpieActivity;
-import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 
 import java.util.ArrayList;
@@ -23,6 +19,7 @@ import java.util.ArrayList;
  */
 public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
 
+    private int userId;
 
     private ArrayList<MagpieBean> beanList = new ArrayList<>();
     private ImageDownloader imageDownloader;
@@ -42,7 +39,7 @@ public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
     }
 
     public interface OnLoadMoreListener {
-        public void onLoadMore();
+        void onLoadMore();
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
@@ -52,13 +49,14 @@ public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
     @Override
     public MagpieCardViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
         CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_magpie_list, null);
-        return new MagpieCardViewHolder(v);
+        return new MagpieCardViewHolder(v, imageDownloader);
     }
 
     @Override
     public void onBindViewHolder(final MagpieCardViewHolder viewHolder, final int i) {
         MagpieBean bean = beanList.get(i);
-        viewHolder.bindBean(bean);
+        viewHolder.setData(bean);
+
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,10 +65,6 @@ public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
                 v.getContext().startActivity(intent);
             }
         });
-
-        // set header pic
-        String headUrl = bean.getUserHeaderUrl();
-        imageDownloader.setBitmap(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
 
         // load more if scrolled to bottom
         if (i == beanList.size() - 1) {

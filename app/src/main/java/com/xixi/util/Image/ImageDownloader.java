@@ -26,9 +26,9 @@ import java.util.Set;
  */
 public class ImageDownloader {
 
-    private Set<String> taskSet = new HashSet<>();
-    private Queue<String> imageQueue = new ArrayDeque<>();
-    private Map<String, Bitmap> imageMap = new HashMap<>();
+    private static Set<String> taskSet = new HashSet<>();
+    private static Queue<String> imageQueue = new ArrayDeque<>();
+    private static Map<String, Bitmap> imageMap = new HashMap<>();
 
     private ViewGroup viewGroup;
 
@@ -37,6 +37,10 @@ public class ImageDownloader {
     }
 
     public void setBitmap(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
+        if (picUrl == null) {
+            imageView.setImageBitmap(null);
+            return;
+        }
         if (containsBitmap(picUrl)) {
             imageView.setImageBitmap(getBitmap(picUrl));
         } else {

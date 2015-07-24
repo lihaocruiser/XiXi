@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
 
-    private static int userID;
+    private int userID;
 
     private ArrayList<CircleBean> beanList = new ArrayList<>();
     private ImageDownloader imageDownloader;
@@ -41,7 +41,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
     }
 
     public interface OnLoadMoreListener {
-        public void onLoadMore();
+        void onLoadMore();
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
@@ -51,13 +51,14 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
     @Override
     public CircleCardViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
         CardView v = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_circle_list, null);
-        return new CircleCardViewHolder(v);
+        return new CircleCardViewHolder(v, imageDownloader);
     }
 
     @Override
     public void onBindViewHolder(final CircleCardViewHolder viewHolder, final int i) {
         CircleBean bean = beanList.get(i);
-        viewHolder.bindBean(bean, userID);
+        viewHolder.setData(bean, userID);
+
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,19 +67,6 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
                 v.getContext().startActivity(intent);
             }
         });
-
-        // set header pic
-        String headUrl = bean.getPublisherHeadPic();
-        imageDownloader.setBitmap(headUrl, viewHolder.imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
-
-        // set moment pic
-        String picUrl = bean.getPic();
-        if (picUrl == null) {
-            viewHolder.imPic.setVisibility(View.GONE);
-        } else {
-            viewHolder.imPic.setVisibility(View.VISIBLE);
-            imageDownloader.setBitmap(picUrl, viewHolder.imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
-        }
 
         // load more if scrolled to bottom
         if (i == beanList.size() - 1) {
