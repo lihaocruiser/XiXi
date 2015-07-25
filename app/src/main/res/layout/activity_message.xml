@@ -1,17 +1,20 @@
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/layout_toolbar"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical" >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle_view"
+        <com.xixi.widget.LoadListView
+            android:id="@+id/load_list_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:scrollbars="vertical"
@@ -19,4 +22,6 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+    <include layout="@layout/layout_edit_bar"/>
+
+</LinearLayout>

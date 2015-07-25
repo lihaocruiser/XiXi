@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // init toolbar
+        // init layout_toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -267,7 +267,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.action_private_message:
-                // TODO private message
+                Intent intent = new Intent(ProfileActivity.this, MessageActivity.class);
+//                intent.putExtra("receiverId", userId);
+                intent.putExtra("receiverId", 1);
+                intent.putExtra("receiverNickname", nickname);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

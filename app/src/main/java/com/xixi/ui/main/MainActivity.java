@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         FileUtil.init(MainActivity.this);
         WindowUtil.init(MainActivity.this);
 
-        // init toolbar
+        // init layout_toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

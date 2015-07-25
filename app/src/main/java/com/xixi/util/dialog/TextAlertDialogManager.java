@@ -33,7 +33,7 @@ public class TextAlertDialogManager {
     }
 
     public void show(DialogInterface.OnClickListener listener, int inputType) {
-        ll = (LinearLayout) inflater.inflate(R.layout.dialog_edit_text, null);
+        ll = (LinearLayout) inflater.inflate(R.layout.widget_dialog_edit_text, null);
         etDialog = (EditText) ll.findViewById(R.id.et_dialog);
         etDialog.setInputType(inputType);
         builder.setView(ll);

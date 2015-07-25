@@ -71,8 +71,8 @@ public class MagpieBean implements Serializable {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject o = (JSONObject) array.get(i);
-                MagpieBean circleBean = new MagpieBean(o);
-                beanList.add(circleBean);
+                MagpieBean magpieBean = new MagpieBean(o);
+                beanList.add(magpieBean);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -87,8 +87,8 @@ public class MagpieBean implements Serializable {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject o = (JSONObject) array.get(i);
-                MagpieBean circleBean = new MagpieBean(o);
-                beanList.add(circleBean);
+                MagpieBean bean = new MagpieBean(o);
+                beanList.add(bean);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

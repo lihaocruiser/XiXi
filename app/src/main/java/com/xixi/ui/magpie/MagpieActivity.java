@@ -58,9 +58,9 @@ public class MagpieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_magpie);
+        setContentView(R.layout.activity_load_list_view);
 
-        // init toolbar
+        // init layout_toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
