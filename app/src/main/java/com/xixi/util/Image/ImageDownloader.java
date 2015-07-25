@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.xixi.net.BitmapReceiver;
+import com.xixi.net.base.BitmapReceiver;
 import com.xixi.net.image.ImageDownloadTask;
 import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;

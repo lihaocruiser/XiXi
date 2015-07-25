@@ -13,7 +13,7 @@ import com.xixi.R;
 import com.xixi.adapter.CircleAdapter;
 import com.xixi.bean.circle.CircleBean;
 import com.xixi.net.circle.CircleListJSONTask;
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -17,8 +17,9 @@ import com.xixi.adapter.CircleHeaderCardViewHolder;
 import com.xixi.adapter.CommentAdapter;
 import com.xixi.bean.CommentBean;
 import com.xixi.bean.circle.CircleBean;
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
+import com.xixi.ui.user.ProfileActivity;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
@@ -95,7 +96,9 @@ public class CircleActivity extends AppCompatActivity {
         adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {
             @Override
             public void onAvatarClick(int userId) {
-                Toast.makeText(CircleActivity.this, "startActivity", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CircleActivity.this, ProfileActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
             }
         });
 

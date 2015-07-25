@@ -1,4 +1,4 @@
-package com.xixi.net;
+package com.xixi.net.base;
 
 public interface RequestUrl {
 	
@@ -28,7 +28,8 @@ public interface RequestUrl {
     String SEND_LIKE = "xqz/likexqz";                           //小圈子点赞
     String CANCEL_LIKE = "xqz/cancellikexqz";                   //小圈子取消点赞
 
-    // me
+    // user
+    String PROFILE = "customer/look";
     String MODIFY_PROFILE = "customer/update";
 
 }

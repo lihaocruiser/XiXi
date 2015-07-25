@@ -1,9 +1,9 @@
 package com.xixi.net.circle;
 
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.JSONReceiver;
-import com.xixi.net.JSONTask;
-import com.xixi.net.RequestUrl;
+import com.xixi.net.base.JSONReceiver;
+import com.xixi.net.base.JSONTask;
+import com.xixi.net.base.RequestUrl;
 
 /**
  * Created by lihao on 7/18/15.

@@ -21,6 +21,7 @@
     <string name="btn_confirm">确定</string>
     <string name="btn_finish">完成</string>
     <string name="btn_new">新的</string>
+    <string name="btn_private_message">私信</string>
     <string name="btn_send">发送</string>
     <string name="btn_upload">上传</string>
 
@@ -47,6 +48,7 @@
     <string name="txt_send_successfully">发送成功</string>
     <string name="txt_sending">发送中</string>
     <string name="txt_settings">设置</string>
+    <string name="txt_sex">性别</string>
     <string name="txt_title">标题</string>
     <string name="txt_uploading">上传中</string>
     <string name="txt_weekend">周末去哪儿</string>

@@ -1,8 +1,7 @@
-package com.xixi.ui.me;
+package com.xixi.ui.user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,15 +9,20 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
-import com.xixi.net.JSONReceiver;
+import com.xixi.bean.user.UserBean;
+import com.xixi.net.base.JSONReceiver;
+import com.xixi.net.user.ProfileJSONTask;
+import com.xixi.util.Image.BitmapUtil;
+import com.xixi.util.Image.ImageDownloader;
 import com.xixi.util.Image.ImageUploader;
-import com.xixi.net.me.ModifyProfileJSONTask;
+import com.xixi.net.user.ModifyProfileJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.util.dialog.ProgressDialogManager;
 import com.xixi.util.dialog.TextAlertDialogManager;
@@ -30,25 +34,36 @@ import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // test
+    String base = "http://home.ustc.edu.cn/~lihao90/android/";
+
     Toolbar toolbar;
 
+    LinearLayout llAvatar;
     LinearLayout llNickname;
+    LinearLayout llSex;
     LinearLayout llAge;
     LinearLayout llSchool;
     LinearLayout llLabel;
 
-    CircleImageView imHeader;
+    CircleImageView imAvatar;
     TextView tvNickname;
+    TextView tvSex;
     TextView tvAge;
+    TextView tvSchool;
     TextView tvLabel;
 
+    ImageDownloader imageDownloader;
+    ApplicationContext ac;
     TextAlertDialogManager textAlertDialogManager;
     ProgressDialogManager progressDialogManager;
 
-    int id;
+    int userId;
     int age;
-    String headerUrl;
+    String avatar;
     String nickname;
+    String sex;
+    String school;
     String label;
 
     @Override
@@ -61,50 +76,74 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        id = 0;
+        userId = getIntent().getIntExtra("userId", 0);
 
         textAlertDialogManager = new TextAlertDialogManager(ProfileActivity.this);
         progressDialogManager = new ProgressDialogManager(ProfileActivity.this);
 
+        llAvatar = (LinearLayout) findViewById(R.id.ll_avatar);
         llNickname = (LinearLayout) findViewById(R.id.ll_nickname);
+        llSex = (LinearLayout) findViewById(R.id.ll_sex);
         llAge = (LinearLayout) findViewById(R.id.ll_age);
         llSchool = (LinearLayout) findViewById(R.id.ll_school);
         llLabel = (LinearLayout) findViewById(R.id.ll_label);
 
-        imHeader = (CircleImageView) findViewById(R.id.im_header);
+        imAvatar = (CircleImageView) findViewById(R.id.im_avatar);
         tvNickname = (TextView) findViewById(R.id.tv_nickname);
+        tvSex = (TextView) findViewById(R.id.tv_sex);
         tvAge = (TextView) findViewById(R.id.tv_age);
+        tvSchool = (TextView) findViewById(R.id.tv_school);
         tvLabel = (TextView) findViewById(R.id.tv_label);
 
-        loadFromApplicationContext();
+        new ProfileJSONTask(userId, new JSONReceiver() {
+            @Override
+            public void onFailure(JSONObject obj) {
+                avatar = base + "1.jpg";
+                nickname = "nickname";
+                age = 0;
+                school = "USTC";
+                label = "DOTA2";
+                initView();
+            }
 
-        imHeader.setOnClickListener(this);
+            @Override
+            public void onSuccess(JSONObject obj) {
+                UserBean userBean = new UserBean(obj);
+                avatar = userBean.getAvatar();
+                nickname = userBean.getNickname();
+                age = userBean.getAge();
+                school = userBean.getSchool();
+                label = userBean.getLabel();
+                initView();
+            }
+        }).execute();
+
+    }
+
+    private void initView() {
+
+        imageDownloader = new ImageDownloader(llAvatar);
+
+        imageDownloader.setBitmap(avatar, imAvatar, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.MIDDLE);
+        tvNickname.setText(nickname);
+        tvSex.setText(sex);
+        tvAge.setText(age + "");
+        tvSchool.setText(school);
+        tvLabel.setText(label);
+
+        imAvatar.setOnClickListener(this);
         llNickname.setOnClickListener(this);
+        llSex.setOnClickListener(this);
         llAge.setOnClickListener(this);
         llSchool.setOnClickListener(this);
         llLabel.setOnClickListener(this);
-    }
-
-    private void loadFromApplicationContext() {
-        ApplicationContext ac = ApplicationContext.getInstance(ProfileActivity.this);
-        headerUrl = ac.getHeadPic();
-        nickname = ac.getNickname();
-        age = ac.getAge();
-        label = ac.getLabel();
-
-        if (headerUrl != null) {
-            imHeader.setImageBitmap(BitmapFactory.decodeFile(headerUrl));
-        }
-        tvNickname.setText(nickname);
-        tvAge.setText(age + "");
-        tvLabel.setText(label);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.im_header:
+            case R.id.im_avatar:
                 Intent intent = new Intent(ProfileActivity.this, ImageBrowseActivity.class);
                 intent.putExtra("maxImageCount", 1);
                 startActivityForResult(intent, 0);
@@ -170,7 +209,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 @Override
                 public void onSuccess(List<String> receivedUrls) {
-                    headerUrl = receivedUrls.get(0);
+                    avatar = receivedUrls.get(0);
                     modifyProfile();
                 }
             });
@@ -187,7 +226,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         progressDialogManager.show("modifying profile");
 
-        new ModifyProfileJSONTask(id, age, headerUrl, nickname, label, new JSONReceiver() {
+        new ModifyProfileJSONTask(userId, age, avatar, nickname, label, new JSONReceiver() {
 
             @Override
             public void onFailure(JSONObject obj) {
@@ -198,11 +237,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onSuccess(JSONObject obj) {
                 ApplicationContext ac = ApplicationContext.getInstance();
-                ac.setHeadPic(headerUrl);
+                ac.setHeadPic(avatar);
                 ac.setNickName(nickname);
                 ac.setAge(age);
                 ac.setLabel(label);
-                loadFromApplicationContext();
+                initView();
                 progressDialogManager.dismiss();
             }
         }).execute();
@@ -212,14 +251,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        MenuItem menuPrivateMessage = menu.findItem(R.id.action_private_message);
+        if (userId != ApplicationContext.getInstance().getUserId()) {
+            menuPrivateMessage.setVisible(true);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_private_message:
+                // TODO private message
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

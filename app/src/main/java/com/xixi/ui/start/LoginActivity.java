@@ -15,7 +15,7 @@ import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.net.start.LoginJSONTask;
 import com.xixi.ui.main.MainActivity;
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 import com.xixi.util.SafeJSON;
 
 public class LoginActivity extends Activity implements OnClickListener {

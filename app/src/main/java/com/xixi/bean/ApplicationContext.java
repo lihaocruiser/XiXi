@@ -15,7 +15,7 @@ public class ApplicationContext {
 	private static ApplicationContext instance;
 
 	private final static String SP_NAME = "mySharedPreferences";
-	private final static String USER_TOKEN = "token";
+    private final static String USER_ID = "userId";
 	private final static String USER_EMAIL = "email";
 	private final static String USER_PASSWORD = "password";
 	private final static String USER_CHECKED = "checked";
@@ -82,12 +82,12 @@ public class ApplicationContext {
 		editor.apply();
 	}
 	
-	public String getToken() {
-		return getSP().getString(USER_TOKEN, null);
+	public int getUserId() {
+		return getSP().getInt(USER_ID, -1);
 	}
 	
-	public void setToken(String token) {
-		Editor editor = getSP().edit().putString(USER_TOKEN, token);
+	public void setUserId(int userId) {
+		Editor editor = getSP().edit().putInt(USER_ID, userId);
 		editor.apply();
 	}
 	
@@ -131,7 +131,7 @@ public class ApplicationContext {
         return getSP().getString(USER_HEAD_PIC, null);
     }
 
-    public void setHeadPic(String USER_HEAD_PIC) {
+    public void setHeadPic(String headPic) {
         Editor editor = getSP().edit().putString(USER_HEAD_PIC, null);
         editor.apply();
     }

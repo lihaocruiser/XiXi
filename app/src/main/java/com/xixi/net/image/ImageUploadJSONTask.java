@@ -1,9 +1,9 @@
 package com.xixi.net.image;
 
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.JSONReceiver;
-import com.xixi.net.JSONTask;
-import com.xixi.net.RequestUrl;
+import com.xixi.net.base.JSONReceiver;
+import com.xixi.net.base.JSONTask;
+import com.xixi.net.base.RequestUrl;
 
 import java.io.File;
 import java.io.FileNotFoundException;

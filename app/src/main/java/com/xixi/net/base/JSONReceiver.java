@@ -1,4 +1,4 @@
-package com.xixi.net;
+package com.xixi.net.base;
 
 import org.json.JSONObject;
 

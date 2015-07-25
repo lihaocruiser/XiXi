@@ -1,11 +1,10 @@
 package com.xixi.net.image;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.xixi.net.BitmapReceiver;
+import com.xixi.net.base.BitmapReceiver;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.xixi.util.Image.BitmapUtil;

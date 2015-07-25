@@ -13,7 +13,7 @@ import com.xixi.R;
 import com.xixi.adapter.MagpieAdapter;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.magpie.MagpieListJSONTask;
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

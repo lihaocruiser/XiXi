@@ -16,7 +16,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.xixi.R;
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 import com.xixi.util.Image.ImageUploader;
 import com.xixi.net.start.RegisterJSONTask;
 import com.xixi.net.start.SchoolListJSONTask;

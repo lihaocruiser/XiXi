@@ -4,7 +4,8 @@
     tools:context="com.xixi.ui.magpie.MagpieActivity">
 
     <item
-        android:id="@+id/action_new"
+        android:id="@+id/action_new_magpie"
+        android:icon="@drawable/btn_add"
         android:title="@string/btn_new"
         android:orderInCategory="100"
         app:showAsAction="always" />

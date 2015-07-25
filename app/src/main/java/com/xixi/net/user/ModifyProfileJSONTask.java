@@ -1,9 +1,9 @@
-package com.xixi.net.me;
+package com.xixi.net.user;
 
 import com.loopj.android.http.RequestParams;
-import com.xixi.net.RequestUrl;
-import com.xixi.net.JSONReceiver;
-import com.xixi.net.JSONTask;
+import com.xixi.net.base.RequestUrl;
+import com.xixi.net.base.JSONReceiver;
+import com.xixi.net.base.JSONTask;
 
 /**
  * Created on 2015-7-16.

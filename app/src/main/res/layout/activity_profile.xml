@@ -3,17 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.xixi.ui.me.ProfileActivity">
+    tools:context="com.xixi.ui.user.ProfileActivity">
 
     <include layout="@layout/toolbar" />
 
-    <com.xixi.widget.CircleImageView
-        android:id="@+id/im_header"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_zhanjun"/>
+    <LinearLayout
+        android:id="@+id/ll_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.xixi.widget.CircleImageView
+            android:id="@+id/im_avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_nickname"
@@ -25,8 +32,22 @@
 
         <TextView
             android:id="@+id/tv_nickname"
-            style="@style/item_tv_tv_right"
-            android:text="某浩的马甲"/>
+            style="@style/item_tv_tv_right"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_sex"
+        style="@style/item_tv_tv"
+        android:layout_marginTop="1dp">
+
+        <TextView
+            style="@style/item_tv_tv_left"
+            android:text="@string/txt_sex"/>
+
+        <TextView
+            android:id="@+id/tv_sex"
+            style="@style/item_tv_tv_right"/>
 
     </LinearLayout>
 
@@ -41,8 +62,7 @@
 
         <TextView
             android:id="@+id/tv_age"
-            style="@style/item_tv_tv_right"
-            android:text="24"/>
+            style="@style/item_tv_tv_right"/>
 
     </LinearLayout>
 
@@ -57,8 +77,7 @@
 
         <TextView
             android:id="@+id/tv_school"
-            style="@style/item_tv_tv_right"
-            android:text="中国科学技术大学"/>
+            style="@style/item_tv_tv_right"/>
 
     </LinearLayout>
 
@@ -73,8 +92,7 @@
 
         <TextView
             android:id="@+id/tv_label"
-            style="@style/item_tv_tv_right"
-            android:text="dota2"/>
+            style="@style/item_tv_tv_right"/>
 
     </LinearLayout>
 

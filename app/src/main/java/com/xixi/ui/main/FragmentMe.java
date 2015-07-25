@@ -12,9 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.xixi.R;
+import com.xixi.bean.ApplicationContext;
 import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.net.BitmapReceiver;
-import com.xixi.ui.me.ProfileActivity;
+import com.xixi.net.base.BitmapReceiver;
+import com.xixi.ui.user.ProfileActivity;
 import com.xixi.widget.CircleImageView;
 
 public class FragmentMe extends Fragment implements View.OnClickListener {
@@ -71,6 +72,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
         switch (id) {
             case R.id.ll_profile:
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                int userId = ApplicationContext.getInstance().getUserId();
+                intent.putExtra("userId", userId);
                 startActivity(intent);
                 break;
             case R.id.ll_messages:

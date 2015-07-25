@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.xixi.R;
+import com.xixi.bean.ApplicationContext;
 import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
 import com.xixi.util.WindowUtil;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
 
+    ApplicationContext ac;
+
     MenuItem menuAdd;
 
     @Override
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        ac = ApplicationContext.getInstance(MainActivity.this);
         FileUtil.init(MainActivity.this);
         WindowUtil.init(MainActivity.this);
 

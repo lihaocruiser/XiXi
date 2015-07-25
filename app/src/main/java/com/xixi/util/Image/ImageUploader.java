@@ -1,6 +1,6 @@
 package com.xixi.util.Image;
 
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.image.ImageUploadJSONTask;
 import com.xixi.util.SafeJSON;
 

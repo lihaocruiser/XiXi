@@ -17,8 +17,9 @@ import com.xixi.adapter.CommentAdapter;
 import com.xixi.adapter.MagpieHeaderCardViewHolder;
 import com.xixi.bean.CommentBean;
 import com.xixi.bean.magpie.MagpieBean;
-import com.xixi.net.JSONReceiver;
+import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
+import com.xixi.ui.user.ProfileActivity;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
@@ -95,7 +96,9 @@ public class MagpieActivity extends AppCompatActivity {
         adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {
             @Override
             public void onAvatarClick(int userId) {
-                Toast.makeText(MagpieActivity.this, "startActivity", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MagpieActivity.this, ProfileActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
             }
         });
 
@@ -116,30 +119,6 @@ public class MagpieActivity extends AppCompatActivity {
 
         onLoadMore();
     }
-
-//    private void initHeaderView() {
-//        LinearLayout llHeader;
-//        CardView cardView;
-//        ImageView imUserHeader;
-//        ImageView imMagpiePic;
-//        ImageView imSex;
-//        TextView tvTitle;
-//        TextView tvUserName;
-//        TextView tvTime;
-//        TextView tvLikeCount;
-//        TextView tvReplyCount;
-//        TextView tvContent;
-//        llHeader = (LinearLayout) LayoutInflater.from(MagpieActivity.this).inflate(R.layout.lv_magpie_header, null);
-//        imUserHeader = (ImageView) findViewById(R.id.im_header);
-//        imMagpiePic = (ImageView) findViewById(R.id.im_pic);
-//        imSex = (ImageView) findViewById(R.id.im_sex);
-//        tvTitle = (TextView) findViewById(R.id.tv_title);
-//        tvUserName = (TextView) findViewById(R.id.tv_name);
-//        tvTime = (TextView) findViewById(R.id.tv_time);
-//        tvLikeCount = (TextView) findViewById(R.id.tv_like_count);
-//        tvReplyCount = (TextView) findViewById(R.id.tv_reply_count);
-//        tvContent = (TextView) findViewById(R.id.tv_content);
-//    }
 
 
     private void onLoadMore() {
