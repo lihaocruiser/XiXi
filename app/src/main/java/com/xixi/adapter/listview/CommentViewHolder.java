@@ -1,4 +1,4 @@
-package com.xixi.adapter;
+package com.xixi.adapter.listview;
 
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;

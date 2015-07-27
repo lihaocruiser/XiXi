@@ -1,10 +1,9 @@
-package com.xixi.adapter;
+package com.xixi.adapter.listview;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 import com.xixi.R;
 import com.xixi.bean.circle.ReplyBean;

@@ -4,10 +4,17 @@
     tools:context="com.xixi.ui.MainActivity">
 
     <item
+        android:id="@+id/action_notify"
+        android:icon="@drawable/ic_action_notify"
+        android:title="notify"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_new_magpie"
         android:icon="@drawable/btn_add"
         android:title="@string/btn_new"
         android:orderInCategory="100"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
 </menu>

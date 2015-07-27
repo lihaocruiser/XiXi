@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xixi.R;
-import com.xixi.adapter.CommentAdapter;
-import com.xixi.adapter.MagpieHeaderCardViewHolder;
+import com.xixi.adapter.listview.CommentAdapter;
+import com.xixi.adapter.cardview.MagpieHeaderCardViewHolder;
 import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.base.JSONReceiver;
@@ -41,7 +41,7 @@ public class MagpieActivity extends AppCompatActivity {
     CommentAdapter adapter;
     ImageDownloader imageDownloader;
 
-    MagpieBean magpieBean;
+    MagpieBean magpieBean = new MagpieBean();
     List<ReplyBean> replyBeanList = new ArrayList<>();
 
     int magpieId;
@@ -65,8 +65,7 @@ public class MagpieActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get intent
-        magpieBean = (MagpieBean) getIntent().getSerializableExtra("MagpieBean");
-        magpieId = magpieBean.getId();
+        magpieId = getIntent().getIntExtra("id", 0);
 
         // find view
         etComment = (EditText) findViewById(R.id.et_send);
@@ -89,7 +88,7 @@ public class MagpieActivity extends AppCompatActivity {
         CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_magpie_header, null);
         listView.addHeaderView(cardView);
         MagpieHeaderCardViewHolder cardViewHolder = new MagpieHeaderCardViewHolder(cardView, imageDownloader);
-        cardViewHolder.setData(magpieBean, userId);
+        cardViewHolder.setData(magpieBean);
 
         // on click listener
         adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {

@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xixi.R;
-import com.xixi.adapter.CircleHeaderCardViewHolder;
-import com.xixi.adapter.CommentAdapter;
+import com.xixi.adapter.cardview.CircleHeaderCardViewHolder;
+import com.xixi.adapter.listview.CommentAdapter;
 import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.circle.CircleBean;
 import com.xixi.net.base.JSONReceiver;
@@ -65,8 +65,7 @@ public class CircleActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get intent
-        circleBean = (CircleBean) getIntent().getSerializableExtra("CircleBean");
-        circleId = circleBean.getId();
+        circleId = getIntent().getIntExtra("id", 0);
 
         // find view
         etComment = (EditText) findViewById(R.id.et_send);
@@ -89,7 +88,7 @@ public class CircleActivity extends AppCompatActivity {
         CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_circle_header, null);
         listView.addHeaderView(cardView);
         CircleHeaderCardViewHolder cardViewHolder = new CircleHeaderCardViewHolder(cardView, imageDownloader);
-        cardViewHolder.setData(circleBean, userId);
+        cardViewHolder.setData(circleBean);
 
         // on click listener
         adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {

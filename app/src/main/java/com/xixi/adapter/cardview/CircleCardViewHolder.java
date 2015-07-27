@@ -1,7 +1,6 @@
-package com.xixi.adapter;
+package com.xixi.adapter.cardview;
 
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,13 +11,12 @@ import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 
 /**
- * Created on 2015-7-22.
+ * Created on 2015-7-27.
  */
-public class CircleCardViewHolder extends RecyclerView.ViewHolder {
+public class CircleCardViewHolder extends CardViewHolder<CircleBean> {
 
-    private ImageDownloader imageDownloader;
+    private int userId;
 
-    public CardView cardView;
     public ImageView imHeader;
     public ImageView imPic;
     public TextView tvNickname;
@@ -28,36 +26,34 @@ public class CircleCardViewHolder extends RecyclerView.ViewHolder {
     public TextView tvLikeCount;
     public TextView tvCommentCount;
 
-    public CircleCardViewHolder(CardView v, ImageDownloader imageDownloader) {
-        super(v);
-        this.cardView = v;
-        imHeader = (ImageView) v.findViewById(R.id.im_header);
-        imPic = (ImageView) v.findViewById(R.id.im_pic);
-        tvNickname = (TextView) v.findViewById(R.id.tv_nickname);
-        tvContent = (TextView) v.findViewById(R.id.tv_content);
-        imLike = (ImageView) v.findViewById(R.id.im_like);
-        imComment = (ImageView) v.findViewById(R.id.im_comment);
-        tvLikeCount = (TextView) v.findViewById(R.id.tv_like_count);
-        tvCommentCount = (TextView) v.findViewById(R.id.tv_comment_count);
-        this.imageDownloader = imageDownloader;
+    public CircleCardViewHolder(CardView cardView, ImageDownloader imageDownloader) {
+        super(cardView, imageDownloader);
+        imHeader = (ImageView) cardView.findViewById(R.id.im_header);
+        imPic = (ImageView) cardView.findViewById(R.id.im_pic);
+        tvNickname = (TextView) cardView.findViewById(R.id.tv_nickname);
+        tvContent = (TextView) cardView.findViewById(R.id.tv_content);
+        imLike = (ImageView) cardView.findViewById(R.id.im_like);
+        imComment = (ImageView) cardView.findViewById(R.id.im_comment);
+        tvLikeCount = (TextView) cardView.findViewById(R.id.tv_like_count);
+        tvCommentCount = (TextView) cardView.findViewById(R.id.tv_comment_count);
     }
 
-    public void setData(CircleBean bean, int userID) {
+    @Override
+    public void setValue(CircleBean bean) {
         tvNickname.setText(bean.getPublisherNickname());
         tvContent.setText(bean.getContent());
         tvLikeCount.setText(bean.getLikeCount() + "");
         tvCommentCount.setText(bean.getCommentCount() + "");
-        if (bean.getLikeIds().contains(userID)) {
+
+        if (bean.getLikeIds().contains(userId)) {
             imLike.setImageResource(R.drawable.ic_circle_like);
         } else {
             imLike.setImageResource(R.drawable.ic_circle_unlike);
         }
 
-        // set header pic
         String headUrl = bean.getPublisherHeadPic();
         imageDownloader.setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
 
-        // set moment pic
         String picUrl = bean.getPic();
         if (picUrl == null) {
             imPic.setVisibility(View.GONE);

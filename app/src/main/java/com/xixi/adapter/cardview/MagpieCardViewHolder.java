@@ -1,7 +1,6 @@
-package com.xixi.adapter;
+package com.xixi.adapter.cardview;
 
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,31 +11,27 @@ import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.CircleImageView;
 
 /**
- * Created on 2015-7-23.
+ * Created on 2015-7-27.
  */
-public class MagpieCardViewHolder extends RecyclerView.ViewHolder {
+public class MagpieCardViewHolder extends CardViewHolder<MagpieBean> {
 
-    ImageDownloader imageDownloader;
-
-    public CardView cardView;
     public CircleImageView imHeader;
     public TextView tvNickname;
     public TextView tvTitle;
 
-    public MagpieCardViewHolder(CardView v, ImageDownloader imageDownloader) {
-        super(v);
-        this.cardView = v;
-        imHeader = (CircleImageView) v.findViewById(R.id.im_header);
-        tvNickname = (TextView) v.findViewById(R.id.tv_nickname);
-        tvTitle = (TextView) v.findViewById(R.id.tv_title);
-        this.imageDownloader = imageDownloader;
+    public MagpieCardViewHolder(CardView cardView, ImageDownloader imageDownloader) {
+        super(cardView, imageDownloader);
+        imHeader = (CircleImageView) cardView.findViewById(R.id.im_header);
+        tvNickname = (TextView) cardView.findViewById(R.id.tv_nickname);
+        tvTitle = (TextView) cardView.findViewById(R.id.tv_title);
     }
 
-    public void setData(MagpieBean bean) {
+    @Override
+    public void setValue(MagpieBean bean) {
+
         tvNickname.setText(bean.getUserName());
         tvTitle.setText(bean.getTitle());
 
-        // set header pic
         String headUrl = bean.getUserHeaderUrl();
         imageDownloader.setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
     }

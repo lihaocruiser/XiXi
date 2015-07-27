@@ -1,5 +1,6 @@
 package com.xixi.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xixi.R;
-import com.xixi.adapter.MagpieAdapter;
+import com.xixi.adapter.cardview.CardAdapter;
+import com.xixi.adapter.cardview.MagpieCardViewHolder;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.magpie.MagpieListJSONTask;
 import com.xixi.net.base.JSONReceiver;
+import com.xixi.ui.magpie.MagpieActivity;
+import com.xixi.util.Image.ImageDownloader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,7 +31,9 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private MagpieAdapter adapter;
+    private CardAdapter<MagpieBean> adapter;
+
+    ImageDownloader imageDownloader = new ImageDownloader();
 
     int pageIndex = 0;
     int pageSize = 30;
@@ -35,14 +41,23 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
     boolean noMore = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
 
-        adapter = new MagpieAdapter();
-        adapter.setOnLoadMoreListener(new MagpieAdapter.OnLoadMoreListener() {
+//        adapter = new MagpieAdapter();
+        adapter = new CardAdapter<>(MagpieCardViewHolder.class, R.layout.cardview_magpie_list, imageDownloader);
+        adapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Object bean) {
+                Intent intent = new Intent(getActivity(), MagpieActivity.class);
+                intent.putExtra("id", ((MagpieBean) bean).getId());
+                startActivity(intent);
+            }
+        });
+        adapter.setOnLoadMoreListener(new CardAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 if (!loading) {
