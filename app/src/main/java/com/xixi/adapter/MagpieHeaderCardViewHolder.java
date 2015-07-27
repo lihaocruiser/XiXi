@@ -49,8 +49,6 @@ public class MagpieHeaderCardViewHolder extends RecyclerView.ViewHolder {
 
     public void setData(MagpieBean bean, int userId) {
 
-        imHeader.setTag(bean.getUserHeaderUrl());
-
         tvNickname.setText(bean.getUserName());
         tvTitle.setText(bean.getTitle());
         tvContent.setText(bean.getContent());

@@ -41,7 +41,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
 
-        adapter = new MagpieAdapter(recyclerView);
+        adapter = new MagpieAdapter();
         adapter.setOnLoadMoreListener(new MagpieAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {

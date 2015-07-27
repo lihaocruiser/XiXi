@@ -22,13 +22,8 @@ public class MagpieAdapter extends RecyclerView.Adapter<MagpieCardViewHolder> {
     private int userId;
 
     private ArrayList<MagpieBean> beanList = new ArrayList<>();
-    private ImageDownloader imageDownloader;
+    private ImageDownloader imageDownloader = new ImageDownloader();
     private OnLoadMoreListener onLoadMoreListener;
-
-    public MagpieAdapter(RecyclerView recyclerView) {
-        super();
-        imageDownloader = new ImageDownloader(recyclerView);
-    }
 
     public void setBeanList(ArrayList<MagpieBean> beanList) {
         this.beanList = beanList;

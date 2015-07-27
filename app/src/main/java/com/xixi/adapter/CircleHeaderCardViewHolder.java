@@ -43,8 +43,6 @@ public class CircleHeaderCardViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(CircleBean bean, int userID) {
-        imHeader.setTag(bean.getPublisherHeadPic());
-        imPic.setTag(bean.getPic());
         tvNickname.setText(bean.getPublisherNickname());
         tvContent.setText(bean.getContent());
         tvLikeCount.setText(bean.getLikeCount() + "");

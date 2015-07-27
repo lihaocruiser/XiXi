@@ -3,6 +3,7 @@ package com.xixi.util.Image;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -16,30 +17,31 @@ import java.io.FileOutputStream;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
 /**
- * Created by LiHao on 7/19/15.
- * manage async loading and caching of images in a ViewGroup
+ * Created on 7/19/15.
+ * manage async loading and caching of images
  */
 public class ImageDownloader {
 
-    private static Set<String> taskSet = new HashSet<>();
-    private static Queue<String> imageQueue = new ArrayDeque<>();
-    private static Map<String, Bitmap> imageMap = new HashMap<>();
+    private Set<String> taskSet = new HashSet<>();
+    private Queue<String> imageQueue = new ArrayDeque<>();
+    private Map<String, Bitmap> imageMap = new HashMap<>();
 
-    private ViewGroup viewGroup;
-
-    public ImageDownloader(ViewGroup viewGroup) {
-        this.viewGroup = viewGroup;
-    }
+    private HashSet<ImageView> imSet = new HashSet<>();
 
     public void setBitmap(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
         if (picUrl == null) {
             imageView.setImageBitmap(null);
             return;
+        }
+        if (!imSet.contains(imageView)) {
+            imSet.add(imageView);
+            imageView.setTag(picUrl);
         }
         if (containsBitmap(picUrl)) {
             imageView.setImageBitmap(getBitmap(picUrl));
@@ -50,7 +52,6 @@ public class ImageDownloader {
             fetchImage(picUrl, viewWidth, viewHeight, scaleType, size);
         }
     }
-
 
     // 判断图片是否在内存
     private boolean containsBitmap(String url) {
@@ -172,52 +173,29 @@ public class ImageDownloader {
 
     // 获取到图片后更新内存
     private void updateCache(String url, Bitmap bitmap) {
-        // 如果图片数量超过阈值且最早加载的图片不在屏幕中，则清除最早的一张
-        if (imageQueue.size() > 50) {
-            String earliest = imageQueue.peek();
-            if (viewGroup.findViewWithTag(earliest) == null) {
-                imageQueue.poll();
-                imageMap.remove(url);
-            }
-        }
         imageQueue.offer(url);
         imageMap.put(url, bitmap);
+        // 如果图片数量超过阈值且最早加载的图片不在屏幕中，则清除最早的一张
+        if (imageQueue.size() < 50) {
+            return;
+        }
+        String earliest = imageQueue.peek();
+        for (ImageView imageView : imSet) {
+            if (url.equals(imageView.getTag())) {
+                return;
+            }
+        }
+        imageQueue.poll();
+        imageMap.remove(earliest);
     }
 
     // 获取到图片后更新UI
     private void updateImageView(String url, Bitmap bitmap, BitmapUtil.Size size) {
-        ImageView imageView = (ImageView) viewGroup.findViewWithTag(url);
-        if (imageView != null) {
-            imageView.setImageBitmap(bitmap);
-            imageView.invalidate();
+        for (ImageView imageView : imSet) {
+            if (url.equals(imageView.getTag())) {
+                imageView.setImageBitmap(bitmap);
+            }
         }
-    }
-
-    /**
-     * 头大，这函数没用过
-     */
-    private Bitmap resizeIfNeeded(Bitmap bitmap, ImageView imageView) {
-
-        boolean xExceeds = (bitmap.getWidth() > imageView.getMaxWidth());
-        boolean yExceeds = (bitmap.getHeight() > imageView.getMaxHeight());
-
-        if (xExceeds || yExceeds) {
-            int bitmapWidth = bitmap.getWidth();
-            int viewWidth = Math.min(imageView.getMaxWidth(), WindowUtil.getWindowWidth());
-            float scaleX = (float) viewWidth / (float) bitmapWidth;
-
-            int bitmapHeight = bitmap.getHeight();
-            int viewHeight = Math.min(imageView.getMaxHeight(), WindowUtil.getWindowHeight());
-            float scaleY = (float) viewHeight / (float) bitmapHeight;
-
-            float scale = Math.min(scaleX, scaleY);
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
-            imageView.measure(bitmap.getWidth(), bitmap.getHeight());
-        }
-        return bitmap;
     }
 
 }

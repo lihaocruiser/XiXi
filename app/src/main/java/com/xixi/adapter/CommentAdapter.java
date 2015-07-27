@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.xixi.R;
-import com.xixi.bean.CommentBean;
+import com.xixi.bean.circle.ReplyBean;
 import com.xixi.util.Image.ImageDownloader;
 
 import java.util.ArrayList;
@@ -18,11 +18,19 @@ import java.util.ArrayList;
 public class CommentAdapter extends BaseAdapter {
 
     private int userId;
-    private ArrayList<CommentBean> beanList = new ArrayList<>();
+    private ArrayList<ReplyBean> beanList = new ArrayList<>();
     private ImageDownloader imageDownloader;
 
     private OnAvatarClickListener avatarClickListener;
     private OnCommentClickListener commentClickListener;
+
+    public CommentAdapter() {
+        imageDownloader = new ImageDownloader();
+    }
+
+    public CommentAdapter(ImageDownloader imageDownloader) {
+        this.imageDownloader = imageDownloader;
+    }
 
     public interface OnAvatarClickListener {
         void onAvatarClick(int userId);
@@ -32,15 +40,11 @@ public class CommentAdapter extends BaseAdapter {
         void onCommentClick(int receiverId, String receiverNickname);
     }
 
-    public CommentAdapter(ListView listView) {
-        imageDownloader = new ImageDownloader(listView);
-    }
-
-    public ArrayList<CommentBean> getBeanList() {
+    public ArrayList<ReplyBean> getBeanList() {
         return beanList;
     }
 
-    public void setBeanList(ArrayList<CommentBean> beanList) {
+    public void setBeanList(ArrayList<ReplyBean> beanList) {
         this.beanList = beanList;
     }
 
@@ -75,7 +79,7 @@ public class CommentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        final CommentBean commentBean = beanList.get(i);
+        final ReplyBean replyBean = beanList.get(i);
         CommentViewHolder holder;
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lv_comment_item, null);
@@ -90,7 +94,7 @@ public class CommentAdapter extends BaseAdapter {
         holder.imHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int userId = commentBean.getSenderId();
+                int userId = replyBean.getSenderId();
                 if (avatarClickListener != null) {
                     avatarClickListener.onAvatarClick(userId);
                 }
@@ -100,8 +104,8 @@ public class CommentAdapter extends BaseAdapter {
         holder.tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int receiverId = commentBean.getSenderId();
-                String  receiverNickname = commentBean.getSenderNickname();
+                int receiverId = replyBean.getSenderId();
+                String  receiverNickname = replyBean.getSenderNickname();
                 if (commentClickListener != null) {
                     commentClickListener.onCommentClick(receiverId, receiverNickname);
                 }

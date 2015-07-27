@@ -122,7 +122,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initView() {
 
-        imageDownloader = new ImageDownloader(llAvatar);
+        imageDownloader = new ImageDownloader();
 
         imageDownloader.setBitmap(avatar, imAvatar, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.MIDDLE);
         tvNickname.setText(nickname);

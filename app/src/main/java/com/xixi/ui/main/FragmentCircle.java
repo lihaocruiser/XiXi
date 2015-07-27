@@ -43,7 +43,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
 
-        adapter = new CircleAdapter(recyclerView);
+        adapter = new CircleAdapter();
         adapter.setOnLoadMoreListener(new CircleAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {

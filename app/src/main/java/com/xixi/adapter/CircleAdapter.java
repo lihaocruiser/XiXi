@@ -17,7 +17,7 @@ import com.xixi.util.Image.ImageDownloader;
 import java.util.ArrayList;
 
 /**
- * Created by LiHao on 2015-7-20.
+ * Created on 2015-7-20.
  */
 public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
 
@@ -27,9 +27,12 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleCardViewHolder> {
     private ImageDownloader imageDownloader;
     private OnLoadMoreListener onLoadMoreListener;
 
-    public CircleAdapter(RecyclerView recyclerView) {
-        super();
-        imageDownloader = new ImageDownloader(recyclerView);
+    public CircleAdapter() {
+        imageDownloader = new ImageDownloader();
+    }
+
+    public CircleAdapter(ImageDownloader imageDownloader) {
+        this.imageDownloader = imageDownloader;
     }
 
     public void setBeanList(ArrayList<CircleBean> beanList) {

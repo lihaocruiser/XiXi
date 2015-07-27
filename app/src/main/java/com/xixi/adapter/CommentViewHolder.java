@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xixi.R;
-import com.xixi.bean.CommentBean;
+import com.xixi.bean.circle.ReplyBean;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 
@@ -31,7 +31,7 @@ public class CommentViewHolder {
         this.imageDownloader = imageDownloader;
     }
 
-    public void setData(final CommentBean bean) {
+    public void setData(final ReplyBean bean) {
 
         // set text
 
@@ -55,7 +55,6 @@ public class CommentViewHolder {
 
         // set image
 
-        imHeader.setTag(bean.getSenderAvatar());
         imageDownloader.setBitmap(bean.getSenderAvatar(), imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
     }
 }

@@ -1,4 +1,4 @@
-package com.xixi.bean;
+package com.xixi.bean.circle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created on 2015-7-24.
  */
-public class CommentBean {
+public class ReplyBean {
 
     private int commentId;
     private int senderId;
@@ -19,9 +19,9 @@ public class CommentBean {
     private String receiverNickname;
     private String comment;
 
-    public CommentBean() {}
+    public ReplyBean() {}
 
-    public CommentBean(JSONObject obj) {
+    public ReplyBean(JSONObject obj) {
         if (obj == null) {
             return;
         }
@@ -34,13 +34,13 @@ public class CommentBean {
         comment = obj.optString("comment");
     }
 
-    public static ArrayList<CommentBean> getBeanList(JSONArray array) {
-        ArrayList<CommentBean> beanList = new ArrayList<>();
+    public static ArrayList<ReplyBean> getBeanList(JSONArray array) {
+        ArrayList<ReplyBean> beanList = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject o = (JSONObject) array.get(i);
-                CommentBean commentBean = new CommentBean(o);
-                beanList.add(commentBean);
+                ReplyBean replyBean = new ReplyBean(o);
+                beanList.add(replyBean);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

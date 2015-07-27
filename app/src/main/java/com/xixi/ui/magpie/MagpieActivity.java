@@ -10,12 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.xixi.R;
 import com.xixi.adapter.CommentAdapter;
 import com.xixi.adapter.MagpieHeaderCardViewHolder;
-import com.xixi.bean.CommentBean;
+import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
@@ -43,7 +42,7 @@ public class MagpieActivity extends AppCompatActivity {
     ImageDownloader imageDownloader;
 
     MagpieBean magpieBean;
-    List<CommentBean> commentBeanList = new ArrayList<>();
+    List<ReplyBean> replyBeanList = new ArrayList<>();
 
     int magpieId;
     int userId;
@@ -75,9 +74,9 @@ public class MagpieActivity extends AppCompatActivity {
         listView = (LoadListView) findViewById(R.id.list_view);
 
         // set adapter
-        adapter = new CommentAdapter(listView);
+        imageDownloader = new ImageDownloader();
+        adapter = new CommentAdapter(imageDownloader);
         listView.setAdapter(adapter);
-        imageDownloader = new ImageDownloader(listView);
         listView.setDividerHeight(0);
         listView.setOnLoadListener(new LoadListView.OnLoadListener() {
             @Override
@@ -133,7 +132,7 @@ public class MagpieActivity extends AppCompatActivity {
                 listView.onLoadComplete();
                 // for test only
                 for (int i = 0; i < 10; i++) {
-                    CommentBean bean = new CommentBean();
+                    ReplyBean bean = new ReplyBean();
                     bean.setSenderNickname("Sender");
                     bean.setSenderAvatar(base + i + ".jpg");
                     bean.setComment(base + i + ".jpg");
@@ -147,7 +146,7 @@ public class MagpieActivity extends AppCompatActivity {
                 loading = false;
                 listView.onLoadComplete();
                 JSONArray array = obj.optJSONArray("list");
-                commentBeanList = CommentBean.getBeanList(array);
+                replyBeanList = ReplyBean.getBeanList(array);
                 adapter.notifyDataSetChanged();
             }
         }).execute();
