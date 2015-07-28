@@ -13,12 +13,12 @@ import android.widget.EditText;
 
 import com.xixi.R;
 import com.xixi.adapter.cardview.CircleHeaderCardViewHolder;
-import com.xixi.adapter.listview.CommentAdapter;
+import com.xixi.adapter.listview.CircleReplyViewHolder;
+import com.xixi.adapter.listview.BaseListAdapter;
 import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.circle.CircleBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
-import com.xixi.ui.user.ProfileActivity;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
@@ -33,12 +33,18 @@ public class CircleActivity extends AppCompatActivity {
     // test
     String base = "http://home.ustc.edu.cn/~lihao90/android/";
 
+    private static CircleActivity instance;
+
+    public static CircleActivity getInstance() {
+        return instance;
+    }
+
     Toolbar toolbar;
     LoadListView listView;
     EditText etComment;
     Button btnSend;
 
-    CommentAdapter adapter;
+    BaseListAdapter<ReplyBean> adapter;
     ImageDownloader imageDownloader;
 
     CircleBean circleBean = new CircleBean();
@@ -58,6 +64,7 @@ public class CircleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_list_view);
+        instance = this;
 
         // init layout_toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,7 +81,7 @@ public class CircleActivity extends AppCompatActivity {
 
         // set adapter
         imageDownloader = new ImageDownloader();
-        adapter = new CommentAdapter(imageDownloader);
+        adapter = new BaseListAdapter<>(CircleReplyViewHolder.class, R.layout.lv_circle_reply_item, imageDownloader);
         listView.setAdapter(adapter);
         listView.setDividerHeight(0);
         listView.setOnLoadListener(new LoadListView.OnLoadListener() {
@@ -90,24 +97,6 @@ public class CircleActivity extends AppCompatActivity {
         CircleHeaderCardViewHolder cardViewHolder = new CircleHeaderCardViewHolder(cardView, imageDownloader);
         cardViewHolder.setData(circleBean);
 
-        // on click listener
-        adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {
-            @Override
-            public void onAvatarClick(int userId) {
-                Intent intent = new Intent(CircleActivity.this, ProfileActivity.class);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
-            }
-        });
-
-        adapter.setOnCommentClickListener(new CommentAdapter.OnCommentClickListener() {
-            @Override
-            public void onCommentClick(int receiverId, String receiverNickname) {
-                CircleActivity.this.receiverId = receiverId;
-                etComment.setHint("@" + receiverNickname);
-            }
-        });
-
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +106,11 @@ public class CircleActivity extends AppCompatActivity {
 
         // request data
         onLoadMore();
+    }
+
+    public void replyCircle(int receiverId, String receiverNickname) {
+        this.receiverId = receiverId;
+        etComment.setHint("@" + receiverNickname);
     }
 
 

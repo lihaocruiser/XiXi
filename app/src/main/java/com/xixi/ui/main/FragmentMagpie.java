@@ -1,6 +1,5 @@
 package com.xixi.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xixi.R;
-import com.xixi.adapter.cardview.CardAdapter;
+import com.xixi.adapter.cardview.BaseCardAdapter;
 import com.xixi.adapter.cardview.MagpieCardViewHolder;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.magpie.MagpieListJSONTask;
 import com.xixi.net.base.JSONReceiver;
-import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.util.Image.ImageDownloader;
 
 import org.json.JSONArray;
@@ -31,7 +29,7 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private CardAdapter<MagpieBean> adapter;
+    private BaseCardAdapter<MagpieBean> adapter;
 
     ImageDownloader imageDownloader = new ImageDownloader();
 
@@ -47,17 +45,8 @@ public class FragmentMagpie extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
 
-//        adapter = new MagpieAdapter();
-        adapter = new CardAdapter<>(MagpieCardViewHolder.class, R.layout.cardview_magpie_list, imageDownloader);
-        adapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Object bean) {
-                Intent intent = new Intent(getActivity(), MagpieActivity.class);
-                intent.putExtra("id", ((MagpieBean) bean).getId());
-                startActivity(intent);
-            }
-        });
-        adapter.setOnLoadMoreListener(new CardAdapter.OnLoadMoreListener() {
+        adapter = new BaseCardAdapter<>(MagpieCardViewHolder.class, R.layout.cardview_magpie_list, imageDownloader);
+        adapter.setOnLoadMoreListener(new BaseCardAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 if (!loading) {

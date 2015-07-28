@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xixi.R;
-import com.xixi.adapter.listview.CommentAdapter;
+import com.xixi.adapter.listview.BaseListAdapter;
 import com.xixi.adapter.cardview.MagpieHeaderCardViewHolder;
+import com.xixi.adapter.listview.MagpieCommentViewHolder;
 import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
-import com.xixi.ui.user.ProfileActivity;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
@@ -33,12 +33,18 @@ public class MagpieActivity extends AppCompatActivity {
     // test
     String base = "http://home.ustc.edu.cn/~lihao90/android/";
 
+    private static MagpieActivity instance;
+
+    public static MagpieActivity getInstance() {
+        return instance;
+    }
+
     Toolbar toolbar;
     LoadListView listView;
     EditText etComment;
     Button btnSend;
 
-    CommentAdapter adapter;
+    BaseListAdapter adapter;
     ImageDownloader imageDownloader;
 
     MagpieBean magpieBean = new MagpieBean();
@@ -58,6 +64,7 @@ public class MagpieActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_list_view);
+        instance = this;
 
         // init layout_toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,7 +81,7 @@ public class MagpieActivity extends AppCompatActivity {
 
         // set adapter
         imageDownloader = new ImageDownloader();
-        adapter = new CommentAdapter(imageDownloader);
+        adapter = new BaseListAdapter<ReplyBean>(MagpieCommentViewHolder.class, R.layout.lv_magpie_reply_item, imageDownloader);
         listView.setAdapter(adapter);
         listView.setDividerHeight(0);
         listView.setOnLoadListener(new LoadListView.OnLoadListener() {
@@ -90,24 +97,6 @@ public class MagpieActivity extends AppCompatActivity {
         MagpieHeaderCardViewHolder cardViewHolder = new MagpieHeaderCardViewHolder(cardView, imageDownloader);
         cardViewHolder.setData(magpieBean);
 
-        // on click listener
-        adapter.setOnAvatarClickListener(new CommentAdapter.OnAvatarClickListener() {
-            @Override
-            public void onAvatarClick(int userId) {
-                Intent intent = new Intent(MagpieActivity.this, ProfileActivity.class);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
-            }
-        });
-
-        adapter.setOnCommentClickListener(new CommentAdapter.OnCommentClickListener() {
-            @Override
-            public void onCommentClick(int receiverId, String receiverNickname) {
-                MagpieActivity.this.receiverId = receiverId;
-                etComment.setHint("@" + receiverNickname);
-            }
-        });
-
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +107,10 @@ public class MagpieActivity extends AppCompatActivity {
         onLoadMore();
     }
 
+    public void replyCircle(int receiverId, String receiverNickname) {
+        this.receiverId = receiverId;
+        etComment.setHint("@" + receiverNickname);
+    }
 
     private void onLoadMore() {
         if (loading) {

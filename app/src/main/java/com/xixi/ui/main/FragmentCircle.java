@@ -1,6 +1,5 @@
 package com.xixi.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xixi.R;
-import com.xixi.adapter.cardview.CardAdapter;
+import com.xixi.adapter.cardview.BaseCardAdapter;
 import com.xixi.adapter.cardview.CircleCardViewHolder;
 import com.xixi.bean.circle.CircleBean;
 import com.xixi.net.circle.CircleListJSONTask;
 import com.xixi.net.base.JSONReceiver;
-import com.xixi.ui.circle.CircleActivity;
 import com.xixi.util.Image.ImageDownloader;
 
 import org.json.JSONArray;
@@ -35,7 +33,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private CardAdapter<CircleBean> adapter;
+    private BaseCardAdapter<CircleBean> adapter;
 
     int pageIndex = 0;
     int pageSize = 30;
@@ -49,17 +47,8 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
 
-        adapter = new CardAdapter<>(CircleCardViewHolder.class, R.layout.cardview_circle_list, imageDownloader);
-        adapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Object bean) {
-                Intent intent = new Intent(getActivity(), CircleActivity.class);
-                intent.putExtra("id", ((CircleBean) bean).getId());
-                startActivity(intent);
-
-            }
-        });
-        adapter.setOnLoadMoreListener(new CardAdapter.OnLoadMoreListener() {
+        adapter = new BaseCardAdapter<>(CircleCardViewHolder.class, R.layout.cardview_circle_list, imageDownloader);
+        adapter.setOnLoadMoreListener(new BaseCardAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 if (!loading) {

@@ -1,5 +1,6 @@
 package com.xixi.adapter.listview;
 
+import android.content.Intent;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -9,31 +10,34 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.bean.circle.ReplyBean;
+import com.xixi.ui.circle.CircleActivity;
+import com.xixi.ui.user.ProfileActivity;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 
 /**
  * Created on 2015-7-24.
  */
-public class CommentViewHolder {
+public class CircleReplyViewHolder extends BaseListViewHolder<ReplyBean> {
 
+    ReplyBean bean;
     ForegroundColorSpan span1;
     ForegroundColorSpan span2;
-    ImageView imHeader;
+    ImageView imAvatar;
     TextView tvComment;
-    ImageDownloader imageDownloader;
 
-    public CommentViewHolder(View v, ImageDownloader imageDownloader) {
+    public CircleReplyViewHolder(View v, ImageDownloader imageDownloader) {
+        super(v, imageDownloader);
         span1 = new ForegroundColorSpan(v.getContext().getResources().getColor(R.color.blue_dark));
         span2 = new ForegroundColorSpan(v.getContext().getResources().getColor(R.color.blue_dark));
-        imHeader = (ImageView) v.findViewById(R.id.im_header);
+        imAvatar = (ImageView) v.findViewById(R.id.im_avatar);
         tvComment = (TextView) v.findViewById(R.id.tv_comment);
-        this.imageDownloader = imageDownloader;
     }
 
-    public void setData(final ReplyBean bean) {
+    @Override
+    public void setValue(ReplyBean bean) {
 
-        // set text
+        this.bean = bean;
 
         SpannableStringBuilder comment = new SpannableStringBuilder();
         String sender, receiver, content;
@@ -55,6 +59,26 @@ public class CommentViewHolder {
 
         // set image
 
-        imageDownloader.setBitmap(bean.getSenderAvatar(), imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+        imageDownloader.setBitmap(bean.getSenderAvatar(), imAvatar, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+
+        // OnClickListener
+
+        imAvatar.setOnClickListener(this);
+        tvComment.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.im_avatar:
+                Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                intent.putExtra("id", bean.getSenderId());
+                v.getContext().startActivity(intent);
+                break;
+            case R.id.tv_comment:
+                CircleActivity.getInstance().replyCircle(bean.getSenderId(), bean.getSenderNickname());
+                break;
+        }
     }
 }

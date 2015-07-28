@@ -11,7 +11,7 @@
         android:layout_marginRight="16dp">
 
         <ImageView
-            android:id="@+id/im_header"
+            android:id="@+id/im_avatar"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginRight="8dp"

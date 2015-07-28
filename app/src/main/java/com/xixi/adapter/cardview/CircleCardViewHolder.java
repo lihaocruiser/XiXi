@@ -1,5 +1,6 @@
 package com.xixi.adapter.cardview;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,13 +8,14 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.bean.circle.CircleBean;
+import com.xixi.ui.circle.CircleActivity;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 
 /**
  * Created on 2015-7-27.
  */
-public class CircleCardViewHolder extends CardViewHolder<CircleBean> {
+public class CircleCardViewHolder extends BaseCardViewHolder<CircleBean> {
 
     private int userId;
 
@@ -63,4 +65,11 @@ public class CircleCardViewHolder extends CardViewHolder<CircleBean> {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        CircleBean bean = (CircleBean) v.getTag();
+        Intent intent = new Intent(v.getContext(), CircleActivity.class);
+        intent.putExtra("id", bean.getId());
+        v.getContext().startActivity(intent);
+    }
 }
