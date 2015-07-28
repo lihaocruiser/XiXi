@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
+import com.xixi.ui.circle.NewCircleActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
 import com.xixi.ui.user.MessageActivity;
 import com.xixi.util.WindowUtil;
@@ -80,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.action_new_circle:
-                //intent = new Intent(MainActivity.this, NewCircleActivity.class);
-                //startActivity(intent);
+                intent = new Intent(MainActivity.this, NewCircleActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_notify:
                 intent = new Intent(MainActivity.this, MessageActivity.class);

@@ -4,11 +4,12 @@
     <string name="app_name">XiXi</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">Main Activity</string>
+    <string name="title_activity_main">XiXi</string>
     <string name="title_activity_magpie">Magpie Bridge</string>
     <string name="title_activity_message">Private Message</string>
-    <string name="title_activity_new_magpie">New Magpie</string>
-    <string name="title_activity_circle">CircleActivity</string>
+    <string name="title_activity_new_circle">Publish Circle</string>
+    <string name="title_activity_new_magpie">Publish Magpie</string>
+    <string name="title_activity_circle">Circle</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_intro">Introduction</string>
@@ -21,7 +22,9 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_finish">Finish</string>
-    <string name="btn_new">New</string>
+    <string name="btn_new_circle">Publish Circle</string>
+    <string name="btn_new_magpie">Publish Magpie</string>
+    <string name="btn_notify">notification</string>
     <string name="btn_private_message">Private Message</string>
     <string name="btn_send">Send</string>
     <string name="btn_upload">Upload</string>

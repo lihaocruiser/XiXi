@@ -44,6 +44,7 @@ public class CircleActivity extends AppCompatActivity {
     EditText etComment;
     Button btnSend;
 
+    CircleHeaderCardViewHolder cardViewHolder;
     BaseListAdapter<ReplyBean> adapter;
     ImageDownloader imageDownloader;
 
@@ -51,12 +52,6 @@ public class CircleActivity extends AppCompatActivity {
     List<ReplyBean> replyBeanList = new ArrayList<>();
 
     private int circleId;
-    private int userId;
-
-    int pageIndex = 0;
-    int pageSize = 10;
-    boolean loading;
-    boolean noMoreItem;
     int receiverId = -1;
 
 
@@ -84,18 +79,11 @@ public class CircleActivity extends AppCompatActivity {
         adapter = new BaseListAdapter<>(CircleReplyViewHolder.class, R.layout.lv_circle_reply_item, imageDownloader);
         listView.setAdapter(adapter);
         listView.setDividerHeight(0);
-        listView.setOnLoadListener(new LoadListView.OnLoadListener() {
-            @Override
-            public void onLoad() {
-                onLoadMore();
-            }
-        });
 
         // add header view
         CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_circle_header, null);
         listView.addHeaderView(cardView);
-        CircleHeaderCardViewHolder cardViewHolder = new CircleHeaderCardViewHolder(cardView, imageDownloader);
-        cardViewHolder.setData(circleBean);
+        cardViewHolder = new CircleHeaderCardViewHolder(cardView, imageDownloader);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +93,7 @@ public class CircleActivity extends AppCompatActivity {
         });
 
         // request data
-        onLoadMore();
+        onRefresh();
     }
 
     public void replyCircle(int receiverId, String receiverNickname) {
@@ -114,17 +102,15 @@ public class CircleActivity extends AppCompatActivity {
     }
 
 
-    private void onLoadMore() {
-        if (loading) {
-            return;
-        }
-        loading = true;
+    private void onRefresh() {
         new CircleJSONTask(circleId, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                loading = false;
                 listView.onLoadComplete();
                 // for test only
+                circleBean.setPublisherHeadPic(base + "0.jpg");
+                circleBean.setPic(base + "u0.jpg");
+                circleBean.setContent("content");
                 for (int i = 0; i < 10; i++) {
                     ReplyBean bean = new ReplyBean();
                     bean.setSenderNickname("Sender");
@@ -133,15 +119,16 @@ public class CircleActivity extends AppCompatActivity {
                     adapter.getBeanList().add(bean);
                 }
                 adapter.notifyDataSetChanged();
+                cardViewHolder.setValue(circleBean);
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
-                loading = false;
                 listView.onLoadComplete();
                 JSONArray array = obj.optJSONArray("list");
                 replyBeanList = ReplyBean.getBeanList(array);
                 adapter.notifyDataSetChanged();
+                cardViewHolder.setValue(circleBean);
             }
         }).execute();
     }
@@ -160,8 +147,8 @@ public class CircleActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.action_new_magpie:
-                Intent intent = new Intent();   // TODO
+            case R.id.action_new_circle:
+                Intent intent = new Intent(CircleActivity.this, NewCircleActivity.class);
                 startActivity(intent);
                 return true;
         }

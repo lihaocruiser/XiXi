@@ -6,19 +6,19 @@
     <item
         android:id="@+id/action_notify"
         android:icon="@drawable/ic_action_notify"
-        android:title="notify"
+        android:title="@string/btn_notify"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_new_magpie"
-        android:title="new_magpie"
+        android:title="@string/btn_new_magpie"
         android:orderInCategory="100"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_new_circle"
-        android:title="new_circle"
+        android:title="@string/btn_new_circle"
         android:orderInCategory="100"
         app:showAsAction="never" />
 

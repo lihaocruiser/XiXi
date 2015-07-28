@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
+import java.util.SimpleTimeZone;
 
 /**
  * Created on 7/19/15.
@@ -49,6 +50,10 @@ public class FileUtil {
     public static String getFileName(String url) {
         int index = url.lastIndexOf(File.separator);
         return url.substring(index + 1);
+    }
+
+    public static String getFilePath(String url) {
+        return imageFolder + File.separator + getFileName(url);
     }
 
 }

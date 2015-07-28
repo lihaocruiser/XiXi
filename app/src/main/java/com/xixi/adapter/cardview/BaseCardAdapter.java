@@ -78,7 +78,7 @@ public class BaseCardAdapter<B> extends RecyclerView.Adapter<BaseCardViewHolder<
         holder.setValue(bean);
 
         // 使CardView持有bean的引用，以便在CardViewHolder中设置OnClickListener
-        holder.cardView.setTag(bean);
+        holder.getRootView().setTag(bean);
 
         if (position == beanList.size() - 1) {
             if (onLoadMoreListener != null) {

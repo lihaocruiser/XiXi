@@ -22,27 +22,29 @@ public class MagpieCardViewHolder extends BaseCardViewHolder<MagpieBean> {
     public TextView tvNickname;
     public TextView tvTitle;
 
-    public MagpieCardViewHolder(CardView cardView, ImageDownloader imageDownloader) {
-        super(cardView, imageDownloader);
-        imHeader = (CircleImageView) cardView.findViewById(R.id.im_header);
-        tvNickname = (TextView) cardView.findViewById(R.id.tv_nickname);
-        tvTitle = (TextView) cardView.findViewById(R.id.tv_title);
+    public MagpieCardViewHolder(CardView v, ImageDownloader imageDownloader) {
+        super(v, imageDownloader);
+        imHeader = (CircleImageView) v.findViewById(R.id.im_header);
+        tvNickname = (TextView) v.findViewById(R.id.tv_nickname);
+        tvTitle = (TextView) v.findViewById(R.id.tv_title);
     }
 
     @Override
     public void setValue(final MagpieBean bean) {
 
+        getRootView().setTag(bean);
+
         tvNickname.setText(bean.getUserName());
         tvTitle.setText(bean.getTitle());
 
         String headUrl = bean.getUserHeaderUrl();
-        imageDownloader.setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+        getImageDownloader().setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
 
     }
 
     @Override
     public void onClick(View v) {
-        MagpieBean bean = (MagpieBean) v.getTag();
+        MagpieBean bean = (MagpieBean) getRootView().getTag();
         Intent intent = new Intent(v.getContext(), MagpieActivity.class);
         intent.putExtra("id", bean.getId());
         v.getContext().startActivity(intent);

@@ -54,20 +54,20 @@ public class CircleCardViewHolder extends BaseCardViewHolder<CircleBean> {
         }
 
         String headUrl = bean.getPublisherHeadPic();
-        imageDownloader.setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
+        getImageDownloader().setBitmap(headUrl, imHeader, ImageView.ScaleType.CENTER_CROP, BitmapUtil.Size.SMALL);
 
         String picUrl = bean.getPic();
         if (picUrl == null) {
             imPic.setVisibility(View.GONE);
         } else {
             imPic.setVisibility(View.VISIBLE);
-            imageDownloader.setBitmap(picUrl, imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
+            getImageDownloader().setBitmap(picUrl, imPic, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
         }
     }
 
     @Override
     public void onClick(View v) {
-        CircleBean bean = (CircleBean) v.getTag();
+        CircleBean bean = (CircleBean) getRootView().getTag();
         Intent intent = new Intent(v.getContext(), CircleActivity.class);
         intent.putExtra("id", bean.getId());
         v.getContext().startActivity(intent);

@@ -11,14 +11,22 @@ import com.xixi.util.Image.ImageDownloader;
  */
 public abstract class BaseCardViewHolder<B> extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public CardView cardView;
-    protected ImageDownloader imageDownloader;
+    private CardView cardView;
+    private ImageDownloader imageDownloader;
 
     public BaseCardViewHolder(CardView cardView, ImageDownloader imageDownloader) {
         super(cardView);
         this.cardView = cardView;
         this.imageDownloader = imageDownloader;
         cardView.setOnClickListener(this);
+    }
+
+    public CardView getRootView() {
+        return cardView;
+    }
+
+    protected ImageDownloader getImageDownloader() {
+        return imageDownloader;
     }
 
     public abstract void setValue(B bean);

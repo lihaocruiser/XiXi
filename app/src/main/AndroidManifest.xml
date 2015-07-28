@@ -91,7 +91,14 @@
             android:label="@string/title_activity_message"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Toolbar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name=".ui.circle.NewCircleActivity"
+            android:label="@string/title_activity_new_circle"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 

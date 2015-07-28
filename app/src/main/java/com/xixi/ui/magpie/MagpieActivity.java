@@ -44,6 +44,7 @@ public class MagpieActivity extends AppCompatActivity {
     EditText etComment;
     Button btnSend;
 
+    MagpieHeaderCardViewHolder cardViewHolder;
     BaseListAdapter<ReplyBean> adapter;
     ImageDownloader imageDownloader;
 
@@ -51,8 +52,6 @@ public class MagpieActivity extends AppCompatActivity {
     List<ReplyBean> replyBeanList = new ArrayList<>();
 
     int magpieId;
-    int userId;
-
     int pageIndex = 0;
     int pageSize = 10;
     boolean loading;
@@ -87,15 +86,14 @@ public class MagpieActivity extends AppCompatActivity {
         listView.setOnLoadListener(new LoadListView.OnLoadListener() {
             @Override
             public void onLoad() {
-                onLoadMore();
+                onRefresh();
             }
         });
 
         // add header view
         CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.cardview_magpie_header, null);
         listView.addHeaderView(cardView);
-        MagpieHeaderCardViewHolder cardViewHolder = new MagpieHeaderCardViewHolder(cardView, imageDownloader);
-        cardViewHolder.setData(magpieBean);
+        cardViewHolder = new MagpieHeaderCardViewHolder(cardView, imageDownloader);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,15 +102,15 @@ public class MagpieActivity extends AppCompatActivity {
             }
         });
 
-        onLoadMore();
+        onRefresh();
     }
 
-    public void replyCircle(int receiverId, String receiverNickname) {
+    public void replyMagpie(int receiverId, String receiverNickname) {
         this.receiverId = receiverId;
         etComment.setHint("@" + receiverNickname);
     }
 
-    private void onLoadMore() {
+    private void onRefresh() {
         if (loading) {
             return;
         }
@@ -123,6 +121,9 @@ public class MagpieActivity extends AppCompatActivity {
                 loading = false;
                 listView.onLoadComplete();
                 // for test only
+                magpieBean.setUserHeaderUrl(base + "0.jpg");
+                magpieBean.setPicUrl(base + "u0.jpg");
+                magpieBean.setTitle("content");
                 for (int i = 0; i < 10; i++) {
                     ReplyBean bean = new ReplyBean();
                     bean.setSenderNickname("Sender");
@@ -131,6 +132,7 @@ public class MagpieActivity extends AppCompatActivity {
                     adapter.getBeanList().add(bean);
                 }
                 adapter.notifyDataSetChanged();
+                cardViewHolder.setValue(magpieBean);
             }
 
             @Override
@@ -140,6 +142,7 @@ public class MagpieActivity extends AppCompatActivity {
                 JSONArray array = obj.optJSONArray("list");
                 replyBeanList = ReplyBean.getBeanList(array);
                 adapter.notifyDataSetChanged();
+                cardViewHolder.setValue(magpieBean);
             }
         }).execute();
     }

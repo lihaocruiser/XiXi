@@ -5,19 +5,18 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.xixi.R;
 import com.xixi.util.Image.BitmapUtil;
+import com.xixi.util.file.FileUtil;
 
-public class LocalImageShowActivity extends AppCompatActivity implements View.OnClickListener {
+import uk.co.senab.photoview.PhotoViewAttacher;
+
+public class LocalImageShowActivity extends AppCompatActivity {
 
     ImageView imImage;
-
-    String localImageUrl;
-
-    //Bitmap bitmap;
+    PhotoViewAttacher photoViewAttacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,22 +24,18 @@ public class LocalImageShowActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_local_image_show);
 
         Intent intent = getIntent();
-        localImageUrl = intent.getStringExtra("localImageUrl");
+        String  url = intent.getStringExtra("url");
+        String filePath = FileUtil.getFilePath(url);
 
         imImage = (ImageView) findViewById(R.id.im_image);
-        imImage.setOnClickListener(this);
 
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
 
-        // TODO
-        Bitmap bitmap = BitmapUtil.decodeFileScaled(localImageUrl, point.x, point.y, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
+        Bitmap bitmap = BitmapUtil.decodeFileScaled(filePath, point.x, point.y, ImageView.ScaleType.CENTER_INSIDE, BitmapUtil.Size.FULL_SCREEN);
 
         imImage.setImageBitmap(bitmap);
+        photoViewAttacher = new PhotoViewAttacher(imImage);
     }
 
-    @Override
-    public void onClick(View v) {
-        finish();
-    }
 }

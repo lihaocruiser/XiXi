@@ -77,7 +77,7 @@ public class MagpieCommentViewHolder extends BaseListViewHolder<ReplyBean> {
                 v.getContext().startActivity(intent);
                 break;
             case R.id.tv_comment:
-                MagpieActivity.getInstance().replyCircle(bean.getSenderId(), bean.getSenderNickname());
+                MagpieActivity.getInstance().replyMagpie(bean.getSenderId(), bean.getSenderNickname());
                 break;
         }
     }
