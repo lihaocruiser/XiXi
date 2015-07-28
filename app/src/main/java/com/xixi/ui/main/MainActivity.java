@@ -12,12 +12,11 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
-import com.xixi.ui.magpie.MagpieActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
+import com.xixi.ui.user.MessageActivity;
 import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
 
     ApplicationContext ac;
-
-    MenuItem menuAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,49 +58,35 @@ public class MainActivity extends AppCompatActivity {
 
         // init PagerSlidingTabStrip
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setTextSize((int)(tabs.getTextSize()*1.5));
+        tabs.setTextSize((int) (tabs.getTextSize() * 1.5));
+        tabs.setShouldExpand(true);
         tabs.setViewPager(viewPager);
-        tabs.setOnPageChangeListener(new MainOnPageChangeListener());
-    }
-
-
-    /**
-     * Change option menu according to current fragment
-     */
-    private class MainOnPageChangeListener implements ViewPager.OnPageChangeListener {
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-        @Override
-        public void onPageScrollStateChanged(int state) {}
-
-        @Override
-        public void onPageSelected(int position) {
-            if (position == 0) {
-                menuAdd.setVisible(true);
-            } else {
-                menuAdd.setVisible(false);
-            }
-        }
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menuAdd = menu.findItem(R.id.action_new_magpie);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_new_magpie) {
-            Intent intent = new Intent(MainActivity.this, NewMagpieActivity.class);
-            startActivity(intent);
-            return true;
+        Intent intent;
+        switch (id) {
+            case R.id.action_new_magpie:
+                intent = new Intent(MainActivity.this, NewMagpieActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_new_circle:
+                //intent = new Intent(MainActivity.this, NewCircleActivity.class);
+                //startActivity(intent);
+                return true;
+            case R.id.action_notify:
+                intent = new Intent(MainActivity.this, MessageActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

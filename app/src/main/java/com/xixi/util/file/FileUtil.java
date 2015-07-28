@@ -6,14 +6,13 @@ import android.os.Environment;
 import java.io.File;
 
 /**
- * Created by LiHao on 7/19/15.
+ * Created on 7/19/15.
  */
 public class FileUtil {
 
     private static String appPath;
-    private static String circlePath;
+    private static String imageFolder;
     private static File circleFile;
-    private static String url;
 
     public static void init(Context context) {
         String sdPath;
@@ -25,9 +24,9 @@ public class FileUtil {
         }
 
         appPath = sdPath + File.separator + "XiXi";
-        circlePath = appPath + File.separator + "Circle";
+        imageFolder = appPath + File.separator + "Image";
 
-        circleFile = makeDirectory(circlePath);
+        circleFile = makeDirectory(imageFolder);
     }
 
     private static File makeDirectory(String dir) {
@@ -39,8 +38,8 @@ public class FileUtil {
     }
 
 
-    public static String getCirclePath() {
-        return circlePath;
+    public static String getImageFolder() {
+        return imageFolder;
     }
 
     public static File getCircleFile() {

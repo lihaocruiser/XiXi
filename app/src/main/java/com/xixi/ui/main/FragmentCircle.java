@@ -88,7 +88,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                     circleBean.setPublisherHeadPic(base + i + ".jpg");
                     circleBean.setPic(base + "u" + i + ".jpg");
                     circleBean.setPublisherNickname("Nickname");
-                    circleBean.setContent(base + i + "jpg");
+                    circleBean.setContent(base + i + ".jpg");
                     refreshedBeanList.add(circleBean);
                 }
                 adapter.setBeanList(refreshedBeanList);
@@ -120,7 +120,7 @@ public class FragmentCircle extends Fragment implements SwipeRefreshLayout.OnRef
                     circleBean.setPublisherHeadPic(base + i + ".jpg");
                     circleBean.setPic(base + "u" + i + ".jpg");
                     circleBean.setPublisherNickname("Nickname");
-                    circleBean.setContent(base + i + "jpg");
+                    circleBean.setContent(base + i + ".jpg");
                     adapter.getBeanList().add(circleBean);
                 }
                 adapter.notifyDataSetChanged();

@@ -9,11 +9,11 @@ import com.xixi.util.Image.ImageDownloader;
  */
 public abstract class BaseListViewHolder<B> implements View.OnClickListener {
 
-    View view;
+    View rootView;
     ImageDownloader imageDownloader;
 
-    public BaseListViewHolder(View view, ImageDownloader imageDownloader) {
-        this.view = view;
+    public BaseListViewHolder(View rootView, ImageDownloader imageDownloader) {
+        this.rootView = rootView;
         this.imageDownloader = imageDownloader;
     }
 

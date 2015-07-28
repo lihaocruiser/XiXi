@@ -1,3 +1,4 @@
+<!-- Fragment Magpie and Fragment Circle -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -14,9 +15,9 @@
             android:id="@+id/recycle_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:fadeScrollbars="false"/>
-
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:scrollbars="vertical"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

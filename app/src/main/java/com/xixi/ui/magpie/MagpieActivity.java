@@ -44,7 +44,7 @@ public class MagpieActivity extends AppCompatActivity {
     EditText etComment;
     Button btnSend;
 
-    BaseListAdapter adapter;
+    BaseListAdapter<ReplyBean> adapter;
     ImageDownloader imageDownloader;
 
     MagpieBean magpieBean = new MagpieBean();

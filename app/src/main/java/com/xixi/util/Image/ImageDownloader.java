@@ -1,23 +1,21 @@
 package com.xixi.util.Image;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.AsyncTask;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.xixi.net.base.BitmapReceiver;
 import com.xixi.net.image.ImageDownloadTask;
-import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -31,7 +29,6 @@ public class ImageDownloader {
     private Set<String> taskSet = new HashSet<>();
     private Queue<String> imageQueue = new ArrayDeque<>();
     private Map<String, Bitmap> imageMap = new HashMap<>();
-
     private HashSet<ImageView> imSet = new HashSet<>();
 
     public void setBitmap(String picUrl, ImageView imageView, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
@@ -39,10 +36,12 @@ public class ImageDownloader {
             imageView.setImageBitmap(null);
             return;
         }
+
         if (!imSet.contains(imageView)) {
             imSet.add(imageView);
-            imageView.setTag(picUrl);
         }
+        imageView.setTag(picUrl);
+
         if (containsBitmap(picUrl)) {
             imageView.setImageBitmap(getBitmap(picUrl));
         } else {
@@ -65,7 +64,7 @@ public class ImageDownloader {
 
     // 如果文件存在则getFile()从文件获取，否则getOnline()从网络获取
     private void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
-        String circlePath = FileUtil.getCirclePath();
+        String circlePath = FileUtil.getImageFolder();
         String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
         File imageFile = new File(imagePath);
         if (imageFile.exists()) {
@@ -149,8 +148,7 @@ public class ImageDownloader {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String circlePath = FileUtil.getCirclePath();
-            String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
+            String imagePath = FileUtil.getImageFolder() + File.separator + FileUtil.getFileName(url);
             File imageFile = new File(imagePath);
             FileOutputStream outputStream;
             try {
@@ -163,8 +161,10 @@ public class ImageDownloader {
                 }
                 outputStream.flush();
                 outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                Log.e("FileNotFoundException", e.getMessage(), e);
+            } catch (IOException e) {
+                Log.e("IOException", e.getMessage(), e);
             }
             return null;
         }

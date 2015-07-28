@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.xixi.util.WindowUtil;
 
 /**
- * Created by LiHao on 2015/7/4.
+ * Created on 2015/7/4.
  * Decode Bitmap with proper size, aims at avoiding OOM
  */
 public class BitmapUtil {
@@ -152,23 +152,6 @@ public class BitmapUtil {
         }
         // inSampleSize在使用时会被变为2的幂次，所以这里乘以2
         return inSampleSize;
-    }
-
-    /**
-     * 作用是使图片大小整齐
-     */
-    private Bitmap fitView(Bitmap bitmap, int viewWidth, int viewHeight, ImageView.ScaleType scaleType) {
-        if (viewWidth > 0 && viewHeight > 0) {
-            int outWidth = bitmap.getWidth();
-            int outHeight = bitmap.getHeight();
-            float scaleX = (float) viewWidth / (float) outWidth;
-            float scaleY = (float) viewHeight / (float) outHeight;
-            float scale = Math.min(scaleX, scaleY);
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, outWidth, outHeight, matrix, true);
-        }
-        return bitmap;
     }
 
 }

@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xixi.R;
+import com.xixi.adapter.listview.BaseListAdapter;
+import com.xixi.adapter.listview.MessageViewHolder;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.bean.user.MessageBean;
 import com.xixi.net.base.JSONReceiver;
@@ -34,8 +36,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
     EditText etSend;
     Button btnSend;
 
-    ArrayList<MessageBean> beanList = new ArrayList<>();
-    MessageAdapter adapter;
+    BaseListAdapter<MessageBean> adapter;
 
     int userId;
     int receiverId;
@@ -66,7 +67,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
             etSend.setHint("@" + receiverNickname);
         }
 
-        adapter = new MessageAdapter();
+        adapter = new BaseListAdapter<>(MessageViewHolder.class, R.layout.lv_message_item, null);
         listView.setAdapter(adapter);
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -91,7 +92,6 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
             public void onFailure(JSONObject obj) {
                 swipeRefreshLayout.setRefreshing(false);
                 // for test only
-                beanList = new ArrayList<>();
                 for (int i = 0; i < pageSize; i++) {
                     MessageBean bean = new MessageBean();
                     if (i % 3 == 0) {
@@ -101,7 +101,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                     }
                     bean.setReceiverNickname("鼎鑫");
                     bean.setContent("我是私信的内容");
-                    beanList.add(bean);
+                    adapter.getBeanList().add(bean);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -114,7 +114,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                 if (array == null || array.length() == 0) {
                     return;
                 }
-                beanList = MessageBean.getBeanList(array);
+                adapter.setBeanList(MessageBean.getBeanList(array));
                 adapter.notifyDataSetChanged();
             }
         }).execute();
@@ -140,7 +140,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                     }
                     bean.setReceiverNickname("鼎鑫");
                     bean.setContent("我是私信的内容");
-                    beanList.add(bean);
+                    adapter.getBeanList().add(bean);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -155,57 +155,10 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                     noMore = true;
                     return;
                 }
-                MessageBean.appendBeanList(beanList, array);
+                MessageBean.appendBeanList(adapter.getBeanList(), array);
                 adapter.notifyDataSetChanged();
             }
         }).execute();
-    }
-
-    private class MessageAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return beanList.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return btnSend.getTag(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            MessageBean bean = beanList.get(i);
-            ViewHolder holder;
-            if (view == null) {
-                holder = new ViewHolder();
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lv_message_item, null);
-                holder.tvTitle = (TextView) view.findViewById(R.id.tv_title);
-                holder.tvContent = (TextView) view.findViewById(R.id.tv_content);
-                view.setTag(holder);
-            } else {
-                holder = (ViewHolder) view.getTag();
-            }
-            String sender = bean.getSenderNickname();
-            String receiver = bean.getReceiverNickname();
-            if (sender != null & ApplicationContext.getInstance().getNickname().equals(bean.getSenderNickname())) {
-                holder.tvTitle.setText("To:" + receiver);
-            } else {
-                holder.tvTitle.setText("From:" + sender);
-            }
-            holder.tvContent.setText(bean.getContent());
-            return view;
-        }
-
-        private class ViewHolder {
-            TextView tvTitle;
-            TextView tvContent;
-        }
     }
 
     @Override
