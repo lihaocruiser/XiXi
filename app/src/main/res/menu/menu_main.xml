@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_notify"
-        android:icon="@drawable/ic_action_notify"
+        android:icon="@drawable/ic_action_notify_off"
         android:title="@string/btn_notify"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />

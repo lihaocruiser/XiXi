@@ -9,19 +9,18 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.xixi.R;
 import com.xixi.adapter.listview.BaseListAdapter;
 import com.xixi.adapter.listview.MessageViewHolder;
-import com.xixi.bean.user.MessageBean;
+import com.xixi.bean.user.NotificationBean;
 import com.xixi.net.base.JSONReceiver;
-import com.xixi.net.user.MessageJSONTask;
+import com.xixi.net.user.NotificationJSONTask;
 import com.xixi.widget.LoadListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class MessageActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class NotificationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     Toolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -29,7 +28,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
     EditText etSend;
     Button btnSend;
 
-    BaseListAdapter<MessageBean> adapter;
+    BaseListAdapter<NotificationBean> adapter;
 
     int userId;
     int receiverId;
@@ -38,8 +37,6 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
     int pageSize = 10;
     boolean loading;
     boolean noMore;
-
-    MaterialDialog materialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +79,18 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        new MessageJSONTask(userId, 0, pageSize, new JSONReceiver() {
+        new NotificationJSONTask(userId, 0, pageSize, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
                 swipeRefreshLayout.setRefreshing(false);
                 // for test only
                 for (int i = 0; i < pageSize; i++) {
-                    MessageBean bean = new MessageBean();
+                    NotificationBean bean = new NotificationBean();
                     if (i % 3 == 0) {
                         bean.setSenderNickname("狸耗");
                     } else {
                         bean.setSenderNickname("");
                     }
-                    bean.setReceiverNickname("鼎鑫");
                     bean.setContent("我是私信的内容");
                     adapter.getBeanList().add(bean);
                 }
@@ -109,7 +105,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                 if (array == null || array.length() == 0) {
                     return;
                 }
-                adapter.setBeanList(MessageBean.getBeanList(array));
+                adapter.setBeanList(NotificationBean.getBeanList(array));
                 adapter.notifyDataSetChanged();
             }
         }).execute();
@@ -121,19 +117,18 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
             return;
         }
         loading = true;
-        new MessageJSONTask(userId, pageIndex, pageSize, new JSONReceiver() {
+        new NotificationJSONTask(userId, pageIndex, pageSize, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
                 swipeRefreshLayout.setRefreshing(false);
                 // for test only
                 for (int i = 0; i < pageSize; i++) {
-                    MessageBean bean = new MessageBean();
+                    NotificationBean bean = new NotificationBean();
                     if (i % 3 == 0) {
                         bean.setSenderNickname("狸耗");
                     } else {
                         bean.setSenderNickname("");
                     }
-                    bean.setReceiverNickname("鼎鑫");
                     bean.setContent("我是私信的内容");
                     adapter.getBeanList().add(bean);
                 }
@@ -150,7 +145,7 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                     noMore = true;
                     return;
                 }
-                MessageBean.appendBeanList(adapter.getBeanList(), array);
+                NotificationBean.appendBeanList(adapter.getBeanList(), array);
                 adapter.notifyDataSetChanged();
             }
         }).execute();

@@ -56,5 +56,6 @@
     <string name="txt_title">Title</string>
     <string name="txt_uploading">Uploading</string>
     <string name="txt_weekend">Weekend</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>

@@ -268,7 +268,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.action_private_message:
-                Intent intent = new Intent(ProfileActivity.this, MessageActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, NotificationActivity.class);
 //                intent.putExtra("receiverId", userId);
                 intent.putExtra("receiverId", 1);
                 intent.putExtra("receiverNickname", nickname);

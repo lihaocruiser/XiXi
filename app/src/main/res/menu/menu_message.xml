@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.xixi.ui.user.MessageActivity">
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.xixi.ui.user.NotificationActivity">
 
     <item
         android:id="@+id/action_settings"

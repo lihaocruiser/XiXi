@@ -15,7 +15,7 @@ import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.net.image.ImageDownloadTask;
 import com.xixi.net.base.BitmapReceiver;
-import com.xixi.ui.user.MessageActivity;
+import com.xixi.ui.user.NotificationActivity;
 import com.xixi.ui.user.ProfileActivity;
 import com.xixi.widget.CircleImageView;
 
@@ -78,7 +78,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.ll_messages:
-                intent = new Intent(getActivity(), MessageActivity.class);
+                intent = new Intent(getActivity(), NotificationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ll_settings:

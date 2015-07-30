@@ -1,5 +1,6 @@
 package com.xixi.bean.user;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,24 +8,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created on 2015-7-30.
+ * Created on 2015-7-25.
  */
-public class MessageBean {
+public class NotificationBean {
+
+    public final static int MAGPIE = 0;
+    public final static int CIRCLE = 1;
+    public final static int PM = 2;
+
     private int id;
     private int senderId;
-    private int receiverId;
+    private boolean isRead;
+    private int type;
+    private int contentId;
     private String senderNickname;
-    private String receiverNickname;
     private String content;
 
-    public MessageBean() {}
 
-    public MessageBean(JSONObject obj) {
+    public NotificationBean() {}
+
+    public NotificationBean(JSONObject obj) {
         id = obj.optInt("customerID", 0);
         senderId = obj.optInt("senderId", 0);
-        receiverId = obj.optInt("senderId", 0);
         senderNickname = obj.optString("senderNickname");
-        receiverNickname = obj.optString("receiverNickname");
         content = obj.optString("content");
     }
 
@@ -70,28 +76,12 @@ public class MessageBean {
         this.senderId = senderId;
     }
 
-    public int getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(int receiverId) {
-        this.receiverId = receiverId;
-    }
-
     public String getSenderNickname() {
         return senderNickname;
     }
 
     public void setSenderNickname(String senderNickname) {
         this.senderNickname = senderNickname;
-    }
-
-    public String getReceiverNickname() {
-        return receiverNickname;
-    }
-
-    public void setReceiverNickname(String receiverNickname) {
-        this.receiverNickname = receiverNickname;
     }
 
     public String getContent() {
@@ -102,4 +92,27 @@ public class MessageBean {
         this.content = content;
     }
 
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(int contentId) {
+        this.contentId = contentId;
+    }
 }

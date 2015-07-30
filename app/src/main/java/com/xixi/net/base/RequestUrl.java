@@ -23,13 +23,21 @@ public interface RequestUrl {
 
     // circle
     String CIRCLE_LIST = "xqz/xqzlist";                         //小圈子列表分页查询
-    String CIRCLE = "xqz/lookxqz";                             //小圈子查看
+    String CIRCLE = "xqz/lookxqz";                              //小圈子查看
     String SEND_CIRCLE = "xqz/releasexqz";                      //小圈子发布
     String SEND_LIKE = "xqz/likexqz";                           //小圈子点赞
     String CANCEL_LIKE = "xqz/cancellikexqz";                   //小圈子取消点赞
 
     // user
-    String PROFILE = "customer/look";
-    String MODIFY_PROFILE = "customer/update";
+    String PROFILE = "customer/look";                           // 查看用户资料
+    String MODIFY_PROFILE = "customer/update";                  // 修改用户资料
+
+    // notification
+    String CHECK_NOTIFICATION = "mm/newmsg";                         // 检查是否有新消息
+    String NOTIFICATION_LIST = "mm/mmlist";                          // 分页查看消息列表
+
+    // pm
+    String PM_DETAIL = "pm/lookpm";                             // 查看私信详情
+    String REPLY_PM = "pmReplies/repliespm";                    // 回复私信
 
 }

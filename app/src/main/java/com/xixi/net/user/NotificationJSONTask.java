@@ -8,11 +8,11 @@ import com.xixi.net.base.RequestUrl;
 /**
  * Created on 2015-7-25.
  */
-public class MessageJSONTask extends JSONTask {
+public class NotificationJSONTask extends JSONTask {
 
-    public MessageJSONTask(int userId, int pageIndex, int pageSize,JSONReceiver receiver) {
+    public NotificationJSONTask(int userId, int pageIndex, int pageSize, JSONReceiver receiver) {
 
-        String url = RequestUrl.PROFILE;
+        String url = RequestUrl.NOTIFICATION_LIST;
 
         RequestParams params = new RequestParams();
         params.put("customerID", userId);

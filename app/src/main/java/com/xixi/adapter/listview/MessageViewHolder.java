@@ -5,13 +5,13 @@ import android.widget.TextView;
 
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
-import com.xixi.bean.user.MessageBean;
+import com.xixi.bean.user.NotificationBean;
 import com.xixi.util.Image.ImageDownloader;
 
 /**
  * Created on 2015-7-28.
  */
-public class MessageViewHolder extends BaseListViewHolder<MessageBean> {
+public class MessageViewHolder extends BaseListViewHolder<NotificationBean> {
 
     TextView tvTitle;
     TextView tvContent;
@@ -23,7 +23,7 @@ public class MessageViewHolder extends BaseListViewHolder<MessageBean> {
     }
 
     @Override
-    public void setValue(MessageBean bean) {
+    public void setValue(NotificationBean bean) {
         String sender = bean.getSenderNickname();
         String receiver = bean.getReceiverNickname();
         if (sender != null & ApplicationContext.getInstance().getNickname().equals(bean.getSenderNickname())) {

@@ -14,10 +14,7 @@ import com.xixi.R;
 import com.xixi.adapter.cardview.CircleCardViewHolder;
 import com.xixi.adapter.cardview.MagpieCardViewHolder;
 import com.xixi.bean.ApplicationContext;
-import com.xixi.bean.circle.CircleBean;
-import com.xixi.ui.circle.NewCircleActivity;
-import com.xixi.ui.magpie.NewMagpieActivity;
-import com.xixi.ui.user.MessageActivity;
+import com.xixi.ui.user.NotificationActivity;
 import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;
 
@@ -92,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (id) {
             case R.id.action_notify:
-                intent = new Intent(MainActivity.this, MessageActivity.class);
+                intent = new Intent(MainActivity.this, NotificationActivity.class);
                 startActivity(intent);
                 return true;
         }
