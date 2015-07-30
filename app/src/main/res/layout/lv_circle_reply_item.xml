@@ -35,6 +35,6 @@
         android:layout_height="1px"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/grey_deep"/>
+        android:background="@color/md_grey_300"/>
 
 </LinearLayout>

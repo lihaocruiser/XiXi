@@ -1,6 +1,5 @@
 package com.xixi.ui.start;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,14 +14,15 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.xixi.R;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.util.Image.ImageUploader;
 import com.xixi.net.start.RegisterJSONTask;
 import com.xixi.net.start.SchoolListJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
-import com.xixi.util.dialog.AlertDialogManager;
-import com.xixi.util.dialog.ProgressDialogManager;
+import com.xixi.util.dialog.ProgressDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,8 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     Button btnLogin;
 
-    AlertDialogManager alertDialogManager;
-    ProgressDialogManager progressDialogManager;
+    ProgressDialog progressDialog;
 
     private String sex;
     private String nickname;
@@ -59,8 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        alertDialogManager = new AlertDialogManager(this);
-        progressDialogManager = new ProgressDialogManager(this);
+        progressDialog = new ProgressDialog(this);
 
         imHeader = (ImageView) findViewById(R.id.im_header);
         rbBoy = (RadioButton) findViewById(R.id.rb_boy);
@@ -85,13 +83,13 @@ public class RegisterActivity extends AppCompatActivity {
         btnSchool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialogManager.show("loading school list");
+                progressDialog.show("loading school list");
                 new SchoolListJSONTask(new JSONReceiver() {
                     @Override
                     public void onFailure(JSONObject obj) {
                         String[] s = new String[]{"中国科学技术大学","b"};  // for text only
                         selectSchool(s);                                    // for test only
-                        progressDialogManager.dismiss();
+                        progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, "request school list fail", Toast.LENGTH_SHORT).show();
                     }
 
@@ -106,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                             schools[i] = school;
                         }
                         selectSchool(schools);
-                        progressDialogManager.dismiss();
+                        progressDialog.dismiss();
                     }
                 }).execute();
             }
@@ -167,24 +165,24 @@ public class RegisterActivity extends AppCompatActivity {
                     executeRegisterTask(nickname, age, school, email, password, sex, headPic);
                 }
             });
-            progressDialogManager.show("uploading");
+            progressDialog.show("uploading");
             imageUploader.execute(localUrl);
         }
     }
 
     private void executeRegisterTask(String nickname, String age, String school, String email,
                                      String password, String sex, String headPic) {
-        progressDialogManager.show("uploading");
+        progressDialog.show("uploading");
         new RegisterJSONTask(nickname, age, school, email, password, sex, headPic, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                progressDialogManager.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, "register fail", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
-                progressDialogManager.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, "register succeed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -195,12 +193,13 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void selectSchool(final String[] schools) {
-        alertDialogManager.show(schools, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(this).title("select school").items(schools).theme(Theme.LIGHT).itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                btnSchool.setText(schools[which]);
+            public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                btnSchool.setText(charSequence);
+                return false;
             }
-        });
+        }).show();
     }
 
 

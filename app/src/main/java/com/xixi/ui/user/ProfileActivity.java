@@ -1,6 +1,5 @@
 package com.xixi.ui.user;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.bean.user.UserBean;
@@ -24,8 +24,7 @@ import com.xixi.util.Image.ImageDownloader;
 import com.xixi.util.Image.ImageUploader;
 import com.xixi.net.user.ModifyProfileJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
-import com.xixi.util.dialog.ProgressDialogManager;
-import com.xixi.util.dialog.TextAlertDialogManager;
+import com.xixi.util.dialog.ProgressDialog;
 import com.xixi.widget.CircleImageView;
 
 import org.json.JSONObject;
@@ -55,8 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     ImageDownloader imageDownloader;
     ApplicationContext ac;
-    TextAlertDialogManager textAlertDialogManager;
-    ProgressDialogManager progressDialogManager;
+    ProgressDialog progressDialog;
 
     int userId;
     int age;
@@ -78,8 +76,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         userId = getIntent().getIntExtra("userId", 0);
 
-        textAlertDialogManager = new TextAlertDialogManager(ProfileActivity.this);
-        progressDialogManager = new ProgressDialogManager(ProfileActivity.this);
+        progressDialog = new ProgressDialog(this);
 
         llAvatar = (LinearLayout) findViewById(R.id.ll_avatar);
         llNickname = (LinearLayout) findViewById(R.id.ll_nickname);
@@ -150,11 +147,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.ll_nickname:
-                textAlertDialogManager.show(new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(this).title(R.string.txt_nickname).input(null, null, new MaterialDialog.InputCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        nickname = textAlertDialogManager.getText();
-                        if (nickname.equals("")) {
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        if (charSequence.equals("")) {
                             Toast.makeText(ProfileActivity.this, "can't be empty", Toast.LENGTH_SHORT).show();
                         } else {
                             modifyProfile();
@@ -164,22 +160,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.ll_age:
-                textAlertDialogManager.show(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String strAge = textAlertDialogManager.getText();
-                        age = (strAge.equals("")) ? 0 : Integer.parseInt(strAge);
+                new MaterialDialog.Builder(this).title(R.string.txt_nickname).inputType(InputType.TYPE_CLASS_NUMBER).input(null, null, new MaterialDialog.InputCallback() {
+                @Override
+                public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                    if (charSequence.equals("")) {
+                        Toast.makeText(ProfileActivity.this, "can't be empty", Toast.LENGTH_SHORT).show();
+                    } else {
                         modifyProfile();
                     }
-                }, InputType.TYPE_CLASS_NUMBER);
+                }
+            });
                 break;
 
             case R.id.ll_label:
-                textAlertDialogManager.show(new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(this).title(R.string.txt_nickname).input(null, null, new MaterialDialog.InputCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        label = textAlertDialogManager.getText();
-                        modifyProfile();
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        if (charSequence.equals("")) {
+                            Toast.makeText(ProfileActivity.this, "can't be empty", Toast.LENGTH_SHORT).show();
+                        } else {
+                            modifyProfile();
+                        }
                     }
                 });
                 break;
@@ -203,7 +204,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             imageUploader.setOnUploadFinishListener(new ImageUploader.OnUploadFinishListener() {
                 @Override
                 public void onFailure() {
-                    progressDialogManager.dismiss();
+                    progressDialog.dismiss();
                     Toast.makeText(ProfileActivity.this, "uploading image fail", Toast.LENGTH_SHORT).show();
                 }
 
@@ -213,7 +214,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     modifyProfile();
                 }
             });
-            progressDialogManager.show("uploading image");
+            progressDialog.show("uploading image");
             imageUploader.execute(url);
         }
     }
@@ -224,13 +225,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void modifyProfile() {
 
-        progressDialogManager.show("modifying profile");
+        progressDialog.show("modifying profile");
 
         new ModifyProfileJSONTask(userId, age, avatar, nickname, label, new JSONReceiver() {
 
             @Override
             public void onFailure(JSONObject obj) {
-                progressDialogManager.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(ProfileActivity.this, "modify profile fail", Toast.LENGTH_SHORT).show();
             }
 
@@ -242,7 +243,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 ac.setAge(age);
                 ac.setLabel(label);
                 initView();
-                progressDialogManager.dismiss();
+                progressDialog.dismiss();
             }
         }).execute();
 

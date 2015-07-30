@@ -4,6 +4,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.xixi.util.Image.ImageDownloader;
@@ -22,6 +23,7 @@ public class BaseCardAdapter<B> extends RecyclerView.Adapter<BaseCardViewHolder<
     private ImageDownloader imageDownloader;
     private Class<? extends BaseCardViewHolder<B>> clazz;
     private OnLoadMoreListener onLoadMoreListener;
+    private OnLeaveTopListener onLeaveTopListener;
 
     public BaseCardAdapter(Class<? extends BaseCardViewHolder<B>> clazz, int resId, ImageDownloader imageDownloader) {
         beanList = new ArrayList<>();
@@ -39,13 +41,22 @@ public class BaseCardAdapter<B> extends RecyclerView.Adapter<BaseCardViewHolder<
         this.beanList = beanList;
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
-        this.onLoadMoreListener = listener;
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+    public void setOnLeaveTopListener(OnLeaveTopListener onLeaveTopListener) {
+        this.onLeaveTopListener = onLeaveTopListener;
     }
 
 
     public interface OnLoadMoreListener {
         void onLoadMore();
+    }
+
+    public interface OnLeaveTopListener {
+        void onLeaveTop();
+        void onRestoreTop();
     }
 
     @Override
@@ -83,6 +94,25 @@ public class BaseCardAdapter<B> extends RecyclerView.Adapter<BaseCardViewHolder<
         if (position == beanList.size() - 1) {
             if (onLoadMoreListener != null) {
                 onLoadMoreListener.onLoadMore();
+            }
+        }
+
+        if (position == 0) {
+            if (onLeaveTopListener != null) {
+                onLeaveTopListener.onRestoreTop();
+            }
+        }
+    }
+
+    /**
+     * 下滑到一定高度时，第一个ViewHolder被回收，此时将floating  Button设为不可见
+     */
+    @Override
+    public void onViewRecycled(BaseCardViewHolder<B> holder) {
+        B bean = (B) holder.getRootView().getTag();
+        if (beanList.get(0) == bean) {
+            if (onLeaveTopListener != null) {
+                onLeaveTopListener.onLeaveTop();
             }
         }
     }

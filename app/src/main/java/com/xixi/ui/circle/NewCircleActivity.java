@@ -13,11 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.xixi.R;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.ui.image.LocalImageShowActivity;
 import com.xixi.util.Image.BitmapUtil;
-import com.xixi.util.dialog.ProgressDialogManager;
 
 public class NewCircleActivity extends AppCompatActivity {
 
@@ -25,8 +25,6 @@ public class NewCircleActivity extends AppCompatActivity {
     EditText etContent;
     Button btnAddPhoto;
     ImageView[] imSelected = new ImageView[3];
-
-    ProgressDialogManager progressDialogManager;
 
     String[] localImageUrls;
 
@@ -39,8 +37,6 @@ public class NewCircleActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        progressDialogManager = new ProgressDialogManager(this);
 
         etContent = (EditText) findViewById(R.id.et_content);
 

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/im_header"
             android:layout_alignParentTop="true"
-            android:textColor="@color/blue_dark"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold"/>
 
         <TextView

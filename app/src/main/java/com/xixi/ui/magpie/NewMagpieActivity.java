@@ -21,7 +21,7 @@ import com.xixi.net.magpie.SendMagpieJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.ui.image.LocalImageShowActivity;
 import com.xixi.util.Image.BitmapUtil;
-import com.xixi.util.dialog.ProgressDialogManager;
+import com.xixi.util.dialog.ProgressDialog;
 
 import org.json.JSONObject;
 
@@ -40,7 +40,7 @@ public class NewMagpieActivity extends AppCompatActivity {
 
     MenuItem menuSend;
 
-    ProgressDialogManager progressDialogManager;
+    ProgressDialog progressDialog;
 
     String[] localImageUrls;
 
@@ -54,7 +54,7 @@ public class NewMagpieActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        progressDialogManager = new ProgressDialogManager(this);
+        progressDialog = new ProgressDialog(this);
 
         etTitle = (EditText) findViewById(R.id.et_title);
         etBasic = (EditText) findViewById(R.id.et_basic);
@@ -97,7 +97,7 @@ public class NewMagpieActivity extends AppCompatActivity {
             imageUploader.setOnUploadFinishListener(new ImageUploader.OnUploadFinishListener() {
                 @Override
                 public void onFailure() {
-                    progressDialogManager.dismiss();
+                    progressDialog.dismiss();
                     Toast.makeText(NewMagpieActivity.this, R.string.error_network, Toast.LENGTH_SHORT).show();
                 }
 
@@ -106,7 +106,7 @@ public class NewMagpieActivity extends AppCompatActivity {
                     executeSendMagpieTask(publisherID, title, content, receivedUrls);
                 }
             });
-            progressDialogManager.show(R.string.txt_uploading);
+            progressDialog.show(R.string.txt_uploading);
             imageUploader.execute(urls);
         } else {
             executeSendMagpieTask(publisherID, title, content, null);
@@ -120,17 +120,17 @@ public class NewMagpieActivity extends AppCompatActivity {
                 stringBuilder.append("@|").append(url);
             }
         }
-        progressDialogManager.show(R.string.txt_sending);
+        progressDialog.show(R.string.txt_sending);
         new SendMagpieJSONTask(publisherID, title, stringBuilder.toString(), new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                progressDialogManager.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(NewMagpieActivity.this, R.string.error_network, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(JSONObject obj) {
-                progressDialogManager.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(NewMagpieActivity.this, R.string.txt_send_successfully, Toast.LENGTH_SHORT).show();
                 NewMagpieActivity.this.finish();
             }

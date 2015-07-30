@@ -29,7 +29,7 @@
             android:layout_toRightOf="@id/im_header"
             android:layout_marginBottom="2dp"
             android:textSize="16sp"
-            android:textColor="@color/blue_deep"/>
+            android:textColor="?attr/colorPrimary"/>
 
         <TextView
             android:id="@+id/tv_title"

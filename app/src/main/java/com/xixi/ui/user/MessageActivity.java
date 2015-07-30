@@ -4,20 +4,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.xixi.R;
 import com.xixi.adapter.listview.BaseListAdapter;
 import com.xixi.adapter.listview.MessageViewHolder;
-import com.xixi.bean.ApplicationContext;
 import com.xixi.bean.user.MessageBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.user.MessageJSONTask;
@@ -25,8 +20,6 @@ import com.xixi.widget.LoadListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class MessageActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -45,6 +38,8 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
     int pageSize = 10;
     boolean loading;
     boolean noMore;
+
+    MaterialDialog materialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 下面是API19及以上的 -->
     <style name="AppTheme.Toolbar" parent="AppTheme">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowTranslucentNavigation">false</item>

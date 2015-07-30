@@ -11,7 +11,10 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.xixi.R;
+import com.xixi.adapter.cardview.CircleCardViewHolder;
+import com.xixi.adapter.cardview.MagpieCardViewHolder;
 import com.xixi.bean.ApplicationContext;
+import com.xixi.bean.circle.CircleBean;
 import com.xixi.ui.circle.NewCircleActivity;
 import com.xixi.ui.magpie.NewMagpieActivity;
 import com.xixi.ui.user.MessageActivity;
@@ -47,9 +50,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // init fragment
+        Bundle circleBundle = new Bundle();
+        circleBundle.putInt("resId", R.layout.cardview_circle_list);
+        circleBundle.putSerializable("clazz", CircleCardViewHolder.class);
+        FragmentCircle fragmentCircle = new FragmentCircle();
+        fragmentCircle.setArguments(circleBundle);
+
+        Bundle magpieBundle = new Bundle();
+        magpieBundle.putInt("resId", R.layout.cardview_magpie_list);
+        magpieBundle.putSerializable("clazz", MagpieCardViewHolder.class);
+        FragmentMagpie fragmentMagpie = new FragmentMagpie();
+        fragmentMagpie.setArguments(magpieBundle);
+
         fragmentList = new ArrayList<>();
-        fragmentList.add(new FragmentMagpie());
-        fragmentList.add(new FragmentCircle());
+        fragmentList.add(fragmentMagpie);
+        fragmentList.add(fragmentCircle);
         fragmentList.add(new FragmentMe());
 
         // init pager
@@ -59,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         // init PagerSlidingTabStrip
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setTextSize((int) (tabs.getTextSize() * 1.5));
+        tabs.setTextSize((int) (tabs.getTextSize() * 1.4));
         tabs.setShouldExpand(true);
         tabs.setViewPager(viewPager);
     }
@@ -76,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         Intent intent;
         switch (id) {
-            case R.id.action_new_magpie:
-                intent = new Intent(MainActivity.this, NewMagpieActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.action_new_circle:
-                intent = new Intent(MainActivity.this, NewCircleActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.action_notify:
                 intent = new Intent(MainActivity.this, MessageActivity.class);
                 startActivity(intent);

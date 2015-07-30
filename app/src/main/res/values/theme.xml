@@ -3,16 +3,20 @@
 
     <!-- universal -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/blue_deep</item>
-        <item name="colorPrimaryDark">@color/blue_deep</item>
-        <item name="colorAccent">@color/blue_mid</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="textAppearanceLargePopupMenu">
-            @style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large
+        <item name="colorPrimary">@color/md_green_500</item>
+        <item name="colorPrimaryDark">@color/md_green_700</item>
+        <item name="colorAccent">@color/md_pink_300</item>
+        <item name="android:textColorPrimary">@color/md_white</item>
+        <item name="android:textAppearanceLargePopupMenu">
+            @style/Theme.XiXi.PopupMenuTextAppearanceLarge
         </item>
     </style>
 
-    <!-- below SDK 19 -->
+    <style name="Theme.XiXi.PopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- 下面是API19以下的 -->
     <style name="AppTheme.Toolbar" parent="AppTheme">
         <item name="android:windowIsTranslucent">false</item>
     </style>

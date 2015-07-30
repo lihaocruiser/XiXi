@@ -4,5 +4,4 @@
     android:id="@+id/toolbar"
     style="@style/toolbar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-    />
+    app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
