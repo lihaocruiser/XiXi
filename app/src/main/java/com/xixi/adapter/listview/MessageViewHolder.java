@@ -25,7 +25,7 @@ public class MessageViewHolder extends BaseListViewHolder<NotificationBean> {
     @Override
     public void setValue(NotificationBean bean) {
         String sender = bean.getSenderNickname();
-        String receiver = bean.getReceiverNickname();
+        String receiver = null;
         if (sender != null & ApplicationContext.getInstance().getNickname().equals(bean.getSenderNickname())) {
             tvTitle.setText("To:" + receiver);
         } else {

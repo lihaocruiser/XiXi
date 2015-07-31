@@ -30,9 +30,21 @@
         style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
-        <ImageView
-            style="@style/item_im_tv_left"
-            android:src="@drawable/ic_me_messages"/>
+        <FrameLayout
+            style="@style/item_im_tv_left">
+
+            <com.xixi.widget.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/primary"/>
+
+            <com.xixi.widget.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_notifications"/>
+
+        </FrameLayout>
 
         <TextView
             style="@style/item_im_tv_right"
@@ -45,9 +57,21 @@
         style="@style/item_im_tv"
         android:layout_marginTop="20dp">
 
-        <ImageView
-            style="@style/item_im_tv_left"
-            android:src="@drawable/ic_me_setting"/>
+        <FrameLayout
+            style="@style/item_im_tv_left">
+
+            <com.xixi.widget.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/primary"/>
+
+            <com.xixi.widget.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_settings"/>
+
+        </FrameLayout>
 
         <TextView
             style="@style/item_im_tv_right"
