@@ -4,7 +4,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.xixi.util.Image.ImageDownloader;
@@ -110,6 +109,7 @@ public class BaseCardAdapter<B> extends RecyclerView.Adapter<BaseCardViewHolder<
     @Override
     public void onViewRecycled(BaseCardViewHolder<B> holder) {
         B bean = (B) holder.getRootView().getTag();
+        holder.recycle();
         if (beanList.get(0) == bean) {
             if (onLeaveTopListener != null) {
                 onLeaveTopListener.onLeaveTop();

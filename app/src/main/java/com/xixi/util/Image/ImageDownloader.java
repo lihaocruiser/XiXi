@@ -52,6 +52,10 @@ public class ImageDownloader {
         }
     }
 
+    public void removeImageView(ImageView imageView) {
+        imSet.remove(imageView);
+    }
+
     // 判断图片是否在内存
     private boolean containsBitmap(String url) {
         return imageMap.containsKey(url);

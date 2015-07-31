@@ -66,6 +66,12 @@ public class CircleCardViewHolder extends BaseCardViewHolder<CircleBean> {
     }
 
     @Override
+    public void recycle() {
+        getImageDownloader().removeImageView(imHeader);
+        getImageDownloader().removeImageView(imPic);
+    }
+
+    @Override
     public void onClick(View v) {
         CircleBean bean = (CircleBean) getRootView().getTag();
         Intent intent = new Intent(v.getContext(), CircleActivity.class);

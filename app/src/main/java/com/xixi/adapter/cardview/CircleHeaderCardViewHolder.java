@@ -76,6 +76,12 @@ public class CircleHeaderCardViewHolder extends BaseCardViewHolder<CircleBean> {
     }
 
     @Override
+    public void recycle() {
+        getImageDownloader().removeImageView(imHeader);
+        getImageDownloader().removeImageView(imPic);
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         CircleBean bean = (CircleBean) getRootView().getTag();

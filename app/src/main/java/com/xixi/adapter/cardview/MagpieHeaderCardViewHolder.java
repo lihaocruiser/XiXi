@@ -68,6 +68,12 @@ public class MagpieHeaderCardViewHolder extends BaseCardViewHolder<MagpieBean> {
     }
 
     @Override
+    public void recycle() {
+        getImageDownloader().removeImageView(imHeader);
+        getImageDownloader().removeImageView(imPic);
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         MagpieBean bean = (MagpieBean) getRootView().getTag();

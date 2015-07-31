@@ -3,6 +3,7 @@ package com.xixi.adapter.cardview;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.xixi.util.Image.ImageDownloader;
 
@@ -30,5 +31,7 @@ public abstract class BaseCardViewHolder<B> extends RecyclerView.ViewHolder impl
     }
 
     public abstract void setValue(B bean);
+
+    public abstract void recycle();
 
 }
