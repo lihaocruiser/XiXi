@@ -128,25 +128,25 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register() {
-        nickname = etNickname.getText().toString();
-        age = etAge.getText().toString();
-        school = btnSchool.getText().toString();
-        email = etEmail.getText().toString();
-        password = etPassword.getText().toString();
-        String  passwordConfirm = etPasswordConfirm.getText().toString();
-        if (rbBoy.isChecked()) {
-            sex = "male";
-        } else if (rbGirl.isChecked()) {
-            sex = "female";
-        }
-        if (nickname.equals("") || age.equals("") || school.equals("") || email.equals("") || password.equals("") || sex == null) {
-            Toast.makeText(RegisterActivity.this, "empty content!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!password.equals(passwordConfirm)) {
-            Toast.makeText(RegisterActivity.this, "password differs", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        nickname = etNickname.getText().toString();
+//        age = etAge.getText().toString();
+//        school = btnSchool.getText().toString();
+//        email = etEmail.getText().toString();
+//        password = etPassword.getText().toString();
+//        String  passwordConfirm = etPasswordConfirm.getText().toString();
+//        if (rbBoy.isChecked()) {
+//            sex = "male";
+//        } else if (rbGirl.isChecked()) {
+//            sex = "female";
+//        }
+//        if (nickname.equals("") || age.equals("") || school.equals("") || email.equals("") || password.equals("") || sex == null) {
+//            Toast.makeText(RegisterActivity.this, "empty content!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (!password.equals(passwordConfirm)) {
+//            Toast.makeText(RegisterActivity.this, "password differs", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
         // upload image
         if (localUrl == null) {

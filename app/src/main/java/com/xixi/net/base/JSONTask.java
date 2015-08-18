@@ -38,16 +38,7 @@ public class JSONTask {
 
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             Log.i(getClass().toString(), "onSuccess");
-            if (response == null) {
-                receiver.onFailure(null);
-                return;
-            }
-            int checked = response.optInt("checked", 1);
-            if (checked == 0) {
-                receiver.onSuccess(response);
-            } else {
-                receiver.onFailure(null);
-            }
+            receiver.onSuccess(response);
         }
 
     };

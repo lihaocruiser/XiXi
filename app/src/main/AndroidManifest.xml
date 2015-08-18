@@ -20,17 +20,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Toolbar"
             android:windowSoftInputMode="adjustPan" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <!-- <activity -->
-        <!-- android:name=".ui.main.MainActivity" -->
-        <!-- android:screenOrientation="portrait" -->
-        <!-- android:theme="@style/AppTheme.Toolbar" > -->
-        <!-- </activity> -->
         <activity
             android:name=".ui.magpie.MagpieActivity"
             android:label="@string/title_activity_magpie"
@@ -54,19 +44,36 @@
         </activity>
         <activity
             android:name=".ui.start.IntroActivity"
-            android:label="@string/title_activity_intro" >
+            android:label="@string/title_activity_intro"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name=".ui.start.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar"
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.start.RegisterActivity"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name=".ui.start.StartActivity"
-            android:label="@string/title_activity_start" >
+            android:label="@string/title_activity_start"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name=".ui.image.ImageBrowseActivity"
@@ -102,7 +109,10 @@
         </activity>
         <activity
             android:name=".ui.user.ChatActivity"
-            android:label="@string/title_activity_chat" >
+            android:label="@string/title_activity_chat"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 

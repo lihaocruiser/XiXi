@@ -2,11 +2,11 @@ package com.xixi.net.base;
 
 public interface RequestUrl {
 	
-    String HOST = "http://lingxi.xuguruogu.com/";
+    String HOST = "http://lingxi.xuguruogu.com/api/v1/";
 
     // start
-    String LOGIN = "customer/login";
-    String REGISTER = "customer/regist";
+    String LOGIN = "login";
+    String REGISTER = "register";
     String SCHOOL_LIST = "customer/schoollist";
 
     // upload image

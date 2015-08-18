@@ -56,17 +56,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void login(String email, String password) {
-		new LoginJSONTask(email, password, jsonReceiver).execute();
+	private void login(String username, String password) {
+		new LoginJSONTask(username, password, jsonReceiver).execute();
 	}
 
     private JSONReceiver jsonReceiver = new JSONReceiver() {
         @Override
         public void onFailure(JSONObject obj) {
-            Toast.makeText(LoginActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
         }
         @Override
         public void onSuccess(JSONObject obj) {
+			startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            Toast.makeText(LoginActivity.this, obj.toString(), Toast.LENGTH_LONG).show();
             switch (SafeJSON.getInt(obj, "checked", -1)) {
                 case 0:        // 登陆成功
                     ApplicationContext ac = ApplicationContext.getInstance();

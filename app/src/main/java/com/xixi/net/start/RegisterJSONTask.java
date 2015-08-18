@@ -16,13 +16,10 @@ public class RegisterJSONTask extends JSONTask {
         String url = RequestUrl.REGISTER;
 
         RequestParams params = new RequestParams();
-        params.put("nickname", nickname);
-        params.put("age", age);
-        params.put("school", school);
-        params.put("email", email);
-        params.put("password", password);
-        params.put("sex", sex);
-        params.put("headPic", headPic);
+        params.put("username", "lihaooo");
+        params.put("password", "123");
+        params.put("email", "a@qq.com");
+        params.put("nickname", "某浩的马甲");
 
         init(url, params, receiver);
 

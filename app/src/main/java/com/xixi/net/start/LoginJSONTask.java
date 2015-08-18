@@ -10,12 +10,12 @@ import com.xixi.net.base.RequestUrl;
  */
 public class LoginJSONTask extends JSONTask {
 
-    public LoginJSONTask(String email, String password, JSONReceiver receiver) {
+    public LoginJSONTask(String username, String password, JSONReceiver receiver) {
 
         String url = RequestUrl.LOGIN;
 
         RequestParams params = new RequestParams();
-        params.put("email", email);
+        params.put("username", username);
         params.put("password", password);
 
         init(url, params, receiver);
