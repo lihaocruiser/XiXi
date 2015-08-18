@@ -19,6 +19,7 @@ import com.xixi.bean.ApplicationContext;
 import com.xixi.bean.user.UserBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.user.ProfileJSONTask;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.util.Image.BitmapUtil;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.util.Image.ImageUploader;
@@ -31,12 +32,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity extends BaseActivity implements View.OnClickListener {
 
     // test
     String base = "http://home.ustc.edu.cn/~lihao90/android/";
-
-    Toolbar toolbar;
 
     LinearLayout llAvatar;
     LinearLayout llNickname;
@@ -68,11 +67,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        // init layout_toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         userId = getIntent().getIntExtra("userId", 0);
 

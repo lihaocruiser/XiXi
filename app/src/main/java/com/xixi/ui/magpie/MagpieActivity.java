@@ -2,7 +2,6 @@ package com.xixi.ui.magpie;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,6 +18,7 @@ import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.magpie.MagpieBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MagpieActivity extends AppCompatActivity {
+public class MagpieActivity extends BaseActivity {
 
     // test
     String base = "http://home.ustc.edu.cn/~lihao90/android/";
@@ -39,7 +39,6 @@ public class MagpieActivity extends AppCompatActivity {
         return instance;
     }
 
-    Toolbar toolbar;
     LoadListView listView;
     EditText etComment;
     Button btnSend;
@@ -64,11 +63,6 @@ public class MagpieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_list_view);
         instance = this;
-
-        // init layout_toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get intent
         magpieId = getIntent().getIntExtra("id", 0);

@@ -1,31 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- universal -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/md_green_500</item>
         <item name="colorPrimaryDark">@color/md_green_700</item>
         <item name="colorAccent">@color/md_pink_300</item>
-        <item name="android:textColorPrimary">@color/md_white</item>
-        <item name="android:textAppearanceLargePopupMenu">
-            @style/Theme.XiXi.PopupMenuTextAppearanceLarge
-        </item>
-    </style>
-
-    <style name="Theme.XiXi.PopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <!-- 下面是API19以下的 -->
-    <style name="AppTheme.Toolbar" parent="AppTheme">
-        <item name="android:windowIsTranslucent">false</item>
-    </style>
-
-    <style name="toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">56dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:background">?attr/colorPrimary</item>
     </style>
 
 </resources>

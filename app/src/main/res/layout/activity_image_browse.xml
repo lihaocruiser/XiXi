@@ -6,6 +6,4 @@
     android:orientation="vertical"
     tools:context="com.xixi.ui.image.ImageBrowseActivity">
 
-    <include layout="@layout/layout_toolbar" />
-
 </LinearLayout>

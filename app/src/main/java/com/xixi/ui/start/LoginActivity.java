@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,11 +15,12 @@ import android.widget.Toast;
 import com.xixi.R;
 import com.xixi.bean.ApplicationContext;
 import com.xixi.net.start.LoginJSONTask;
+import com.xixi.ui.base.BaseActivityNoToolbar;
 import com.xixi.ui.main.MainActivity;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.util.SafeJSON;
 
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends BaseActivityNoToolbar implements OnClickListener {
 
 	EditText etEmail;
 	EditText etPassword;

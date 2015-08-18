@@ -15,14 +15,14 @@ import com.xixi.adapter.listview.MessageViewHolder;
 import com.xixi.bean.user.NotificationBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.user.NotificationJSONTask;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.widget.LoadListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class NotificationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class NotificationActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    Toolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
     LoadListView listView;
     EditText etSend;
@@ -42,11 +42,6 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-
-        // init toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         receiverId = getIntent().getIntExtra("receiverId", 0);
         receiverNickname = getIntent().getStringExtra("receiverNickname");

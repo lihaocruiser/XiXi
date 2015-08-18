@@ -5,10 +5,9 @@
     android:id="@+id/tabs"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:layout_marginTop="-12dp"
+    android:layout_marginTop="-6dp"
     android:background="?attr/colorPrimary"
     android:textColor="@android:color/white"
     app:pstsIndicatorColor="@color/white"
     app:pstsTextAllCaps="false"
     />
-<!-- layout_marginTop=-12dp只是为了好看 -->

@@ -15,13 +15,13 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xixi.R;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.ui.image.ImageBrowseActivity;
 import com.xixi.ui.image.LocalImageShowActivity;
 import com.xixi.util.Image.BitmapUtil;
 
-public class NewCircleActivity extends AppCompatActivity {
+public class NewCircleActivity extends BaseActivity {
 
-    Toolbar toolbar;
     EditText etContent;
     Button btnAddPhoto;
     ImageView[] imSelected = new ImageView[3];
@@ -32,11 +32,6 @@ public class NewCircleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_circle);
-        // init layout_toolbar
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         etContent = (EditText) findViewById(R.id.et_content);
 

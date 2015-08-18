@@ -14,6 +14,7 @@ import com.xixi.R;
 import com.xixi.adapter.cardview.CircleCardViewHolder;
 import com.xixi.adapter.cardview.MagpieCardViewHolder;
 import com.xixi.bean.ApplicationContext;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.ui.user.NotificationActivity;
 import com.xixi.util.WindowUtil;
 import com.xixi.util.file.FileUtil;
@@ -22,9 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    Toolbar toolbar;
     PagerSlidingTabStrip tabs;
 
     private ViewPager viewPager;
@@ -36,15 +36,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ac = ApplicationContext.getInstance(MainActivity.this);
         FileUtil.init(MainActivity.this);
         WindowUtil.init(MainActivity.this);
-
-        // init layout_toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // init fragment
         Bundle circleBundle = new Bundle();

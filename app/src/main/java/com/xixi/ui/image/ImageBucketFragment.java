@@ -67,7 +67,7 @@ public class ImageBucketFragment extends Fragment {
 
 
     public interface OnBucketClickListener {
-        public void onBucketClick(int position);
+        void onBucketClick(int position);
     }
 
     public void setOnBucketClickedListener(OnBucketClickListener listener) {

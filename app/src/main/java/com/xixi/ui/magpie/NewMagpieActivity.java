@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.xixi.R;
 import com.xixi.net.base.JSONReceiver;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.util.Image.ImageUploader;
 import com.xixi.net.magpie.SendMagpieJSONTask;
 import com.xixi.ui.image.ImageBrowseActivity;
@@ -28,9 +29,8 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
 
-public class NewMagpieActivity extends AppCompatActivity {
+public class NewMagpieActivity extends BaseActivity {
 
-    Toolbar toolbar;
     EditText etTitle;
     EditText etBasic;
     EditText etHobby;
@@ -48,11 +48,6 @@ public class NewMagpieActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_magpie);
-
-        // init layout_toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         progressDialog = new ProgressDialog(this);
 

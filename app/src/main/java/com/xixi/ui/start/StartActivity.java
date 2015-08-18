@@ -2,14 +2,16 @@ package com.xixi.ui.start;
 
 import com.xixi.bean.ApplicationContext;
 import com.xixi.R;
+import com.xixi.ui.base.BaseActivityNoToolbar;
 import com.xixi.ui.main.MainActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
-public class StartActivity extends Activity {
+public class StartActivity extends BaseActivityNoToolbar {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

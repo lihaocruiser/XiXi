@@ -94,7 +94,7 @@ public class CircleHeaderCardViewHolder extends BaseCardViewHolder<CircleBean> {
                 break;
             case R.id.im_pic:
                 intent = new Intent(v.getContext(), LocalImageShowActivity.class);
-                intent.putExtra("url", bean.getPic());
+                intent.putExtra("imageUrl", bean.getPic());
                 v.getContext().startActivity(intent);
                 break;
         }

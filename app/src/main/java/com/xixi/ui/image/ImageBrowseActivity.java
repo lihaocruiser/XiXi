@@ -11,12 +11,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.xixi.R;
+import com.xixi.ui.base.BaseActivity;
 
 import java.util.Collection;
 
-public class ImageBrowseActivity extends AppCompatActivity {
-
-    Toolbar toolbar;
+public class ImageBrowseActivity extends BaseActivity {
 
     ImageBucketFragment imageBucketFragment;
     ImageGridFragment imageGridFragment;
@@ -30,11 +29,6 @@ public class ImageBrowseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_browse);
-
-        // init layout_toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         maxImageCount = getIntent().getIntExtra("maxImageCount", 1);
 

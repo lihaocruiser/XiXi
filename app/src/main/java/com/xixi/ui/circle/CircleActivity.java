@@ -19,6 +19,7 @@ import com.xixi.bean.circle.ReplyBean;
 import com.xixi.bean.circle.CircleBean;
 import com.xixi.net.base.JSONReceiver;
 import com.xixi.net.circle.CircleJSONTask;
+import com.xixi.ui.base.BaseActivity;
 import com.xixi.util.Image.ImageDownloader;
 import com.xixi.widget.LoadListView;
 
@@ -28,7 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CircleActivity extends AppCompatActivity {
+public class CircleActivity extends BaseActivity {
 
     // test
     String base = "http://home.ustc.edu.cn/~lihao90/android/";
@@ -39,7 +40,6 @@ public class CircleActivity extends AppCompatActivity {
         return instance;
     }
 
-    Toolbar toolbar;
     LoadListView listView;
     EditText etComment;
     Button btnSend;
@@ -60,11 +60,6 @@ public class CircleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_list_view);
         instance = this;
-
-        // init layout_toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get intent
         circleId = getIntent().getIntExtra("id", 0);

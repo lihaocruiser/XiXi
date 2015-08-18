@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.xixi.R;
 import com.xixi.net.base.JSONReceiver;
+import com.xixi.ui.base.BaseActivityNoToolbar;
 import com.xixi.util.Image.ImageUploader;
 import com.xixi.net.start.RegisterJSONTask;
 import com.xixi.net.start.SchoolListJSONTask;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivityNoToolbar {
 
     ImageView imHeader;
     RadioButton rbBoy;

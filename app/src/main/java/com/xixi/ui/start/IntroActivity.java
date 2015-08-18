@@ -1,7 +1,7 @@
 package com.xixi.ui.start;
 
-import android.app.Activity;
+import com.xixi.ui.base.BaseActivityNoToolbar;
 
-public class IntroActivity extends Activity {
+public class IntroActivity extends BaseActivityNoToolbar {
 
 }

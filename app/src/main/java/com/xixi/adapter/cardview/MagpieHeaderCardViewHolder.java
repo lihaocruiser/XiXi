@@ -86,7 +86,7 @@ public class MagpieHeaderCardViewHolder extends BaseCardViewHolder<MagpieBean> {
                 break;
             case R.id.im_pic:
                 intent = new Intent(v.getContext(), LocalImageShowActivity.class);
-                intent.putExtra("url", bean.getPicUrl());
+                intent.putExtra("imageUrl", bean.getPicUrl());
                 v.getContext().startActivity(intent);
                 break;
         }
