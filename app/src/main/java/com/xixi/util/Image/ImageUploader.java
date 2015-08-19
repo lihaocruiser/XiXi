@@ -58,7 +58,7 @@ public class ImageUploader {
     };
 
     private void uploadImage(int imageCount) {
-        new ImageUploadJSONTask(localUrls.get(imageCount), receiver);
+        new ImageUploadJSONTask(localUrls.get(imageCount), receiver).execute();
     }
 
 
@@ -71,7 +71,7 @@ public class ImageUploader {
      * upload one picture
      */
     public void execute(String localUrl) {
-        ArrayList<String > urls = new ArrayList<>();
+        ArrayList<String> urls = new ArrayList<>();
         urls.add(localUrl);
         this.execute(urls);
     }

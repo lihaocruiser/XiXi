@@ -52,7 +52,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     TextView tvLabel;
 
     ImageDownloader imageDownloader;
-    ApplicationContext ac;
     ProgressDialog progressDialog;
 
     int userId;

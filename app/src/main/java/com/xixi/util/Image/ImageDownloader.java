@@ -68,8 +68,7 @@ public class ImageDownloader {
 
     // 如果文件存在则getFile()从文件获取，否则getOnline()从网络获取
     private void fetchImage(String url, int viewWidth, int viewHeight, ImageView.ScaleType scaleType, BitmapUtil.Size size) {
-        String circlePath = FileUtil.getImageFolder();
-        String imagePath = circlePath + File.separator + FileUtil.getFileName(url);
+        String imagePath = FileUtil.getFilePath(url);
         File imageFile = new File(imagePath);
         if (imageFile.exists()) {
             getFile(url, imagePath, viewWidth, viewHeight, scaleType, size);
@@ -106,6 +105,7 @@ public class ImageDownloader {
         @Override
         protected Bitmap doInBackground(Void... voids) {
             return BitmapUtil.decodeFileScaled(imagePath, viewWidth, viewHeight, scaleType, size);
+            //return BitmapUtil.decodeFileWithMaxPix(imagePath, 100);
         }
 
         @Override
@@ -152,7 +152,7 @@ public class ImageDownloader {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String imagePath = FileUtil.getImageFolder() + File.separator + FileUtil.getFileName(url);
+            String imagePath = FileUtil.getFilePath(url);
             File imageFile = new File(imagePath);
             FileOutputStream outputStream;
             try {

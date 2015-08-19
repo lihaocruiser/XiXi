@@ -22,6 +22,37 @@ public class BitmapUtil {
     }
 
     /**
+     * decode bitmap, the out size of the result is no larger than maxSize
+     * @param maxSize both width & height will not exceed this parameter
+     */
+    public static Bitmap decodeFileWithMaxPix(String pathName, int maxSize) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathName, options);
+        measureSize(options, maxSize);
+        Bitmap rawBitmap = BitmapFactory.decodeFile(pathName);
+        return Bitmap.createScaledBitmap(rawBitmap, options.outWidth, options.outHeight, true);
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    private static void measureSize(BitmapFactory.Options options, int maxSize) {
+        float rawWidth = options.outWidth;
+        float rawHeight = options.outHeight;
+        float inSampleX = rawWidth / maxSize;
+        float inSampleY = rawHeight / maxSize;
+        if (inSampleX > 1 || inSampleY > 1) {
+            if (inSampleX > inSampleY) {
+                options.outWidth /= inSampleX;
+                options.outHeight /= inSampleX;
+            } else {
+                options.outWidth /= inSampleY;
+                options.outHeight /= inSampleY;
+            }
+        }
+    }
+
+
+    /**
      * decode bitmap from File
      * @param viewWidth width of the view holding the bitmap
      * @param viewHeight height of the view holding the bitmap
