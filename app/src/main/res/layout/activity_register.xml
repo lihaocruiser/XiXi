@@ -45,7 +45,7 @@
         <Button
             android:id="@+id/btn_school"
             style="@style/btn_blue_large"
-            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginTop="4dp"
             android:hint="select school"
             android:textColorHint="@color/white"
             android:singleLine="true"/>
@@ -53,14 +53,14 @@
         <EditText
             android:id="@+id/et_nickname"
             style="@style/et_large"
-            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginTop="4dp"
             android:hint="nickname"
             android:singleLine="true"/>
 
         <EditText
             android:id="@+id/et_age"
             style="@style/et_large"
-            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginTop="4dp"
             android:inputType="number"
             android:hint="age"
             android:singleLine="true"/>
@@ -68,7 +68,7 @@
         <EditText
             android:id="@+id/et_email"
             style="@style/et_large"
-            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginTop="4dp"
             android:inputType="textEmailAddress"
             android:hint="email"
             android:singleLine="true"/>
@@ -76,7 +76,7 @@
         <EditText
             android:id="@+id/et_password"
             style="@style/et_large"
-            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginTop="4dp"
             android:inputType="textPassword"
             android:hint="password"
             android:singleLine="true"/>
@@ -84,7 +84,7 @@
         <EditText
             android:id="@+id/et_password_confirm"
             style="@style/et_large"
-            android:layout_marginTop="@dimen/abc_action_bar_default_padding_material"
+            android:layout_marginTop="4dp"
             android:inputType="textPassword"
             android:hint="confirm password"
             android:singleLine="true"/>
