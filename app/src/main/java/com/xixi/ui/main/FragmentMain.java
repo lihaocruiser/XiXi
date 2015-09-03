@@ -2,6 +2,7 @@ package com.xixi.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.xixi.R;
 import com.xixi.adapter.cardview.BaseCardAdapter;
 import com.xixi.adapter.cardview.BaseCardViewHolder;
@@ -46,11 +46,10 @@ public abstract class FragmentMain<B> extends Fragment implements SwipeRefreshLa
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        clazz = (Class<? extends  BaseCardViewHolder<B>>) getArguments().getSerializable("clazz");
+        clazz = (Class<? extends BaseCardViewHolder<B>>) getArguments().getSerializable("clazz");
         resId = getArguments().getInt("resId");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle_view);
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);

@@ -24,7 +24,6 @@ public class MainActivity extends BaseActivity {
     PagerSlidingTabStrip tabs;
 
     private ViewPager viewPager;
-    private List<Fragment> fragmentList;
 
     ApplicationContext ac;
 
@@ -36,27 +35,9 @@ public class MainActivity extends BaseActivity {
 
         ac = ApplicationContext.getInstance(MainActivity.this);
 
-        // init fragment
-        Bundle circleBundle = new Bundle();
-        circleBundle.putInt("resId", R.layout.cardview_circle_list);
-        circleBundle.putSerializable("clazz", CircleCardViewHolder.class);
-        FragmentCircle fragmentCircle = new FragmentCircle();
-        fragmentCircle.setArguments(circleBundle);
-
-        Bundle magpieBundle = new Bundle();
-        magpieBundle.putInt("resId", R.layout.cardview_magpie_list);
-        magpieBundle.putSerializable("clazz", MagpieCardViewHolder.class);
-        FragmentMagpie fragmentMagpie = new FragmentMagpie();
-        fragmentMagpie.setArguments(magpieBundle);
-
-        fragmentList = new ArrayList<>();
-        fragmentList.add(fragmentMagpie);
-        fragmentList.add(fragmentCircle);
-        fragmentList.add(new FragmentMe());
-
         // init pager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
+        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
         viewPager.setCurrentItem(0);
 
         // init PagerSlidingTabStrip
