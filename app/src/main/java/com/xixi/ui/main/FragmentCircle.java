@@ -22,10 +22,11 @@ public class FragmentCircle extends FragmentMain<CircleBean> {
                 ArrayList<CircleBean> refreshedBeanList = new ArrayList<>();
                 for (int i = 0; i < pageSize; i++) {
                     CircleBean circleBean = new CircleBean();
-                    circleBean.setPublisherHeadPic(base + i + ".jpg");
-                    circleBean.setPic(base + "u" + i + ".jpg");
-                    circleBean.setPublisherNickname("Nickname");
-                    circleBean.setContent(base + i + ".jpg");
+                    circleBean.setId(i);
+                    circleBean.setPublisherHeadPic(base + "header (" + i + ").png");
+                    circleBean.setPic(base + "pic (" + i + ").jpg");
+                    circleBean.setPublisherNickname("Username" + i);
+                    circleBean.setContent("Content" + i);
                     refreshedBeanList.add(circleBean);
                 }
                 adapter.setBeanList(refreshedBeanList);
@@ -52,12 +53,13 @@ public class FragmentCircle extends FragmentMain<CircleBean> {
             public void onFailure(JSONObject obj) {
                 loading = false;
                 // test only
-                for (int i = 0; i < pageSize; i++) {
+                for (int i = pageSize; i < 2 * pageSize; i++) {
                     CircleBean circleBean = new CircleBean();
-                    circleBean.setPublisherHeadPic(base + i + ".jpg");
-                    circleBean.setPic(base + "u" + i + ".jpg");
-                    circleBean.setPublisherNickname("Nickname");
-                    circleBean.setContent(base + i + ".jpg");
+                    circleBean.setId(i);
+                    circleBean.setPublisherHeadPic(base + "header (" + i + ").png");
+                    circleBean.setPic(base + "pic (" + i + ").jpg");
+                    circleBean.setPublisherNickname("Username" + i);
+                    circleBean.setContent("Content" + i);
                     adapter.getBeanList().add(circleBean);
                 }
                 adapter.notifyDataSetChanged();

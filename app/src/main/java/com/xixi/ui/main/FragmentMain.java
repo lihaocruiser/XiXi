@@ -38,7 +38,7 @@ public abstract class FragmentMain<B> extends Fragment implements SwipeRefreshLa
     ImageDownloader imageDownloader = new ImageDownloader();
 
     int pageIndex = 0;
-    int pageSize = 30;
+    int pageSize = 10;
     boolean loading = false;
     boolean noMore = false;
 

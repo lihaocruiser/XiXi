@@ -103,14 +103,15 @@ public class CircleActivity extends BaseActivity {
             public void onFailure(JSONObject obj) {
                 listView.onLoadComplete();
                 // for test only
-                circleBean.setPublisherHeadPic(base + "0.jpg");
-                circleBean.setPic(base + "u0.jpg");
-                circleBean.setContent("content");
+                circleBean.setPublisherHeadPic(base + "header (" + circleId + ").png");
+                circleBean.setPic(base + "pic (" + circleId + ").jpg");
+                circleBean.setContent("Content");
                 for (int i = 0; i < 10; i++) {
                     ReplyBean bean = new ReplyBean();
-                    bean.setSenderNickname("Sender");
-                    bean.setSenderAvatar(base + i + ".jpg");
-                    bean.setComment(base + i + ".jpg");
+                    bean.setSenderId(i);
+                    bean.setSenderNickname("Username" + i);
+                    bean.setSenderAvatar(base + "header (" + i + ").png");
+                    bean.setComment("Content" + i);
                     adapter.getBeanList().add(bean);
                 }
                 adapter.notifyDataSetChanged();

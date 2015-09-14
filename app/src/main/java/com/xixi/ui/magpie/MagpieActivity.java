@@ -115,14 +115,16 @@ public class MagpieActivity extends BaseActivity {
                 loading = false;
                 listView.onLoadComplete();
                 // for test only
-                magpieBean.setUserHeaderUrl(base + "0.jpg");
-                magpieBean.setPicUrl(base + "u0.jpg");
+                magpieBean.setId(magpieId);
+                magpieBean.setUserHeaderUrl(base + "header (" + magpieId + ").png");
+                magpieBean.setPicUrl(base + "pic (" + magpieId + ").jpg");
                 magpieBean.setTitle("content");
                 for (int i = 0; i < 10; i++) {
                     ReplyBean bean = new ReplyBean();
-                    bean.setSenderNickname("Sender");
-                    bean.setSenderAvatar(base + i + ".jpg");
-                    bean.setComment(base + i + ".jpg");
+                    bean.setSenderId(i);
+                    bean.setSenderNickname("Username" + i);
+                    bean.setSenderAvatar(base + "header (" + i + ").png");
+                    bean.setComment("Content" + i);
                     adapter.getBeanList().add(bean);
                 }
                 adapter.notifyDataSetChanged();

@@ -102,7 +102,8 @@ public class BitmapUtil {
         scale = 1f / inSampleSize;
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
-        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        //return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        return bitmap;
     }
 
 

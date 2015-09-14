@@ -2,8 +2,6 @@ package com.xixi.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,7 +52,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     ImageDownloader imageDownloader;
     ProgressDialog progressDialog;
 
-    int userId;
+    int id;
     int age;
     String avatar;
     String nickname;
@@ -67,7 +65,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        userId = getIntent().getIntExtra("userId", 0);
+        id = getIntent().getIntExtra("id", -1);
 
         progressDialog = new ProgressDialog(this);
 
@@ -85,10 +83,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         tvSchool = (TextView) findViewById(R.id.tv_school);
         tvLabel = (TextView) findViewById(R.id.tv_label);
 
-        new ProfileJSONTask(userId, new JSONReceiver() {
+        new ProfileJSONTask(id, new JSONReceiver() {
             @Override
             public void onFailure(JSONObject obj) {
-                avatar = base + "1.jpg";
+                if (id == -1) {
+                    avatar = base + "header (" + id + ").jpg";
+                } else {
+                    avatar = base + "header (" + id + ").png";
+                }
                 nickname = "nickname";
                 age = 0;
                 school = "USTC";
@@ -121,12 +123,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         tvSchool.setText(school);
         tvLabel.setText(label);
 
-        imAvatar.setOnClickListener(this);
-        llNickname.setOnClickListener(this);
-        llSex.setOnClickListener(this);
-        llAge.setOnClickListener(this);
-        llSchool.setOnClickListener(this);
-        llLabel.setOnClickListener(this);
+        if (id == -1) {
+            imAvatar.setOnClickListener(this);
+            llNickname.setOnClickListener(this);
+            llSex.setOnClickListener(this);
+            llAge.setOnClickListener(this);
+            llSchool.setOnClickListener(this);
+            llLabel.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -149,20 +153,20 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             modifyProfile();
                         }
                     }
-                });
+                }).show();
                 break;
 
             case R.id.ll_age:
                 new MaterialDialog.Builder(this).title(R.string.txt_nickname).inputType(InputType.TYPE_CLASS_NUMBER).input(null, null, new MaterialDialog.InputCallback() {
-                @Override
-                public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                    if (charSequence.equals("")) {
-                        Toast.makeText(ProfileActivity.this, "can't be empty", Toast.LENGTH_SHORT).show();
-                    } else {
-                        modifyProfile();
+                    @Override
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        if (charSequence.equals("")) {
+                            Toast.makeText(ProfileActivity.this, "can't be empty", Toast.LENGTH_SHORT).show();
+                        } else {
+                            modifyProfile();
+                        }
                     }
-                }
-            });
+                }).show();
                 break;
 
             case R.id.ll_label:
@@ -175,7 +179,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             modifyProfile();
                         }
                     }
-                });
+                }).show();
                 break;
         }
     }
@@ -220,7 +224,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         progressDialog.show("modifying profile");
 
-        new ModifyProfileJSONTask(userId, age, avatar, nickname, label, new JSONReceiver() {
+        new ModifyProfileJSONTask(id, age, avatar, nickname, label, new JSONReceiver() {
 
             @Override
             public void onFailure(JSONObject obj) {
@@ -247,7 +251,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         MenuItem menuPrivateMessage = menu.findItem(R.id.action_private_message);
-        if (userId != ApplicationContext.getInstance().getUserId()) {
+        if (id != ApplicationContext.getInstance().getUserId()) {
             menuPrivateMessage.setVisible(true);
         }
         return true;
@@ -262,7 +266,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.action_private_message:
                 Intent intent = new Intent(ProfileActivity.this, NotificationActivity.class);
-//                intent.putExtra("receiverId", userId);
+//                intent.putExtra("receiverId", id);
                 intent.putExtra("receiverId", 1);
                 intent.putExtra("receiverNickname", nickname);
                 startActivity(intent);

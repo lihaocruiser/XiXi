@@ -22,10 +22,11 @@ public class FragmentMagpie extends FragmentMain<MagpieBean> {
                 ArrayList<MagpieBean> refreshedBeanList = new ArrayList<>();
                 for (int i = 0; i < pageSize; i++) {
                     MagpieBean magpieBean = new MagpieBean();
-                    magpieBean.setUserName("李浩");
-                    magpieBean.setPicUrl(base + "u" + i + ".jpg");
-                    magpieBean.setTitle(base + i + ".jpg");
-                    magpieBean.setUserHeaderUrl(base + i + ".jpg");
+                    magpieBean.setId(i);
+                    magpieBean.setUserName("Username" + i);
+                    magpieBean.setPicUrl(base + "pic (" + i + ").jpg");
+                    magpieBean.setTitle("Title" + i);
+                    magpieBean.setUserHeaderUrl(base + "header (" + i + ").png");
                     refreshedBeanList.add(magpieBean);
                 }
                 adapter.setBeanList(refreshedBeanList);
@@ -51,11 +52,13 @@ public class FragmentMagpie extends FragmentMain<MagpieBean> {
             @Override
             public void onFailure(JSONObject obj) {
                 loading = false;
-                for (int i = 0; i < pageSize; i++) {
+                for (int i = pageSize; i < 2 * pageSize; i++) {
                     MagpieBean magpieBean = new MagpieBean();
-                    magpieBean.setUserName("李浩");
-                    magpieBean.setTitle(base + i + ".jpg");
-                    magpieBean.setUserHeaderUrl(base + i + ".jpg");
+                    magpieBean.setId(i);
+                    magpieBean.setUserName("Username" + i);
+                    magpieBean.setPicUrl(base + "pic (" + i + ").jpg");
+                    magpieBean.setTitle("Title" + i);
+                    magpieBean.setUserHeaderUrl(base + "header (" + i + ").png");
                     adapter.getBeanList().add(magpieBean);
                 }
                 adapter.notifyDataSetChanged();
